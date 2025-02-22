@@ -1,1 +1,0 @@
-# vinayamin.com
