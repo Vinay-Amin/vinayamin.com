@@ -1,0 +1,22 @@
+# Clacky-related configuration
+.1024*
+!.1024
+.breakpoints
+.clacky/
+
+# Next.js specific files
+.next/
+out/
+.env*.local
+
+# Language-specific files
+*.log
+*.tmp
+*.temp
+
+# Framework-related files
+.DS_Store
+Thumbs.db
+
+# Package manager directories
+node_modules/
