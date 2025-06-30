@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 interface BlogCardProps {
-  id: number;
+  id: string;
   slug: string;
   title: string;
   date: string;

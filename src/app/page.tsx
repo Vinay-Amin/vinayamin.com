@@ -1,7 +1,6 @@
-import Image from "next/image";
 import Link from "next/link";
 import { FaLaptopCode, FaChartLine, FaUsers } from "react-icons/fa";
-import { MdOutlineComputer, MdGavel, MdOutlineMailOutline } from "react-icons/md";
+import { MdOutlineComputer, MdGavel } from "react-icons/md";
 import { BsArrowRight } from "react-icons/bs";
 
 export default function Home() {
