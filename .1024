@@ -3,4 +3,4 @@
 # For more information, please refer to the documentation: https://docs.clacky.ai/clacky-workspace
 
 # Command to run when "Run" button clicked
-run_command: cd vinay-portfolio && npm run dev
+run_command: npm run dev

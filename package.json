@@ -1,12 +1,15 @@
 {
-  "name": "vinay-portfolio",
+  "name": "portfolio",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://username.github.io/repository-name",
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "export": "next export",
+    "deploy": "npm run build && npm run export"
   },
   "dependencies": {
     "next": "15.3.4",
