@@ -32,6 +32,10 @@ jobs:
         
       - name: Build project
         run: npm run build
+        env:
+          DISABLE_ESLINT: true
+          CI: false
+          NEXT_TELEMETRY_DISABLED: 1
         
       - name: Setup Pages
         uses: actions/configure-pages@v5

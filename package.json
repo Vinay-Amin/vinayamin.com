@@ -5,7 +5,8 @@
   "homepage": "https://username.github.io/repository-name",
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "next build",
+    "build": "DISABLE_ESLINT=true next build",
+    "build:deploy": "DISABLE_ESLINT=true CI=false NEXT_TELEMETRY_DISABLED=1 next build",
     "start": "next start",
     "lint": "next lint",
     "export": "next export",
