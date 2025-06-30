@@ -73,7 +73,7 @@ export function getAllTags(): string[] {
 }
 
 // Validate blog data structure
-export function validateBlogData(blog: any): blog is Blog {
+export function validateBlogData(blog: unknown): blog is Blog {
   return (
     typeof blog.id === 'number' &&
     typeof blog.slug === 'string' &&
@@ -82,7 +82,7 @@ export function validateBlogData(blog: any): blog is Blog {
     typeof blog.excerpt === 'string' &&
     typeof blog.content === 'string' &&
     Array.isArray(blog.tags) &&
-    blog.tags.every((tag: any) => typeof tag === 'string') &&
+    blog.tags.every((tag: unknown) => typeof tag === 'string') &&
     typeof blog.metadata === 'object' &&
     typeof blog.metadata.title === 'string' &&
     typeof blog.metadata.description === 'string' &&
