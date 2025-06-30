@@ -1,7 +1,6 @@
 import Link from "next/link";
 
 interface BlogCardProps {
-  id: string;
   slug: string;
   title: string;
   date: string;
@@ -9,7 +8,7 @@ interface BlogCardProps {
   tags: string[];
 }
 
-export default function BlogCard({ id, slug, title, date, excerpt, tags }: BlogCardProps) {
+export default function BlogCard({ slug, title, date, excerpt, tags }: BlogCardProps) {
   const formattedDate = new Date(date).toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'long',

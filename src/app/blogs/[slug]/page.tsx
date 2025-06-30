@@ -199,10 +199,10 @@ export default function BlogPostPage({ params }: BlogParams) {
             <h3 className="text-2xl font-semibold text-gray-900 mb-6">Related Articles</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {blogsData
-                .filter((relatedBlog) => relatedBlog.id !== blog.id)
+                .filter((relatedBlog) => relatedBlog.slug !== blog.slug)
                 .slice(0, 2)
                 .map((relatedBlog) => (
-                  <div key={relatedBlog.id} className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+                  <div key={relatedBlog.slug} className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
                     <h4 className="text-xl font-semibold text-gray-900 mb-2">
                       <Link href={`/blogs/${relatedBlog.slug}`} className="hover:text-blue-600 transition-colors duration-300">
                         {relatedBlog.title}
