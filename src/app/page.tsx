@@ -1,15 +1,38 @@
+'use client';
 import Link from "next/link";
 import { FaLaptopCode, FaChartLine, FaUsers } from "react-icons/fa";
 import { MdOutlineComputer } from "react-icons/md";
 import { BsArrowRight } from "react-icons/bs";
+import { HiMenu, HiX } from "react-icons/hi";
+import { useState } from "react";
 
 export default function Home() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
   return (
     <div>
       {/* Navigation */}
-      <header className="fixed top-0 left-0 w-full bg-white shadow-md z-50 py-4 px-6 md:px-12 flex justify-between items-center">
+      <header className="fixed top-0 left-0 w-full bg-white shadow-md z-50 py-4 px-4 md:px-6 lg:px-12 flex justify-between items-center">
         <div className="text-2xl font-bold text-gray-900">Vinay Amin</div>
-        <nav>
+        
+        {/* Mobile Menu Button */}
+        <button 
+          className="md:hidden text-gray-700 focus:outline-none" 
+          onClick={toggleMenu}
+        >
+          {isMenuOpen ? (
+            <HiX className="h-6 w-6" />
+          ) : (
+            <HiMenu className="h-6 w-6" />
+          )}
+        </button>
+
+        {/* Desktop Navigation */}
+        <nav className="hidden md:block">
           <ul className="flex space-x-6">
             <li>
               <a href="#about" className="text-gray-600 hover:text-blue-600 transition-colors duration-300">About</a>
@@ -30,22 +53,91 @@ export default function Home() {
         </nav>
       </header>
 
+      {/* Mobile Menu Overlay */}
+      <div 
+        className={`fixed inset-0 z-40 bg-gray-900 bg-opacity-50 backdrop-blur-sm transition-opacity duration-300 ${
+          isMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+        }`}
+      >
+        <div className={`fixed right-0 top-0 w-64 h-full bg-white shadow-lg z-50 transform transition-transform duration-300 ease-in-out ${
+          isMenuOpen ? "translate-x-0" : "translate-x-full"
+        }`}>
+          <div className="p-6">
+            <button 
+              className="absolute top-4 right-4 text-gray-700 focus:outline-none" 
+              onClick={toggleMenu}
+            >
+              <HiX className="h-6 w-6" />
+            </button>
+            <div className="mt-8">
+              <ul className="space-y-4">
+                <li>
+                  <a 
+                    href="#about" 
+                    className="text-gray-700 hover:text-blue-600 transition-colors duration-300 text-lg block"
+                    onClick={toggleMenu}
+                  >
+                    About
+                  </a>
+                </li>
+                <li>
+                  <a 
+                    href="#experience" 
+                    className="text-gray-700 hover:text-blue-600 transition-colors duration-300 text-lg block"
+                    onClick={toggleMenu}
+                  >
+                    Experience
+                  </a>
+                </li>
+                <li>
+                  <a 
+                    href="#projects" 
+                    className="text-gray-700 hover:text-blue-600 transition-colors duration-300 text-lg block"
+                    onClick={toggleMenu}
+                  >
+                    Projects
+                  </a>
+                </li>
+                <li>
+                  <a 
+                    href="#blogs" 
+                    className="text-gray-700 hover:text-blue-600 transition-colors duration-300 text-lg block"
+                    onClick={toggleMenu}
+                  >
+                    Blogs
+                  </a>
+                </li>
+                <li>
+                  <a 
+                    href="#contact" 
+                    className="text-gray-700 hover:text-blue-600 transition-colors duration-300 text-lg block"
+                    onClick={toggleMenu}
+                  >
+                    Contact
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Hero Section */}
       <section id="hero" className="relative h-screen flex items-center justify-center bg-gray-50 overflow-hidden">
-        <div className="container mx-auto px-6 text-center z-10">
-          <div className="w-48 h-48 rounded-full overflow-hidden mx-auto mb-8 bg-gray-200 flex items-center justify-center">
-            <span className="text-gray-500 text-5xl">👤</span>
+        <div className="container mx-auto px-4 md:px-6 text-center z-10">
+          <div className="w-36 h-36 md:w-48 md:h-48 rounded-full overflow-hidden mx-auto mb-6 md:mb-8 bg-gray-200 flex items-center justify-center">
+            <span className="text-gray-500 text-4xl md:text-5xl">👤</span>
           </div>
-          <h1 className="text-6xl font-bold text-gray-900 mb-6">Vinay Amin</h1>
-          <p className="text-2xl text-blue-600 mb-8 font-medium">Product Manager & Developer</p>
-          <div className="flex justify-center space-x-8 text-gray-700 text-lg mb-10">
+          <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-4 md:mb-6">Vinay Amin</h1>
+          <p className="text-lg md:text-2xl text-blue-600 mb-6 md:mb-8 font-medium">Product Manager & Developer</p>
+          <div className="flex flex-col md:flex-row justify-center md:space-x-8 text-gray-700 text-sm md:text-lg mb-8 md:mb-10 space-y-3 md:space-y-0">
             <a href="mailto:vinayamin1997@gmail.com" className="hover:text-blue-600 transition-colors duration-300">📧 vinayamin1997@gmail.com</a>
             <a href="tel:8217866171" className="hover:text-blue-600 transition-colors duration-300">📞 8217866171</a>
             <span>📍 Bengaluru, India</span>
             <a href="https://www.linkedin.com/in/vinayvp/" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">LinkedIn</a>
           </div>
-          <div className="mt-10">
-            <a href="#contact" className="inline-flex items-center px-8 py-3 border border-transparent text-base font-medium rounded-full shadow-sm text-white bg-blue-600 hover:bg-blue-700 transition-colors duration-300">
+          <div className="mt-8 md:mt-10">
+            <a href="#contact" className="inline-flex items-center px-6 md:px-8 py-3 border border-transparent text-base font-medium rounded-full shadow-sm text-white bg-blue-600 hover:bg-blue-700 transition-colors duration-300">
               Get in Touch <BsArrowRight className="ml-2" />
             </a>
           </div>
@@ -53,10 +145,10 @@ export default function Home() {
       </section>
 
       {/* About Section */}
-      <section id="about" className="section-padding bg-white">
-        <div className="container mx-auto px-6">
-          <h2 className="heading-secondary text-center text-gray-900 mb-12">About Me</h2>
-          <div className="text-gray-700 text-lg leading-relaxed mx-auto max-w-4xl">
+      <section id="about" className="section-padding bg-white px-4 md:px-6">
+        <div className="container mx-auto">
+          <h2 className="heading-secondary text-center text-gray-900 mb-8 md:mb-12">About Me</h2>
+          <div className="text-gray-700 text-base md:text-lg leading-relaxed mx-auto max-w-4xl">
             <p className="mb-4">
               I am a Product Manager with 4 years of experience and proven expertise in driving product vision, roadmapping, and data-driven decision-making. I specialize in synthesizing complex user requirements into strategic, actionable plans.
             </p>
@@ -71,28 +163,28 @@ export default function Home() {
       </section>
 
       {/* Skills Section */}
-      <section id="skills" className="section-padding bg-gray-100">
-        <div className="container mx-auto px-6">
-          <h2 className="heading-secondary text-center text-gray-900 mb-12">Skills</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <div className="bg-white p-6 rounded-lg shadow-md text-center hover:shadow-lg transition-shadow duration-300">
-              <FaLaptopCode className="text-4xl text-blue-600 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-gray-900 mb-3">Development</h3>
+      <section id="skills" className="section-padding bg-gray-100 px-4 md:px-6">
+        <div className="container mx-auto">
+          <h2 className="heading-secondary text-center text-gray-900 mb-8 md:mb-12">Skills</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+            <div className="bg-white p-5 md:p-6 rounded-lg shadow-md text-center hover:shadow-lg transition-shadow duration-300">
+              <FaLaptopCode className="text-3xl md:text-4xl text-blue-600 mx-auto mb-3 md:mb-4" />
+              <h3 className="text-lg md:text-xl font-semibold text-gray-900 mb-2 md:mb-3">Development</h3>
               <p className="text-gray-700">Python, Django, FastAPI, SQL, MongoDB</p>
             </div>
-            <div className="bg-white p-6 rounded-lg shadow-md text-center hover:shadow-lg transition-shadow duration-300">
-              <FaChartLine className="text-4xl text-blue-600 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-gray-900 mb-3">Product Management</h3>
+            <div className="bg-white p-5 md:p-6 rounded-lg shadow-md text-center hover:shadow-lg transition-shadow duration-300">
+              <FaChartLine className="text-3xl md:text-4xl text-blue-600 mx-auto mb-3 md:mb-4" />
+              <h3 className="text-lg md:text-xl font-semibold text-gray-900 mb-2 md:mb-3">Product Management</h3>
               <p className="text-gray-700">Roadmapping, Analytics, Feature Prioritization</p>
             </div>
-            <div className="bg-white p-6 rounded-lg shadow-md text-center hover:shadow-lg transition-shadow duration-300">
-              <FaUsers className="text-4xl text-blue-600 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-gray-900 mb-3">Leadership</h3>
+            <div className="bg-white p-5 md:p-6 rounded-lg shadow-md text-center hover:shadow-lg transition-shadow duration-300">
+              <FaUsers className="text-3xl md:text-4xl text-blue-600 mx-auto mb-3 md:mb-4" />
+              <h3 className="text-lg md:text-xl font-semibold text-gray-900 mb-2 md:mb-3">Leadership</h3>
               <p className="text-gray-700">Team Management, Agile Methodologies</p>
             </div>
-            <div className="bg-white p-6 rounded-lg shadow-md text-center hover:shadow-lg transition-shadow duration-300">
-              <MdOutlineComputer className="text-4xl text-blue-600 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-gray-900 mb-3">Process Automation</h3>
+            <div className="bg-white p-5 md:p-6 rounded-lg shadow-md text-center hover:shadow-lg transition-shadow duration-300">
+              <MdOutlineComputer className="text-3xl md:text-4xl text-blue-600 mx-auto mb-3 md:mb-4" />
+              <h3 className="text-lg md:text-xl font-semibold text-gray-900 mb-2 md:mb-3">Process Automation</h3>
               <p className="text-gray-700">SOP Implementation, Optimization</p>
             </div>
           </div>
@@ -100,13 +192,13 @@ export default function Home() {
       </section>
 
       {/* Experience Timeline Section */}
-      <section id="experience" className="section-padding bg-white">
-        <div className="container mx-auto px-6">
-          <h2 className="heading-secondary text-center text-gray-900 mb-12">Experience</h2>
-          <div className="relative border-l-2 border-blue-600 ml-4 md:ml-20">
+      <section id="experience" className="section-padding bg-white px-4 md:px-6">
+        <div className="container mx-auto">
+          <h2 className="heading-secondary text-center text-gray-900 mb-8 md:mb-12">Experience</h2>
+          <div className="relative border-l-2 border-blue-600 ml-2 md:ml-20">
             <div className="mb-8 flex items-center w-full">
               <div className="absolute w-4 h-4 bg-blue-600 rounded-full -left-2 border-white border-2"></div>
-              <div className="ml-8 md:ml-12 p-6 bg-gray-50 rounded-lg shadow-md flex-1">
+              <div className="ml-6 md:ml-12 p-4 md:p-6 bg-gray-50 rounded-lg shadow-md flex-1">
                 <h3 className="text-xl font-semibold text-gray-900">Product Manager</h3>
                 <p className="text-blue-600 text-md mb-2">Varahe Analytics Pvt. Ltd. | 2023 - Present</p>
                 <ul className="list-disc list-inside text-gray-700 text-base space-y-1">
@@ -118,7 +210,7 @@ export default function Home() {
             </div>
             <div className="mb-8 flex items-center w-full">
               <div className="absolute w-4 h-4 bg-blue-600 rounded-full -left-2 border-white border-2"></div>
-              <div className="ml-8 md:ml-12 p-6 bg-gray-50 rounded-lg shadow-md flex-1">
+              <div className="ml-6 md:ml-12 p-4 md:p-6 bg-gray-50 rounded-lg shadow-md flex-1">
                 <h3 className="text-xl font-semibold text-gray-900">Backend Team Lead</h3>
                 <p className="text-blue-600 text-md mb-2">DeepByte Technology | 2022 - 2023</p>
                 <ul className="list-disc list-inside text-gray-700 text-base space-y-1">
@@ -130,7 +222,7 @@ export default function Home() {
             </div>
             <div className="mb-8 flex items-center w-full">
               <div className="absolute w-4 h-4 bg-blue-600 rounded-full -left-2 border-white border-2"></div>
-              <div className="ml-8 md:ml-12 p-6 bg-gray-50 rounded-lg shadow-md flex-1">
+              <div className="ml-6 md:ml-12 p-4 md:p-6 bg-gray-50 rounded-lg shadow-md flex-1">
                 <h3 className="text-xl font-semibold text-gray-900">Associate Software Engineer</h3>
                 <p className="text-blue-600 text-md mb-2">Kaleyra | 2021 - Present</p>
                 <ul className="list-disc list-inside text-gray-700 text-base space-y-1">
@@ -145,32 +237,32 @@ export default function Home() {
       </section>
 
       {/* Projects Section */}
-      <section id="projects" className="section-padding bg-white">
-        <div className="container mx-auto px-6">
-          <h2 className="heading-secondary text-center text-gray-900 mb-12">Projects</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
-            <div className="bg-gray-50 p-8 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+      <section id="projects" className="section-padding bg-white px-4 md:px-6">
+        <div className="container mx-auto">
+          <h2 className="heading-secondary text-center text-gray-900 mb-8 md:mb-12">Projects</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+            <div className="bg-gray-50 p-6 md:p-8 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
               <h3 className="heading-tertiary text-gray-900 mb-3">My Vote Labs</h3>
               <p className="text-blue-600 text-md mb-2">Django, MySQL, Django Template</p>
               <p className="text-gray-700">
                 Developed a robust web application for managing political campaigns and voter data. Features include candidate profiling, constituency management, voter outreach tools, and real-time analytics. Utilized Django for the backend, MySQL for database management, and Django templates for the frontend, ensuring a scalable and maintainable solution.
               </p>
             </div>
-            <div className="bg-gray-50 p-8 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+            <div className="bg-gray-50 p-6 md:p-8 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
               <h3 className="heading-tertiary text-gray-900 mb-3">Viyaat Management Consulting Services</h3>
               <p className="text-blue-600 text-md mb-2">Digital transformation</p>
               <p className="text-gray-700">
                 Led the digital transformation initiative for a management consulting firm, optimizing their internal processes and client engagement strategies. Implemented cloud-based solutions for document management, project collaboration, and CRM, resulting in a 30% increase in operational efficiency. Provided strategic recommendations for technology adoption and ensured smooth transition for employees.
               </p>
             </div>
-            <div className="bg-gray-50 p-8 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+            <div className="bg-gray-50 p-6 md:p-8 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
               <h3 className="heading-tertiary text-gray-900 mb-3">Aatri Experiential Travel</h3>
               <p className="text-blue-600 text-md mb-2">Process optimization</p>
               <p className="text-gray-700">
                 Streamlined and optimized operational processes for an experiential travel company, enhancing customer experience and reducing administrative overhead. Implemented automated booking systems, itinerary management tools, and feedback collection mechanisms. Conducted an in-depth analysis of existing workflows and identified key areas for improvement, leading to a more efficient and enjoyable travel planning experience for clients.
               </p>
             </div>
-            <div className="bg-gray-50 p-8 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+            <div className="bg-gray-50 p-6 md:p-8 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
               <h3 className="heading-tertiary text-gray-900 mb-3">SphereTree Analytics</h3>
               <p className="text-blue-600 text-md mb-2">Structured reporting methodologies</p>
               <p className="text-gray-700">
@@ -182,31 +274,31 @@ export default function Home() {
       </section>
 
       {/* Blogs Section */}
-      <section id="blogs" className="section-padding bg-gray-100">
-        <div className="container mx-auto px-6">
-          <h2 className="heading-secondary text-center text-gray-900 mb-12">Blogs</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+      <section id="blogs" className="section-padding bg-gray-100 px-4 md:px-6">
+        <div className="container mx-auto">
+          <h2 className="heading-secondary text-center text-gray-900 mb-8 md:mb-12">Blogs</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+            <div className="bg-white p-5 md:p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
               <h3 className="text-xl font-semibold text-gray-900 mb-3">Product Management Best Practices</h3>
               <p className="text-blue-600 text-sm mb-2">December 15, 2024</p>
               <p className="text-gray-700 mb-4">Exploring effective strategies for product roadmapping and feature prioritization in modern software development.</p>
               <Link href="/blogs/product-management-best-practices" className="text-blue-600 hover:underline">Read More →</Link>
             </div>
-            <div className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+            <div className="bg-white p-5 md:p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
               <h3 className="text-xl font-semibold text-gray-900 mb-3">Leading Cross-Functional Teams</h3>
               <p className="text-blue-600 text-sm mb-2">November 28, 2024</p>
               <p className="text-gray-700 mb-4">Insights on managing diverse teams and fostering collaboration in agile environments.</p>
               <Link href="/blogs/leading-cross-functional-teams" className="text-blue-600 hover:underline">Read More →</Link>
             </div>
-            <div className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+            <div className="bg-white p-5 md:p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
               <h3 className="text-xl font-semibold text-gray-900 mb-3">Data-Driven Decision Making</h3>
               <p className="text-blue-600 text-sm mb-2">October 10, 2024</p>
               <p className="text-gray-700 mb-4">How to leverage analytics and user feedback to make informed product decisions.</p>
               <Link href="/blogs/data-driven-decision-making" className="text-blue-600 hover:underline">Read More →</Link>
             </div>
           </div>
-          <div className="text-center mt-10">
-            <Link href="/blogs" className="inline-flex items-center px-6 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 transition-colors duration-300">
+          <div className="text-center mt-8 md:mt-10">
+            <Link href="/blogs" className="inline-flex items-center px-5 md:px-6 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 transition-colors duration-300">
               View All Blogs <BsArrowRight className="ml-2" />
             </Link>
           </div>
@@ -214,14 +306,14 @@ export default function Home() {
       </section>
 
       {/* Education Section */}
-      <section id="education" className="section-padding bg-white">
-        <div className="container mx-auto px-6">
-          <h2 className="heading-secondary text-center text-gray-900 mb-12">Education</h2>
-          <div className="relative border-l-2 border-blue-600 ml-4 md:ml-20">
+      <section id="education" className="section-padding bg-white px-4 md:px-6">
+        <div className="container mx-auto">
+          <h2 className="heading-secondary text-center text-gray-900 mb-8 md:mb-12">Education</h2>
+          <div className="relative border-l-2 border-blue-600 ml-2 md:ml-20">
             {/* Education Entry 1 */}
             <div className="mb-8 flex items-center w-full">
               <div className="absolute w-4 h-4 bg-blue-600 rounded-full -left-2 border-white border-2"></div>
-              <div className="ml-8 md:ml-12 p-6 bg-gray-50 rounded-lg shadow-md flex-1">
+              <div className="ml-6 md:ml-12 p-4 md:p-6 bg-gray-50 rounded-lg shadow-md flex-1">
                 <h3 className="text-xl font-semibold text-gray-900">Mechanical Engineering (B.E)</h3>
                 <p className="text-blue-600 text-md mb-2">K S Institute of Technology | 2016 - 2020</p>
               </div>
@@ -229,7 +321,7 @@ export default function Home() {
             {/* Education Entry 2 */}
             <div className="mb-8 flex items-center w-full">
               <div className="absolute w-4 h-4 bg-blue-600 rounded-full -left-2 border-white border-2"></div>
-              <div className="ml-8 md:ml-12 p-6 bg-gray-50 rounded-lg shadow-md flex-1">
+              <div className="ml-6 md:ml-12 p-4 md:p-6 bg-gray-50 rounded-lg shadow-md flex-1">
                 <h3 className="text-xl font-semibold text-gray-900">Pre-University</h3>
                 <p className="text-blue-600 text-md mb-2">Sri AdiChunchanagiri PU College | 2014 - 2016</p>
               </div>
@@ -237,7 +329,7 @@ export default function Home() {
             {/* Education Entry 3 */}
             <div className="mb-8 flex items-center w-full">
               <div className="absolute w-4 h-4 bg-blue-600 rounded-full -left-2 border-white border-2"></div>
-              <div className="ml-8 md:ml-12 p-6 bg-gray-50 rounded-lg shadow-md flex-1">
+              <div className="ml-6 md:ml-12 p-4 md:p-6 bg-gray-50 rounded-lg shadow-md flex-1">
                 <h3 className="text-xl font-semibold text-gray-900">Secondary School</h3>
                 <p className="text-blue-600 text-md mb-2">S.K.N High School | 2014</p>
               </div>
@@ -247,73 +339,73 @@ export default function Home() {
       </section>
 
       {/* Contact Form Section */}
-      <section id="contact" className="section-padding bg-white">
-        <div className="container mx-auto px-6">
-          <h2 className="heading-secondary text-center text-gray-900 mb-12">Get in Touch</h2>
-          <form className="max-w-xl mx-auto bg-gray-50 p-8 rounded-lg shadow-md">
-            <div className="mb-6">
-              <label htmlFor="fullName" className="block text-gray-800 text-lg font-medium mb-2">Full Name</label>
+      <section id="contact" className="section-padding bg-white px-4 md:px-6">
+        <div className="container mx-auto">
+          <h2 className="heading-secondary text-center text-gray-900 mb-8 md:mb-12">Get in Touch</h2>
+          <form className="max-w-xl mx-auto bg-gray-50 p-6 md:p-8 rounded-lg shadow-md">
+            <div className="mb-5 md:mb-6">
+              <label htmlFor="fullName" className="block text-gray-800 text-base md:text-lg font-medium mb-2">Full Name</label>
               <input
                 type="text"
                 id="fullName"
                 name="fullName"
-                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 md:px-4 py-2 md:py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Vinay V P"
               />
             </div>
-            <div className="mb-6">
-              <label htmlFor="email" className="block text-gray-800 text-lg font-medium mb-2">Email Address</label>
+            <div className="mb-5 md:mb-6">
+              <label htmlFor="email" className="block text-gray-800 text-base md:text-lg font-medium mb-2">Email Address</label>
               <input
                 type="email"
                 id="email"
                 name="email"
-                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 md:px-4 py-2 md:py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="vinayamin1997@gmail.com"
               />
             </div>
-            <div className="mb-6">
-              <label htmlFor="phone" className="block text-gray-800 text-lg font-medium mb-2">Phone Number</label>
+            <div className="mb-5 md:mb-6">
+              <label htmlFor="phone" className="block text-gray-800 text-base md:text-lg font-medium mb-2">Phone Number</label>
               <input
                 type="tel"
                 id="phone"
                 name="phone"
-                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 md:px-4 py-2 md:py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="8217866171"
               />
             </div>
-            <div className="mb-6">
-              <label htmlFor="organization" className="block text-gray-800 text-lg font-medium mb-2">Company/Organization</label>
+            <div className="mb-5 md:mb-6">
+              <label htmlFor="organization" className="block text-gray-800 text-base md:text-lg font-medium mb-2">Company/Organization</label>
               <input
                 type="text"
                 id="organization"
                 name="organization"
-                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 md:px-4 py-2 md:py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Your Company"
               />
             </div>
-            <div className="mb-6">
-              <label htmlFor="subject" className="block text-gray-800 text-lg font-medium mb-2">Subject</label>
+            <div className="mb-5 md:mb-6">
+              <label htmlFor="subject" className="block text-gray-800 text-base md:text-lg font-medium mb-2">Subject</label>
               <input
                 type="text"
                 id="subject"
                 name="subject"
-                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 md:px-4 py-2 md:py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Inquiry about..."
               />
             </div>
-            <div className="mb-6">
-              <label htmlFor="message" className="block text-gray-800 text-lg font-medium mb-2">Message</label>
+            <div className="mb-5 md:mb-6">
+              <label htmlFor="message" className="block text-gray-800 text-base md:text-lg font-medium mb-2">Message</label>
               <textarea
                 id="message"
                 name="message"
                 rows={5}
-                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 md:px-4 py-2 md:py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Your message here..."
               ></textarea>
             </div>
             <button
               type="submit"
-              className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold text-lg hover:bg-blue-700 transition-colors duration-300"
+              className="w-full bg-blue-600 text-white py-2 md:py-3 rounded-lg font-semibold text-base md:text-lg hover:bg-blue-700 transition-colors duration-300"
             >
               Send Message
             </button>
@@ -322,7 +414,7 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-800 text-white py-8 text-center">
+      <footer className="bg-gray-800 text-white py-6 md:py-8 text-center px-4 md:px-6">
         <p>&copy; {new Date().getFullYear()} Vinay V P. All rights reserved.</p>
         <div className="flex justify-center space-x-6 mt-4">
           <a href="https://www.linkedin.com/in/vinayvp/" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors duration-300">LinkedIn</a>
