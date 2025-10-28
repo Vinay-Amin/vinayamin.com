@@ -38,10 +38,10 @@ export function ImpactStats({ stats, testimonials }: ImpactStatsProps) {
           <div>
             <p className="text-sm font-semibold uppercase tracking-[0.3em] text-blue-300">Impact</p>
             <h2 className="heading-secondary mt-3 text-balance text-slate-100">
-              Social innovation, measurable outcomes, and empowered teams
+              Product delivery with quantifiable revenue and reliability gains
             </h2>
             <p className="mt-4 text-pretty text-slate-300">
-              Whether guiding civic programs or scaling SaaS platforms, Vinay grounds decisions in data, empathy, and iterative learning.
+              From roadmap to rollout, Vinay anchors teams in data, customer truth, and engineering discipline to ship outcomes executives can measure.
             </p>
             <dl className="mt-10 grid gap-6 sm:grid-cols-2">
               {stats.map((stat) => (

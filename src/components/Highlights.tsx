@@ -7,10 +7,10 @@ export function Highlights({ items }: { items: Highlight[] }) {
         <div className="flex flex-col gap-4 text-center">
           <p className="text-sm font-semibold uppercase tracking-[0.3em] text-blue-600 dark:text-blue-400">Highlights</p>
           <h2 className="heading-secondary text-balance text-slate-900 dark:text-slate-100">
-            Outcomes delivered across product, civic impact, and technical leadership
+            Product leadership that compounds revenue, reliability, and delivery pace
           </h2>
           <p className="text-muted mx-auto max-w-3xl text-pretty">
-            Stories, metrics, and transformation moments that showcase how Vinay ships clarity, velocity, and measurable value.
+            Metrics and milestones that highlight how Vinay aligns product strategy, engineering rigor, and commercial outcomes.
           </p>
         </div>
         <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
