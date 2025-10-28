@@ -1,7 +1,7 @@
 'use client';
 
 import Link from "next/link";
-import { useState } from "react";
+import { FormEvent, useCallback, useState } from "react";
 import { BsArrowRight } from "react-icons/bs";
 import { HiMenu, HiX } from "react-icons/hi";
 import { Hero } from "@/components/Hero";
@@ -18,8 +18,62 @@ import {
 
 export default function Home() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [formStatus, setFormStatus] = useState<
+    | { state: "idle" }
+    | { state: "loading" }
+    | { state: "success"; message: string }
+    | { state: "error"; message: string }
+  >({ state: "idle" });
 
   const toggleMenu = () => setIsMenuOpen((prev) => !prev);
+
+  const handleContactSubmit = useCallback(async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+    const getValue = (key: string) => {
+      const value = formData.get(key);
+      return typeof value === "string" ? value.trim() : "";
+    };
+    const payload = {
+      fullName: getValue("fullName"),
+      email: getValue("email"),
+      phone: getValue("phone"),
+      organization: getValue("organization"),
+      message: getValue("message"),
+    };
+
+    setFormStatus({ state: "loading" });
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await response.json().catch(() => ({}));
+
+      if (!response.ok) {
+        const message =
+          typeof data?.message === "string"
+            ? data.message
+            : data?.errors && typeof data.errors === "object"
+              ? Object.values(data.errors as Record<string, string>)[0] ?? "Something went wrong."
+              : "Something went wrong.";
+
+        setFormStatus({ state: "error", message });
+        return;
+      }
+
+      form.reset();
+      setFormStatus({ state: "success", message: data?.message ?? "Thanks for reaching out!" });
+    } catch (error) {
+      console.error("Failed to submit contact form", error);
+      setFormStatus({ state: "error", message: "Unable to send message right now. Please try again soon." });
+    }
+  }, [setFormStatus]);
 
   return (
     <div className="bg-gradient-to-b from-white via-white to-slate-50 text-slate-900 dark:from-slate-950 dark:via-slate-950 dark:to-slate-900">
@@ -141,7 +195,7 @@ export default function Home() {
                   <p>+91 82178 66171</p>
                 </div>
               </div>
-              <form className="grid gap-4">
+              <form className="grid gap-4" onSubmit={handleContactSubmit}>
                 <label className="form-field">
                   <span>Full Name</span>
                   <input type="text" name="fullName" placeholder="Vinay V P" autoComplete="name" />
@@ -164,11 +218,23 @@ export default function Home() {
                 </label>
                 <button
                   type="submit"
-                  className="inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-blue-600 to-cyan-500 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-500/40 transition hover:from-blue-500 hover:to-cyan-400"
+                  className="inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-blue-600 to-cyan-500 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-500/40 transition hover:from-blue-500 hover:to-cyan-400 disabled:cursor-not-allowed disabled:opacity-70"
+                  disabled={formStatus.state === "loading"}
                 >
                   Send message
                   <BsArrowRight />
                 </button>
+                <div aria-live="polite" className="min-h-[1.25rem] text-sm">
+                  {formStatus.state === "success" && (
+                    <p className="text-emerald-600 dark:text-emerald-400">{formStatus.message}</p>
+                  )}
+                  {formStatus.state === "error" && (
+                    <p className="text-rose-600 dark:text-rose-400">{formStatus.message}</p>
+                  )}
+                  {formStatus.state === "loading" && (
+                    <p className="text-slate-600 dark:text-slate-300">Sending message…</p>
+                  )}
+                </div>
               </form>
             </div>
           </div>
