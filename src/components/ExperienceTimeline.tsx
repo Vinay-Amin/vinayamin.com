@@ -13,11 +13,11 @@ export function ExperienceTimeline({ items }: { items: Experience[] }) {
             A journey blending product craft, technical depth, and social impact delivery.
           </p>
         </div>
-        <div className="relative mt-12 pl-6 before:absolute before:left-[22px] before:top-0 before:h-full before:w-px before:bg-gradient-to-b before:from-blue-500 before:via-blue-400/40 before:to-transparent md:pl-12 md:before:left-[46px]">
+        <div className="relative mt-12 before:absolute before:left-4 before:top-0 before:h-full before:w-px before:bg-gradient-to-b before:from-blue-500 before:via-blue-400/40 before:to-transparent md:before:left-10">
           {items.map((item) => (
             <article key={`${item.role}-${item.company}`} className="relative mb-10 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm transition hover:shadow-lg dark:border-slate-700 dark:bg-slate-900/60">
               <span className="absolute left-2 top-6 flex h-4 w-4 items-center justify-center rounded-full border-2 border-white bg-blue-500 shadow-md md:left-8" />
-              <div className="md:ml-6">
+              <div className="md:ml-8">
                 <p className="text-xs font-semibold uppercase tracking-[0.2em] text-blue-500 dark:text-blue-300">
                   {item.timeframe}
                 </p>
