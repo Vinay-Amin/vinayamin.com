@@ -7,10 +7,10 @@ export function ExperienceTimeline({ items }: { items: Experience[] }) {
         <div className="text-center">
           <p className="text-sm font-semibold uppercase tracking-[0.3em] text-blue-600 dark:text-blue-400">Experience</p>
           <h2 className="heading-secondary mt-3 text-balance text-slate-900 dark:text-slate-100">
-            Leadership across product, engineering, and civic transformation
+            Leadership across product strategy, engineering rigor, and scaled delivery
           </h2>
           <p className="text-muted mx-auto mt-4 max-w-3xl">
-            A journey blending product craft, technical depth, and social impact delivery.
+            Roles that showcase how Vinay balances customer insight, technical execution, and measurable business outcomes.
           </p>
         </div>
         <div className="relative mt-12 pl-6 before:absolute before:left-[22px] before:top-0 before:h-full before:w-px before:bg-gradient-to-b before:from-blue-500 before:via-blue-400/40 before:to-transparent md:pl-12 md:before:left-[46px]">

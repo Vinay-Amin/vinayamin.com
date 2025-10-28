@@ -76,8 +76,8 @@ export default function Home() {
         <div id="hero">
           <Hero
             headline="Vinay Amin"
-            subheadline="Product Manager & Civic Technology Builder"
-            summary="Designs and delivers roadmaps that blend civic problem-solving, data depth, and pragmatic technology execution."
+            subheadline="Product & Technology Leader for Data-Rich Platforms"
+            summary="Builds enterprise analytics and workflow products that convert strategy into shipped value with engineering rigor and commercial clarity."
             location="Bengaluru, India"
             email="vinayamin1997@gmail.com"
             phone="+91 82178 66171"
@@ -93,10 +93,10 @@ export default function Home() {
             <div className="flex flex-col gap-4 text-center">
               <p className="text-sm font-semibold uppercase tracking-[0.3em] text-blue-600 dark:text-blue-400">Projects</p>
               <h2 className="heading-secondary text-balance text-slate-900 dark:text-slate-100">
-                Programs and products that unlocked measurable change
+                Product launches that scaled adoption, revenue, and reliability
               </h2>
               <p className="text-muted mx-auto max-w-3xl text-pretty">
-                A mix of civic innovation, digital transformation, and operational reinvention led with curiosity and clarity.
+                A portfolio of SaaS and platform initiatives where disciplined product management, engineering excellence, and stakeholder alignment delivered outsized outcomes.
               </p>
             </div>
             <div className="mt-12 grid gap-8 lg:grid-cols-2">
@@ -129,7 +129,7 @@ export default function Home() {
               <div>
                 <p className="text-sm font-semibold uppercase tracking-[0.3em] text-blue-600 dark:text-blue-400">Get in touch</p>
                 <h2 className="heading-secondary mt-3 text-slate-900 dark:text-slate-100">
-                  Let&apos;s collaborate on products that move communities forward
+                  Let&apos;s accelerate your next product milestone
                 </h2>
                 <p className="text-muted mt-4">
                   Share a challenge, idea, or partnership opportunity. Vinay will respond within two business days.
