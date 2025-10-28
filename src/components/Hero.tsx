@@ -4,15 +4,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { BsArrowRight } from "react-icons/bs";
 
-type HeroProps = {
-  headline: string;
-  subheadline: string;
-  summary: string;
-  location: string;
-  email: string;
-  phone: string;
-  linkedin: string;
-};
+import type { Profile } from "@/lib/cms/types";
+
+type HeroProps = Pick<
+  Profile,
+  "headline" | "subheadline" | "summary" | "location" | "email" | "phone" | "linkedin"
+>;
 
 export function Hero({
   headline,

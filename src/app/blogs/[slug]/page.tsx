@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { Metadata } from "next";
-import blogsData from "@/data/blogs.json";
 import { notFound } from "next/navigation";
 import { BlogNavigation } from "@/components/BlogNavigation";
+import { getAllBlogs, getBlogBySlug } from "@/utils/blogUtils";
 
 type BlogParams = {
   params: {
@@ -12,14 +12,15 @@ type BlogParams = {
 
 // Generate static pages for all blog posts at build time
 export async function generateStaticParams() {
-  return blogsData.map((blog) => ({
+  const blogs = await getAllBlogs();
+  return blogs.map((blog) => ({
     slug: blog.slug,
   }));
 }
 
 // Dynamic metadata generation based on the blog post
 export async function generateMetadata({ params }: BlogParams): Promise<Metadata> {
-  const blog = blogsData.find((post) => post.slug === params.slug);
+  const blog = await getBlogBySlug(params.slug);
   
   if (!blog) {
     return {
@@ -51,13 +52,15 @@ export async function generateMetadata({ params }: BlogParams): Promise<Metadata
   };
 }
 
-export default function BlogPostPage({ params }: BlogParams) {
-  const blog = blogsData.find((post) => post.slug === params.slug);
-  
+export default async function BlogPostPage({ params }: BlogParams) {
+  const blog = await getBlogBySlug(params.slug);
+
   // Handle case when blog post is not found
   if (!blog) {
     notFound();
   }
+
+  const blogs = await getAllBlogs();
   
   // Format date for display
   const formattedDate = new Date(blog.date).toLocaleDateString("en-US", {
@@ -176,7 +179,7 @@ export default function BlogPostPage({ params }: BlogParams) {
           <div className="max-w-3xl mx-auto mt-8 md:mt-12">
             <h3 className="text-xl md:text-2xl font-semibold text-gray-900 mb-4 md:mb-6">Related Articles</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-              {blogsData
+              {blogs
                 .filter((relatedBlog) => relatedBlog.slug !== blog.slug)
                 .slice(0, 2)
                 .map((relatedBlog) => (

@@ -1,34 +1,14 @@
-import blogsData from '@/data/blogs.json';
-
-// Type definitions for blog data structure
-export interface BlogMetadata {
-  title: string;
-  description: string;
-  keywords: string[];
-  author: string;
-  publishedTime: string;
-  modifiedTime: string;
-}
-
-export interface Blog {
-  id: number;
-  slug: string;
-  title: string;
-  date: string;
-  excerpt: string;
-  content: string;
-  tags: string[];
-  metadata: BlogMetadata;
-}
+import type { Blog } from "@/lib/cms/types";
+import { getBlogBySlug as fetchBlogBySlug, getBlogs } from "@/lib/cms/storage";
 
 // Get all blog posts
-export function getAllBlogs(): Blog[] {
-  return blogsData as Blog[];
+export async function getAllBlogs(): Promise<Blog[]> {
+  return getBlogs();
 }
 
 // Get a specific blog post by slug
-export function getBlogBySlug(slug: string): Blog | undefined {
-  return blogsData.find((blog) => blog.slug === slug) as Blog | undefined;
+export async function getBlogBySlug(slug: string): Promise<Blog | undefined> {
+  return fetchBlogBySlug(slug);
 }
 
 // Generate a slug from a title
@@ -42,33 +22,35 @@ export function generateBlogSlug(title: string): string {
 }
 
 // Get blogs by tag
-export function getBlogsByTag(tag: string): Blog[] {
-  return blogsData.filter((blog) => 
+export async function getBlogsByTag(tag: string): Promise<Blog[]> {
+  const blogs = await getBlogs();
+  return blogs.filter((blog) =>
     blog.tags.some((blogTag) => blogTag.toLowerCase() === tag.toLowerCase())
-  ) as Blog[];
+  );
 }
 
 // Get recent blogs (limited number)
-export function getRecentBlogs(limit: number = 3): Blog[] {
-  return blogsData
-    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-    .slice(0, limit) as Blog[];
+export async function getRecentBlogs(limit: number = 3): Promise<Blog[]> {
+  const blogs = await getBlogs();
+  return blogs.slice(0, limit);
 }
 
 // Search blogs by title or content
-export function searchBlogs(query: string): Blog[] {
+export async function searchBlogs(query: string): Promise<Blog[]> {
+  const blogs = await getBlogs();
   const searchTerm = query.toLowerCase();
-  return blogsData.filter((blog) =>
+  return blogs.filter((blog) =>
     blog.title.toLowerCase().includes(searchTerm) ||
     blog.excerpt.toLowerCase().includes(searchTerm) ||
     blog.content.toLowerCase().includes(searchTerm) ||
     blog.tags.some((tag) => tag.toLowerCase().includes(searchTerm))
-  ) as Blog[];
+  );
 }
 
 // Get all unique tags from all blogs
-export function getAllTags(): string[] {
-  const allTags = blogsData.flatMap((blog) => blog.tags);
+export async function getAllTags(): Promise<string[]> {
+  const blogs = await getBlogs();
+  const allTags = blogs.flatMap((blog) => blog.tags);
   return Array.from(new Set(allTags));
 }
 

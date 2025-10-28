@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Metadata } from "next";
-import blogsData from "@/data/blogs.json";
+import { getAllBlogs } from "@/utils/blogUtils";
 import { BlogNavigation } from "@/components/BlogNavigation";
 
 export const metadata: Metadata = {
@@ -14,7 +14,9 @@ export const metadata: Metadata = {
   },
 };
 
-export default function BlogsPage() {
+export default async function BlogsPage() {
+  const blogs = await getAllBlogs();
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Navigation */}
@@ -46,7 +48,7 @@ export default function BlogsPage() {
 
           {/* Blog Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-            {blogsData.map((blog) => (
+            {blogs.map((blog) => (
               <article key={blog.id} className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden">
                 <div className="p-4 md:p-6">
                   <div className="flex flex-wrap gap-2 mb-2 md:mb-3">

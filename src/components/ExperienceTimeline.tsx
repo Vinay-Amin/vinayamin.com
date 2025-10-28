@@ -1,4 +1,4 @@
-import { Experience } from "@/data/resume";
+import type { Experience } from "@/lib/cms/types";
 
 export function ExperienceTimeline({ items }: { items: Experience[] }) {
   return (

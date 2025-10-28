@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from "react";
-import { ImpactStat, Testimonial } from "@/data/resume";
+import type { ImpactStat, Testimonial } from "@/lib/cms/types";
 import { BsArrowLeft, BsArrowRight } from "react-icons/bs";
 
 const AUTOPLAY_INTERVAL = 7000;

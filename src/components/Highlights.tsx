@@ -1,4 +1,16 @@
-import { Highlight } from "@/data/resume";
+import type { ComponentType } from "react";
+
+import { FaChartLine, FaHandsHelping, FaLightbulb } from "react-icons/fa";
+import { MdLeaderboard } from "react-icons/md";
+
+import type { Highlight } from "@/lib/cms/types";
+
+const iconMap = {
+  MdLeaderboard,
+  FaChartLine,
+  FaHandsHelping,
+  FaLightbulb,
+} satisfies Record<string, ComponentType<{ className?: string }>>;
 
 export function Highlights({ items }: { items: Highlight[] }) {
   return (
@@ -15,7 +27,7 @@ export function Highlights({ items }: { items: Highlight[] }) {
         </div>
         <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
           {items.map((highlight) => {
-            const Icon = highlight.icon;
+            const Icon = iconMap[highlight.iconKey] ?? MdLeaderboard;
             return (
               <article
                 key={highlight.title}
