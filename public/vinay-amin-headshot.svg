@@ -1,0 +1,28 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">Vinay Amin stylised headshot</title>
+  <desc id="desc">Abstract illustrated portrait with gradients representing Vinay Amin.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a" />
+      <stop offset="50%" stop-color="#1e3a8a" />
+      <stop offset="100%" stop-color="#38bdf8" />
+    </linearGradient>
+    <linearGradient id="shirt" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1d4ed8" />
+      <stop offset="100%" stop-color="#2563eb" />
+    </linearGradient>
+    <linearGradient id="face" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#f1c6a7" />
+      <stop offset="100%" stop-color="#d29b78" />
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" fill="url(#bg)" rx="128" />
+  <g transform="translate(128 120)">
+    <path d="M128 256c70 0 128 46 128 102v18H0v-18c0-56 58-102 128-102z" fill="url(#shirt)" />
+    <path d="M128 32c56 0 96 46 96 112s-40 120-96 120-96-54-96-120 40-112 96-112z" fill="url(#face)" />
+    <path d="M128 0c64 0 104 32 112 88l-0.3 0.2c-12-18-38-30-72-30-38 0-70 14-86 42-4.9 8.5-15.4 12.6-25 9.4l-14.1-4.6C48.4 45.5 80.6 0 128 0z" fill="#0f172a" />
+    <path d="M96 136c0-8.8 7.2-16 16-16s16 7.2 16 16-7.2 16-16 16-16-7.2-16-16zm64 0c0-8.8 7.2-16 16-16s16 7.2 16 16-7.2 16-16 16-16-7.2-16-16z" fill="#0f172a" opacity="0.85" />
+    <path d="M96 192c8 16 19.2 24 32 24s24-8 32-24" stroke="#0f172a" stroke-width="12" stroke-linecap="round" fill="none" opacity="0.65" />
+    <path d="M72 168c18 12 36 18 56 18s38-6 56-18" stroke="#0f172a" stroke-width="10" stroke-linecap="round" fill="none" opacity="0.25" />
+  </g>
+</svg>
