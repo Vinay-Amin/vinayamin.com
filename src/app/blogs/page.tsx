@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { Metadata } from "next";
-import blogsData from "@/data/blogs.json";
 import { BlogNavigation } from "@/components/BlogNavigation";
+import { getBlogPosts } from "@/utils/contentful";
+import type { BlogPost } from "@/utils/contentful";
 
 export const metadata: Metadata = {
   title: "Blogs - Vinay V P | Product Management & Leadership Insights",
@@ -14,91 +15,111 @@ export const metadata: Metadata = {
   },
 };
 
-export default function BlogsPage() {
+function formatDate(input?: string) {
+  if (!input) return "";
+  const date = new Date(input);
+  if (Number.isNaN(date.getTime())) return "";
+  return new Intl.DateTimeFormat("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  }).format(date);
+}
+
+function PostCard({ post }: { post: BlogPost }) {
+  const formattedDate = formatDate(post.publishDate);
+
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Navigation */}
-      <BlogNavigation pageType="blogs" />
-
-      {/* Main Content */}
-      <main className="pt-24 pb-8 md:pb-12">
-        <div className="container mx-auto px-4 md:px-6">
-          {/* Breadcrumb */}
-          <nav className="mb-6 md:mb-8">
-            <ol className="flex items-center space-x-2 text-xs md:text-sm text-gray-600 mobile-text-truncate">
-              <li>
-                <Link href="/" className="hover:text-blue-600 transition-colors duration-300">Home</Link>
-              </li>
-              <li>
-                <span className="mx-2">/</span>
-              </li>
-              <li className="text-gray-900 font-medium truncate">Blogs</li>
-            </ol>
-          </nav>
-
-          {/* Page Header */}
-          <div className="text-center mb-8 md:mb-12">
-            <h1 className="text-2xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-3 md:mb-4">Blog Posts</h1>
-            <p className="text-base md:text-xl text-gray-600 max-w-2xl mx-auto">
-              Insights on product management, leadership, and data-driven decision making from my experience in the field.
-            </p>
-          </div>
-
-          {/* Blog Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-            {blogsData.map((blog) => (
-              <article key={blog.id} className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden">
-                <div className="p-4 md:p-6">
-                  <div className="flex flex-wrap gap-2 mb-2 md:mb-3">
-                    {blog.tags.slice(0, 2).map((tag) => (
-                      <span key={tag} className="px-2 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded-full">
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                  <h2 className="text-lg md:text-xl font-semibold text-gray-900 mb-2 md:mb-3 line-clamp-2">
-                    <Link href={`/blogs/${blog.slug}`} className="hover:text-blue-600 transition-colors duration-300">
-                      {blog.title}
-                    </Link>
-                  </h2>
-                  <p className="text-blue-600 text-xs md:text-sm mb-2 md:mb-3">
-                    {new Date(blog.date).toLocaleDateString('en-US', {
-                      year: 'numeric',
-                      month: 'long',
-                      day: 'numeric'
-                    })}
-                  </p>
-                  <p className="text-sm md:text-base text-gray-700 mb-3 md:mb-4 line-clamp-3">{blog.excerpt}</p>
-                  <Link 
-                    href={`/blogs/${blog.slug}`}
-                    className="inline-flex items-center text-blue-600 hover:text-blue-700 font-medium transition-colors duration-300 min-h-[44px] py-2"
-                  >
-                    Read More →
-                  </Link>
-                </div>
-              </article>
+    <article className="group flex h-full flex-col justify-between rounded-3xl border border-slate-800 bg-slate-900/60 p-6 transition hover:border-slate-600 hover:bg-slate-900">
+      <div className="space-y-4">
+        {post.tags.length > 0 && (
+          <div className="flex flex-wrap gap-2 text-xs uppercase tracking-[0.25em] text-blue-400/80">
+            {post.tags.slice(0, 3).map((tag) => (
+              <span key={tag} className="rounded-full border border-blue-400/30 px-3 py-1 text-[0.65rem] font-semibold text-blue-300">
+                {tag}
+              </span>
             ))}
           </div>
-
-          {/* Back to Home */}
-          <div className="text-center mt-8 md:mt-12">
-            <Link 
-              href="/"
-              className="inline-flex items-center px-5 md:px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 transition-colors duration-300"
-            >
-              ← Back to Home
+        )}
+        <div className="space-y-3">
+          <h2 className="text-xl font-semibold text-white transition group-hover:text-blue-300">
+            <Link href={`/blogs/${post.slug}`} className="nav-link text-inherit">
+              {post.title}
             </Link>
-          </div>
+          </h2>
+          {formattedDate && <p className="text-xs uppercase tracking-[0.3em] text-slate-400">{formattedDate}</p>}
+          {post.excerpt && <p className="text-sm text-slate-300">{post.excerpt}</p>}
         </div>
-      </main>
+      </div>
+      <div className="pt-6">
+        <Link
+          href={`/blogs/${post.slug}`}
+          className="inline-flex items-center gap-2 text-sm font-semibold text-blue-300 transition hover:text-blue-200"
+        >
+          Read Story
+          <span aria-hidden="true">→</span>
+        </Link>
+      </div>
+    </article>
+  );
+}
 
-      {/* Footer */}
-      <footer className="bg-gray-800 text-white py-6 md:py-8 text-center px-4 md:px-6">
-        <p>&copy; {new Date().getFullYear()} Vinay V P. All rights reserved.</p>
-        <div className="flex justify-center space-x-6 mt-4">
-          <a href="https://www.linkedin.com/in/vinayvp/" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors duration-300">LinkedIn</a>
-        </div>
-      </footer>
+export default async function BlogsPage() {
+  const posts = await getBlogPosts();
+
+  return (
+    <div className="dark min-h-screen bg-slate-950 text-slate-100">
+      <BlogNavigation pageType="blogs" />
+      <main className="mx-auto max-w-5xl px-6 pb-16 pt-32">
+        <nav className="mb-8 text-xs font-semibold uppercase tracking-[0.3em] text-slate-500">
+          <ol className="flex items-center gap-2 text-slate-400">
+            <li>
+              <Link href="/" className="nav-link text-slate-400 hover:text-blue-300">
+                Home
+              </Link>
+            </li>
+            <li className="text-slate-600">/</li>
+            <li className="text-slate-200">Blog</li>
+          </ol>
+        </nav>
+
+        <header className="mb-12 space-y-6 text-center">
+          <p className="text-xs font-semibold uppercase tracking-[0.4em] text-blue-400">Latest Thinking</p>
+          <h1 className="text-balance font-display text-4xl tracking-tight text-white sm:text-5xl">
+            Stories from the product leadership desk
+          </h1>
+          <p className="mx-auto max-w-2xl text-base text-slate-300 sm:text-lg">
+            Field notes on orchestrating analytics platforms, aligning stakeholders, and scaling experiments that deliver measurable outcomes.
+          </p>
+        </header>
+
+        {posts.length === 0 ? (
+          <div className="rounded-3xl border border-slate-800 bg-slate-900/60 p-12 text-center text-slate-300">
+            <p className="text-lg font-semibold text-slate-200">No published posts yet</p>
+            <p className="mt-2 text-sm text-slate-400">
+              Once entries are published in Contentful they will appear here automatically.
+            </p>
+          </div>
+        ) : (
+          <div className="grid gap-6 sm:grid-cols-2">
+            {posts.map((post) => (
+              <PostCard key={post.id} post={post} />
+            ))}
+          </div>
+        )}
+
+        <footer className="mt-16 flex flex-col items-center gap-3 text-center text-sm text-slate-500">
+          <p>&copy; {new Date().getFullYear()} Vinay V P. All rights reserved.</p>
+          <a
+            href="https://www.linkedin.com/in/vinayvp/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="nav-link text-slate-400 hover:text-blue-300"
+          >
+            LinkedIn
+          </a>
+        </footer>
+      </main>
     </div>
   );
 }
