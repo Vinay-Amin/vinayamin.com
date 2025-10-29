@@ -5,6 +5,8 @@ import Link from "next/link";
 import { FormEvent, useCallback, useState } from "react";
 import { HiMenu, HiX } from "react-icons/hi";
 
+import { RESUME_DOWNLOAD_URL } from "@/config/site";
+
 const navigation = [
   { href: "#hero", label: "Home" },
   { href: "#about", label: "About" },
@@ -128,7 +130,9 @@ export default function Home() {
                   Let&apos;s Collaborate
                 </Link>
                 <Link
-                  href="/vinay-amin-resume.pdf"
+                  href={RESUME_DOWNLOAD_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="inline-flex items-center justify-center rounded-full border border-slate-700 px-6 py-3 text-sm font-semibold text-slate-100 transition hover:border-slate-500 hover:text-white"
                 >
                   Download Resume
