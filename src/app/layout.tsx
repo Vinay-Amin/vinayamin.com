@@ -13,10 +13,12 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Vinay V P - Product Manager | Social Service (NSS) | YEP",
-  description: "Product Manager with 4 years of experience and proven expertise in driving product vision, roadmapping, and data-driven decision-making. Specializes in synthesizing complex user requirements into strategic, actionable plans with experience in political and non-political campaigns.",
-  keywords: "Product Manager, Product Vision, Roadmapping, Data-driven Decision Making, Python, Django, FastAPI, SQL, MongoDB, Cross-functional Collaboration, Feature Prioritisation, Process Automation, Agile Methodologies, Political Consulting, NSS, YEP",
-  authors: [{name: "Vinay V P"}],
+  title: "VVP - Product manager",
+  description:
+    "Product Manager with 4 years of experience and proven expertise in driving product vision, roadmapping, and data-driven decision-making. Specializes in synthesizing complex user requirements into strategic, actionable plans across industries.",
+  keywords:
+    "Product Manager, Product Vision, Roadmapping, Data-driven Decision Making, Python, Django, FastAPI, SQL, MongoDB, Cross-functional Collaboration, Feature Prioritisation, Process Automation, Agile Methodologies",
+  authors: [{ name: "Vinay V P" }],
   creator: "Vinay V P",
   publisher: "Vinay V P",
   formatDetection: {
@@ -25,8 +27,9 @@ export const metadata: Metadata = {
     telephone: false,
   },
   openGraph: {
-    title: "Vinay V P - Product Manager | Social Service (NSS) | YEP",
-    description: "Product Manager with 4 years of experience and proven expertise in driving product vision, roadmapping, and data-driven decision-making.",
+    title: "VVP - Product manager",
+    description:
+      "Product Manager with 4 years of experience and proven expertise in driving product vision, roadmapping, and data-driven decision-making.",
     type: "website",
     locale: "en_US",
   },
@@ -36,6 +39,13 @@ export const metadata: Metadata = {
   },
   alternates: {
     canonical: "https://vinayvp.com",
+  },
+  icons: {
+    icon: [
+      { url: "/favicon.ico", type: "image/x-icon" },
+      { url: "/icon.png", sizes: "512x512", type: "image/png" },
+    ],
+    apple: [{ url: "/apple-icon.png", sizes: "180x180", type: "image/png" }],
   },
 };
 
@@ -61,3 +71,4 @@ export default function RootLayout({
     </html>
   );
 }
+
