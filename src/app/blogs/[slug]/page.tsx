@@ -1,8 +1,9 @@
 import Link from "next/link";
 import { Metadata } from "next";
-import blogsData from "@/data/blogs.json";
 import { notFound } from "next/navigation";
 import { BlogNavigation } from "@/components/BlogNavigation";
+import { getAllBlogSlugs, getBlogPostBySlug, getBlogPosts } from "@/utils/contentful";
+import type { BlogPost } from "@/utils/contentful";
 
 type BlogParams = {
   params: {
@@ -10,228 +11,252 @@ type BlogParams = {
   };
 };
 
-// Generate static pages for all blog posts at build time
 export async function generateStaticParams() {
-  return blogsData.map((blog) => ({
-    slug: blog.slug,
-  }));
+  const slugs = await getAllBlogSlugs();
+  return slugs.map((slug) => ({ slug }));
 }
 
-// Dynamic metadata generation based on the blog post
 export async function generateMetadata({ params }: BlogParams): Promise<Metadata> {
-  const blog = blogsData.find((post) => post.slug === params.slug);
-  
-  if (!blog) {
+  const post = await getBlogPostBySlug(params.slug);
+
+  if (!post) {
     return {
       title: "Blog Post Not Found",
-      description: "The requested blog post could not be found",
+      description: "The requested blog post could not be found.",
     };
   }
-  
+
+  const title = post.seoTitle ?? post.title;
+  const description = post.seoDescription ?? post.excerpt ?? `Read ${post.title}`;
+
+  const openGraphImages = post.heroImage
+    ? [
+        {
+          url: post.heroImage.url,
+          width: post.heroImage.width,
+          height: post.heroImage.height,
+          alt: post.heroImage.description ?? post.heroImage.title ?? post.title,
+        },
+      ]
+    : undefined;
+
   return {
-    title: blog.metadata.title,
-    description: blog.metadata.description,
-    keywords: blog.metadata.keywords,
-    authors: [{ name: blog.metadata.author }],
+    title,
+    description,
     openGraph: {
-      title: blog.metadata.title,
-      description: blog.metadata.description,
+      title,
+      description,
       type: "article",
-      publishedTime: blog.metadata.publishedTime,
-      modifiedTime: blog.metadata.modifiedTime,
-      authors: [blog.metadata.author],
-      tags: blog.tags,
+      publishedTime: post.publishDate,
+      authors: post.author ? [post.author] : undefined,
+      tags: post.tags,
+      images: openGraphImages,
     },
     twitter: {
-      card: "summary_large_image",
-      title: blog.metadata.title,
-      description: blog.metadata.description,
-      creator: blog.metadata.author,
+      card: post.heroImage ? "summary_large_image" : "summary",
+      title,
+      description,
     },
   };
 }
 
-export default function BlogPostPage({ params }: BlogParams) {
-  const blog = blogsData.find((post) => post.slug === params.slug);
-  
-  // Handle case when blog post is not found
-  if (!blog) {
-    notFound();
-  }
-  
-  // Format date for display
-  const formattedDate = new Date(blog.date).toLocaleDateString("en-US", {
+function formatDate(input?: string) {
+  if (!input) return "";
+  const date = new Date(input);
+  if (Number.isNaN(date.getTime())) return "";
+  return new Intl.DateTimeFormat("en-US", {
     year: "numeric",
     month: "long",
     day: "numeric",
-  });
+  }).format(date);
+}
 
-  // Split content by paragraphs and headings for proper formatting
-  const contentParts = blog.content.split("\n\n").map((part, index) => {
+function renderContent(body?: string) {
+  if (!body) {
+    return <p className="text-sm text-slate-300">Content coming soon.</p>;
+  }
+
+  return body.split("\n\n").map((part, index) => {
     if (part.startsWith("## ")) {
       return (
-        <h2 key={index} className="text-xl md:text-2xl font-semibold text-gray-900 mt-6 md:mt-8 mb-3 md:mb-4">
+        <h2 key={index} className="mt-10 text-2xl font-semibold text-white">
           {part.substring(3)}
         </h2>
       );
-    } else if (part.startsWith("### ")) {
+    }
+
+    if (part.startsWith("### ")) {
       return (
-        <h3 key={index} className="text-lg md:text-xl font-semibold text-gray-800 mt-5 md:mt-6 mb-2 md:mb-3">
+        <h3 key={index} className="mt-8 text-xl font-semibold text-slate-100">
           {part.substring(4)}
         </h3>
       );
-    } else {
-      return (
-        <p key={index} className="mb-4 md:mb-6 text-sm md:text-base text-gray-700 leading-relaxed">
-          {part}
-        </p>
-      );
     }
+
+    return (
+      <p key={index} className="text-base leading-relaxed text-slate-200">
+        {part}
+      </p>
+    );
   });
+}
+
+function RelatedCard({ post }: { post: BlogPost }) {
+  const formattedDate = formatDate(post.publishDate);
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Navigation */}
+    <article className="rounded-3xl border border-slate-800 bg-slate-900/60 p-6 transition hover:border-slate-600">
+      <div className="space-y-2">
+        <h4 className="text-lg font-semibold text-white">
+          <Link href={`/blogs/${post.slug}`} className="nav-link text-inherit">
+            {post.title}
+          </Link>
+        </h4>
+        {formattedDate && <p className="text-xs uppercase tracking-[0.3em] text-slate-400">{formattedDate}</p>}
+        {post.excerpt && <p className="text-sm text-slate-300 line-clamp-3">{post.excerpt}</p>}
+      </div>
+    </article>
+  );
+}
+
+export default async function BlogPostPage({ params }: BlogParams) {
+  const post = await getBlogPostBySlug(params.slug);
+
+  if (!post) {
+    notFound();
+  }
+
+  const relatedPosts = (await getBlogPosts()).filter((related) => related.slug !== post.slug).slice(0, 2);
+  const formattedDate = formatDate(post.publishDate);
+
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: post.title,
+    description: post.excerpt,
+    author: post.author
+      ? {
+          "@type": "Person",
+          name: post.author,
+        }
+      : undefined,
+    datePublished: post.publishDate,
+    dateModified: post.publishDate,
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": `https://vinayvp.com/blogs/${post.slug}`,
+    },
+    image: post.heroImage?.url,
+    keywords: post.tags.join(", "),
+  };
+
+  return (
+    <div className="dark min-h-screen bg-slate-950 text-slate-100">
       <BlogNavigation pageType="blog" />
+      <main className="mx-auto max-w-3xl px-6 pb-24 pt-32">
+        <nav className="mb-8 text-xs font-semibold uppercase tracking-[0.3em] text-slate-500">
+          <ol className="flex items-center gap-2 text-slate-400">
+            <li>
+              <Link href="/" className="nav-link text-slate-400 hover:text-blue-300">
+                Home
+              </Link>
+            </li>
+            <li className="text-slate-600">/</li>
+            <li>
+              <Link href="/blogs" className="nav-link text-slate-400 hover:text-blue-300">
+                Blog
+              </Link>
+            </li>
+            <li className="text-slate-600">/</li>
+            <li className="text-slate-200">{post.title}</li>
+          </ol>
+        </nav>
 
-      {/* Main Content */}
-      <main className="pt-24 pb-8 md:pb-12">
-        <div className="container mx-auto px-4 md:px-6">
-          {/* Breadcrumb */}
-          <nav className="mb-6 md:mb-8">
-            <ol className="flex items-center space-x-2 text-xs md:text-sm text-gray-600 overflow-x-auto whitespace-nowrap">
-              <li>
-                <Link href="/" className="hover:text-blue-600 transition-colors duration-300 min-h-[44px] flex items-center">Home</Link>
-              </li>
-              <li>
-                <span className="mx-2">/</span>
-              </li>
-              <li>
-                <Link href="/blogs" className="hover:text-blue-600 transition-colors duration-300 min-h-[44px] flex items-center">Blogs</Link>
-              </li>
-              <li>
-                <span className="mx-2">/</span>
-              </li>
-              <li className="text-gray-900 font-medium truncate max-w-[150px] md:max-w-xs">{blog.title}</li>
-            </ol>
-          </nav>
-
-          {/* Back Button */}
-          <div className="mb-4 md:mb-6">
-            <Link
-              href="/blogs"
-              className="inline-flex items-center px-4 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 transition-colors duration-300 min-h-[44px]"
-            >
-              ← Back to Blogs
-            </Link>
-          </div>
-
-          {/* Article */}
-          <article className="max-w-3xl mx-auto bg-white p-4 md:p-8 rounded-lg shadow-md">
-            {/* Article Header */}
-            <header className="mb-6 md:mb-8">
-              <div className="flex flex-wrap gap-2 mb-3 md:mb-4">
-                {blog.tags.map((tag) => (
-                  <span key={tag} className="px-2 md:px-3 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded-full">
+        <article className="space-y-10 rounded-3xl border border-slate-800 bg-slate-900/60 p-8 shadow-xl">
+          <header className="space-y-5 text-center">
+            {post.tags.length > 0 && (
+              <div className="flex flex-wrap justify-center gap-2 text-xs uppercase tracking-[0.3em] text-blue-400/80">
+                {post.tags.map((tag) => (
+                  <span key={tag} className="rounded-full border border-blue-400/30 px-3 py-1 text-[0.65rem] font-semibold text-blue-300">
                     {tag}
                   </span>
                 ))}
               </div>
-              <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-3 md:mb-4">{blog.title}</h1>
-              <div className="text-blue-600 text-xs md:text-sm mb-3 md:mb-4">
-                <time dateTime={blog.date}>{formattedDate}</time> • By {blog.metadata.author}
-              </div>
-            </header>
-
-            {/* Article Content */}
-            <div className="prose prose-sm md:prose-base lg:prose-lg max-w-none">
-              {contentParts}
+            )}
+            <h1 className="text-balance font-display text-4xl tracking-tight text-white sm:text-5xl">{post.title}</h1>
+            <div className="flex flex-col items-center gap-2 text-xs uppercase tracking-[0.3em] text-slate-400 sm:flex-row sm:justify-center">
+              {formattedDate && (
+                <time dateTime={post.publishDate ?? undefined} className="text-slate-300">
+                  {formattedDate}
+                </time>
+              )}
+              {post.author && (
+                <span className="text-slate-500">•</span>
+              )}
+              {post.author && <span className="text-slate-300">{post.author}</span>}
             </div>
+          </header>
 
-            {/* Social Sharing */}
-            <div className="mt-8 md:mt-12 pt-4 md:pt-6 border-t border-gray-200">
-              <h3 className="text-base md:text-lg font-semibold text-gray-900 mb-3 md:mb-4">Share this article</h3>
-              <div className="flex flex-wrap gap-3">
-                <a
-                  href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(`https://vinayvp.com/blogs/${blog.slug}`)}&text=${encodeURIComponent(blog.title)}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="px-3 md:px-4 py-2 bg-[#1DA1F2] text-white rounded-md hover:bg-opacity-90 transition-colors duration-300 min-h-[44px] inline-flex items-center justify-center text-sm md:text-base"
-                >
-                  Twitter
-                </a>
-                <a
-                  href={`https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(`https://vinayvp.com/blogs/${blog.slug}`)}&title=${encodeURIComponent(blog.title)}&summary=${encodeURIComponent(blog.excerpt)}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="px-3 md:px-4 py-2 bg-[#0077B5] text-white rounded-md hover:bg-opacity-90 transition-colors duration-300 min-h-[44px] inline-flex items-center justify-center text-sm md:text-base"
-                >
-                  LinkedIn
-                </a>
-              </div>
-            </div>
-          </article>
+          <div className="space-y-6 text-left leading-relaxed">
+            {renderContent(post.body)}
+          </div>
 
-          {/* Related Articles - Placeholder */}
-          <div className="max-w-3xl mx-auto mt-8 md:mt-12">
-            <h3 className="text-xl md:text-2xl font-semibold text-gray-900 mb-4 md:mb-6">Related Articles</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-              {blogsData
-                .filter((relatedBlog) => relatedBlog.slug !== blog.slug)
-                .slice(0, 2)
-                .map((relatedBlog) => (
-                  <div key={relatedBlog.slug} className="bg-white p-4 md:p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
-                    <h4 className="text-lg md:text-xl font-semibold text-gray-900 mb-2">
-                      <Link href={`/blogs/${relatedBlog.slug}`} className="hover:text-blue-600 transition-colors duration-300 min-h-[44px] flex items-center">
-                        {relatedBlog.title}
-                      </Link>
-                    </h4>
-                    <p className="text-blue-600 text-xs md:text-sm mb-2">{new Date(relatedBlog.date).toLocaleDateString()}</p>
-                    <p className="text-sm md:text-base text-gray-700 line-clamp-2">{relatedBlog.excerpt}</p>
-                  </div>
-                ))}
+          <div className="flex flex-wrap items-center justify-between gap-4 border-t border-slate-800 pt-6 text-sm text-slate-300">
+            <div>Enjoyed this read? Share it with your network.</div>
+            <div className="flex flex-wrap gap-3">
+              <a
+                href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(`https://vinayvp.com/blogs/${post.slug}`)}&text=${encodeURIComponent(post.title)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="rounded-full border border-blue-400/40 px-4 py-2 text-xs font-semibold uppercase tracking-[0.3em] text-blue-300 transition hover:border-blue-300 hover:text-blue-200"
+              >
+                Twitter
+              </a>
+              <a
+                href={`https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(`https://vinayvp.com/blogs/${post.slug}`)}&title=${encodeURIComponent(post.title)}&summary=${encodeURIComponent(post.excerpt ?? "")}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="rounded-full border border-blue-400/40 px-4 py-2 text-xs font-semibold uppercase tracking-[0.3em] text-blue-300 transition hover:border-blue-300 hover:text-blue-200"
+              >
+                LinkedIn
+              </a>
             </div>
           </div>
-        </div>
+        </article>
+
+        {relatedPosts.length > 0 && (
+          <section className="mt-12 space-y-6">
+            <div className="flex items-center justify-between">
+              <h2 className="text-2xl font-semibold text-white">Continue exploring</h2>
+              <Link href="/blogs" className="nav-link text-sm text-blue-300 hover:text-blue-200">
+                View all posts
+              </Link>
+            </div>
+            <div className="grid gap-4 sm:grid-cols-2">
+              {relatedPosts.map((related) => (
+                <RelatedCard key={related.id} post={related} />
+              ))}
+            </div>
+          </section>
+        )}
+
+        <footer className="mt-16 flex flex-col items-center gap-3 text-center text-sm text-slate-500">
+          <p>&copy; {new Date().getFullYear()} Vinay V P. All rights reserved.</p>
+          <a
+            href="https://www.linkedin.com/in/vinayvp/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="nav-link text-slate-400 hover:text-blue-300"
+          >
+            LinkedIn
+          </a>
+        </footer>
       </main>
 
-      {/* Footer */}
-      <footer className="bg-gray-800 text-white py-6 md:py-8 text-center px-4 md:px-6">
-        <p>&copy; {new Date().getFullYear()} Vinay V P. All rights reserved.</p>
-        <div className="flex justify-center space-x-6 mt-4">
-          <a href="https://www.linkedin.com/in/vinayvp/" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors duration-300 min-h-[44px] flex items-center">LinkedIn</a>
-        </div>
-      </footer>
-
-      {/* Structured Data for SEO */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "BlogPosting",
-            "headline": blog.title,
-            "description": blog.excerpt,
-            "author": {
-              "@type": "Person",
-              "name": blog.metadata.author
-            },
-            "datePublished": blog.metadata.publishedTime,
-            "dateModified": blog.metadata.modifiedTime,
-            "publisher": {
-              "@type": "Organization",
-              "name": "Vinay V P",
-              "logo": {
-                "@type": "ImageObject",
-                "url": "https://vinayvp.com/logo.png"
-              }
-            },
-            "keywords": blog.metadata.keywords.join(", "),
-            "mainEntityOfPage": {
-              "@type": "WebPage",
-              "@id": `https://vinayvp.com/blogs/${blog.slug}`
-            }
-          })
+          __html: JSON.stringify(schema),
         }}
       />
     </div>
