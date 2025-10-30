@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 
+export const dynamic = "force-static";
+
 const FAVICON_BUFFER = Buffer.from(
   `AAABAAEAAAAAAAEAIAAPEAAAFgAAAIlQTkcNChoKAAAADUlIRFIAAAIAAAACAAgGAAAA9HjU+gAA
 D9ZJREFUeNrt3bF18zC2hVHF7sN9uB235v4US7GXA0tLAol7zg52/MYkiPtB+Gfe5ePz6wYAdLl4
