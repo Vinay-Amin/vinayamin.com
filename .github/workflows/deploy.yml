@@ -36,6 +36,7 @@ jobs:
           DISABLE_ESLINT: true
           CI: false
           NEXT_TELEMETRY_DISABLED: 1
+          STATIC_EXPORT: true
         
       - name: Setup Pages
         uses: actions/configure-pages@v5
