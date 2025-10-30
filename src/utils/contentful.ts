@@ -80,12 +80,30 @@ type FetchOptions = {
   revalidate?: number;
 };
 
-function assertEnv(name: string, value: string | undefined): string {
-  if (!value) {
-    throw new Error(`Missing required environment variable: ${name}`);
+function isContentfulConfigured() {
+  return Boolean(SPACE_ID && DELIVERY_TOKEN);
+}
+
+function getContentfulConfig(preview?: boolean) {
+  if (!isContentfulConfigured()) {
+    if (process.env.NODE_ENV !== "production") {
+      console.warn(
+        "Contentful environment variables are not fully configured. Blog content will be skipped during build."
+      );
+    }
+    return null;
   }
 
-  return value;
+  if (preview && !PREVIEW_TOKEN && process.env.NODE_ENV !== "production") {
+    console.warn("CONTENTFUL_PREVIEW_TOKEN is not set. Falling back to delivery token for preview mode.");
+  }
+
+  return {
+    spaceId: SPACE_ID as string,
+    environment: ENVIRONMENT,
+    token: preview && PREVIEW_TOKEN ? PREVIEW_TOKEN : (DELIVERY_TOKEN as string),
+    baseUrl: preview && PREVIEW_TOKEN ? "https://preview.contentful.com" : "https://cdn.contentful.com",
+  } as const;
 }
 
 function getQuery(params?: URLSearchParams) {
@@ -101,26 +119,21 @@ function getQuery(params?: URLSearchParams) {
 }
 
 async function contentfulFetch<TEntry>(options: FetchOptions = {}): Promise<ContentfulCollection<ContentfulEntry>> {
-  const spaceId = assertEnv("CONTENTFUL_SPACE_ID", SPACE_ID);
-  const environment = assertEnv("CONTENTFUL_ENVIRONMENT", ENVIRONMENT);
-  const deliveryToken = assertEnv("CONTENTFUL_DELIVERY_TOKEN", DELIVERY_TOKEN);
-
   const { preview = false, query = getQuery(options.query), revalidate = DEFAULT_REVALIDATE } = options;
+  const config = getContentfulConfig(preview);
 
-  const token = preview ? PREVIEW_TOKEN : deliveryToken;
-  if (!token) {
-    throw new Error(preview ? "CONTENTFUL_PREVIEW_TOKEN is required for preview mode." : "CONTENTFUL_DELIVERY_TOKEN is required.");
+  if (!config) {
+    return { items: [] };
   }
 
-  const baseUrl = preview ? "https://preview.contentful.com" : "https://cdn.contentful.com";
-  const url = new URL(`/spaces/${spaceId}/environments/${environment}/entries`, baseUrl);
+  const url = new URL(`/spaces/${config.spaceId}/environments/${config.environment}/entries`, config.baseUrl);
   query.forEach((value, key) => {
     url.searchParams.set(key, value);
   });
 
   const response = await fetch(url.toString(), {
     headers: {
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${config.token}`,
     },
     next: { revalidate },
   });
