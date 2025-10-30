@@ -1,0 +1,36 @@
+[
+  {
+    "id": "fallback-product-strategy-rituals",
+    "slug": "product-strategy-rituals",
+    "title": "Product Strategy Rituals for High-Growth Teams",
+    "excerpt": "How I align product rituals, metrics, and decision-making cadences so growth teams stay focused on measurable outcomes.",
+    "body": "## Why rituals matter\nCadences that bind discovery, delivery, and analytics keep teams oriented toward the same outcomes. I share the planning templates that helped me reset direction at Varahe Analytics.\n\n### Weekly focus reviews\nI use a lightweight business review that forces teams to connect user insights with roadmap bets. It reduces handoffs and spotlights when experiments stall.\n\n### Quarterly operating narrative\nEvery quarter I assemble a narrative that ties metrics, learnings, and roadmap shifts. It prevents thrash and keeps leadership, sales, and engineering aligned.",
+    "publishDate": "2024-06-10",
+    "tags": ["Product Strategy", "Leadership"],
+    "author": "Vinay V P",
+    "heroImage": {
+      "id": "fallback-hero-rituals",
+      "url": "/vinay-amin-headshot.svg",
+      "title": "Vinay Amin portrait"
+    },
+    "seoTitle": "Product Strategy Rituals for High-Growth Teams",
+    "seoDescription": "The planning and review rituals Vinay uses to keep high-growth product teams focused on outcomes."
+  },
+  {
+    "id": "fallback-scaling-analytics-playbooks",
+    "slug": "scaling-analytics-playbooks",
+    "title": "Scaling Analytics Playbooks Without Burning the Team",
+    "excerpt": "Lessons from orchestrating analytics platform rollouts across dozens of civic and enterprise programmes.",
+    "body": "## Start with instrumentation\nI start every rollout with instrumentation that exposes leading indicators. It unlocks where to double down before adoption dips.\n\n### Co-designing guardrails\nPlaybooks die when governance is bolted on later. I co-design guardrails with data engineers and programme owners so experimentation stays safe.\n\n### Let experiments graduate\nWe retire experiments explicitly so the backlog never becomes a graveyard. It keeps stakeholders confident that analytics work ties back to revenue and mission goals.",
+    "publishDate": "2024-04-18",
+    "tags": ["Analytics", "Execution"],
+    "author": "Vinay V P",
+    "heroImage": {
+      "id": "fallback-hero-analytics",
+      "url": "/vinay-amin-headshot.svg",
+      "title": "Vinay Amin portrait"
+    },
+    "seoTitle": "Scaling Analytics Playbooks Without Burning the Team",
+    "seoDescription": "Practical tactics for expanding analytics programmes while protecting delivery teams from burnout."
+  }
+]
