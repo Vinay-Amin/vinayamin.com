@@ -1,5 +1,3 @@
-import fs from "fs";
-import path from "path";
 import Link from "next/link";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
@@ -13,35 +11,16 @@ type BlogParams = {
   };
 };
 
+export const dynamicParams = false;
+
 /**
- * Provide static params for Next.js export. First try Contentful; if that fails,
- * read a cached file at data/blog-slugs.json so the export does not crash in CI.
+ * Provide static params for Next.js export. The underlying utility handles
+ * falling back to cached slugs when Contentful is unavailable so the export does
+ * not crash in CI environments.
  */
-export async function generateStaticParams() {
-  try {
-    const slugs = await getAllBlogSlugs();
-    return slugs
-      .filter((s): s is string => Boolean(s))
-      .map((slug) => ({ slug }));
-  } catch (err) {
-    console.error("generateStaticParams: Contentful fetch failed:", err);
-
-    // Fallback to cached slugs committed in the repo to make CI builds robust
-    try {
-      const cachePath = path.join(process.cwd(), "data", "blog-slugs.json");
-      const raw = fs.readFileSync(cachePath, "utf8");
-      const cached: unknown = JSON.parse(raw);
-      if (Array.isArray(cached)) {
-        return cached.filter((s): s is string => typeof s === "string" && Boolean(s)).map((slug) => ({ slug }));
-      }
-    } catch (cacheErr) {
-      console.error("generateStaticParams: failed to read cached slugs:", cacheErr);
-    }
-
-    // If everything fails, return empty array rather than throwing.
-    // Export will succeed with no generated blog pages.
-    return [];
-  }
+export async function generateStaticParams(): Promise<{ slug: string }[]> {
+  const slugs = await getAllBlogSlugs();
+  return slugs.filter((slug): slug is string => Boolean(slug)).map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({ params }: BlogParams): Promise<Metadata> {

@@ -1,5 +1,7 @@
 import "server-only";
 
+import fallbackBlogPosts from "@/data/blog-cache.json";
+
 const SPACE_ID = process.env.CONTENTFUL_SPACE_ID;
 const ENVIRONMENT = process.env.CONTENTFUL_ENVIRONMENT ?? "master";
 const DELIVERY_TOKEN = process.env.CONTENTFUL_DELIVERY_TOKEN;
@@ -64,6 +66,28 @@ export type BlogPost = {
   seoTitle?: string;
   seoDescription?: string;
 };
+
+const FALLBACK_BLOG_POSTS: BlogPost[] = (fallbackBlogPosts as BlogPost[]).map((post) => ({
+  ...post,
+  tags: Array.isArray(post.tags) ? [...post.tags] : [],
+  heroImage: post.heroImage
+    ? {
+        ...post.heroImage,
+      }
+    : undefined,
+}));
+
+function cloneFallbackPosts(): BlogPost[] {
+  return FALLBACK_BLOG_POSTS.map((post) => ({
+    ...post,
+    tags: [...post.tags],
+    heroImage: post.heroImage ? { ...post.heroImage } : undefined,
+  }));
+}
+
+function getFallbackPostBySlug(slug: string): BlogPost | null {
+  return FALLBACK_BLOG_POSTS.find((post) => post.slug === slug) ?? null;
+}
 
 export type AssetDetails = {
   id: string;
@@ -241,44 +265,75 @@ function mapBlogPost(entry: ContentfulEntry, assets: ContentfulAsset[] | undefin
 }
 
 export async function getBlogPosts(options: { preview?: boolean; limit?: number } = {}): Promise<BlogPost[]> {
+  if (!isContentfulConfigured()) {
+    return cloneFallbackPosts();
+  }
+
   const query = getQuery();
   if (options.limit) {
     query.set("limit", options.limit.toString());
   }
 
-  const collection = await contentfulFetch({
-    preview: options.preview,
-    query,
-  });
+  try {
+    const collection = await contentfulFetch({
+      preview: options.preview,
+      query,
+    });
 
-  const assets = collection.includes?.Asset;
-  return collection.items
-    .map((entry) => mapBlogPost(entry, assets))
-    .filter((post): post is BlogPost => Boolean(post));
+    const assets = collection.includes?.Asset;
+    const posts = collection.items
+      .map((entry) => mapBlogPost(entry, assets))
+      .filter((post): post is BlogPost => Boolean(post));
+
+    return posts.length > 0 ? posts : cloneFallbackPosts();
+  } catch (error) {
+    console.error("getBlogPosts: failed to fetch from Contentful:", error);
+    return cloneFallbackPosts();
+  }
 }
 
 export async function getBlogPostBySlug(slug: string, options: { preview?: boolean } = {}): Promise<BlogPost | null> {
+  if (!isContentfulConfigured()) {
+    return getFallbackPostBySlug(slug);
+  }
+
   const query = getQuery();
   query.set(`fields.${POST_SLUG_FIELD}`, slug);
   query.set("limit", "1");
 
-  const collection = await contentfulFetch({
-    preview: options.preview,
-    query,
-  });
+  try {
+    const collection = await contentfulFetch({
+      preview: options.preview,
+      query,
+    });
 
-  const assets = collection.includes?.Asset;
-  const [entry] = collection.items;
-  const post = entry ? mapBlogPost(entry, assets) : null;
+    const assets = collection.includes?.Asset;
+    const [entry] = collection.items;
+    const post = entry ? mapBlogPost(entry, assets) : null;
 
-  return post ?? null;
+    return post ?? getFallbackPostBySlug(slug);
+  } catch (error) {
+    console.error("getBlogPostBySlug: failed to fetch from Contentful:", error);
+    return getFallbackPostBySlug(slug);
+  }
 }
 
 export async function getAllBlogSlugs(): Promise<string[]> {
+  if (!isContentfulConfigured()) {
+    return cloneFallbackPosts().map((post) => post.slug);
+  }
+
   const query = getQuery();
   query.set("select", `fields.${POST_SLUG_FIELD}`);
-  const collection = await contentfulFetch({ query });
-  return collection.items
-    .map((entry) => getFieldValue<string>(entry.fields as Record<string, unknown>, POST_SLUG_FIELD))
-    .filter((slug): slug is string => Boolean(slug));
+  try {
+    const collection = await contentfulFetch({ query });
+    const slugs = collection.items
+      .map((entry) => getFieldValue<string>(entry.fields as Record<string, unknown>, POST_SLUG_FIELD))
+      .filter((slug): slug is string => Boolean(slug));
+
+    return slugs.length > 0 ? slugs : cloneFallbackPosts().map((post) => post.slug);
+  } catch (error) {
+    console.error("getAllBlogSlugs: failed to fetch from Contentful:", error);
+    return cloneFallbackPosts().map((post) => post.slug);
+  }
 }
