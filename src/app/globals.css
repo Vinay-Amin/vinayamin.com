@@ -9,6 +9,8 @@
   --surface-muted: #f8fafc;
   --surface-elevated: rgba(255, 255, 255, 0.85);
   --border-soft: rgba(15, 23, 42, 0.08);
+  --font-geist-sans: "Inter", "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-geist-mono: "JetBrains Mono", "Fira Mono", "Menlo", monospace;
 }
 
 @media (prefers-color-scheme: dark) {
