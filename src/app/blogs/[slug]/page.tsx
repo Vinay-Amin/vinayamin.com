@@ -1,12 +1,11 @@
+import fs from "fs";
+import path from "path";
 import Link from "next/link";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { BlogNavigation } from "@/components/BlogNavigation";
 import { getAllBlogSlugs, getBlogPostBySlug, getBlogPosts } from "@/utils/contentful";
 import type { BlogPost } from "@/utils/contentful";
-import fs from "fs";
-import path from "path";
-import { getAllBlogSlugs } from "@/utils/contentful";
 
 type BlogParams = {
   params: {
@@ -14,12 +13,9 @@ type BlogParams = {
   };
 };
 
-// Ensure this import is present at the top of the file:
-// import { getAllBlogSlugs } from "@/utils/contentful";
-
 /**
- * Return the list of slugs for static export. First try Contentful, then fall back
- * to a cached file at data/blog-slugs.json to make CI/static export robust.
+ * Provide static params for Next.js export. First try Contentful; if that fails,
+ * read a cached file at data/blog-slugs.json so the export does not crash in CI.
  */
 export async function generateStaticParams() {
   try {
@@ -28,19 +24,23 @@ export async function generateStaticParams() {
       .filter((s): s is string => Boolean(s))
       .map((slug) => ({ slug }));
   } catch (err) {
-    console.error("generateStaticParams: failed to fetch slugs from Contentful:", err);
+    console.error("generateStaticParams: Contentful fetch failed:", err);
 
-    // Fallback: read cached slugs from repo (create data/blog-slugs.json)
+    // Fallback to cached slugs committed in the repo to make CI builds robust
     try {
       const cachePath = path.join(process.cwd(), "data", "blog-slugs.json");
       const raw = fs.readFileSync(cachePath, "utf8");
-      const cached: string[] = JSON.parse(raw);
-      return cached.filter(Boolean).map((slug) => ({ slug }));
+      const cached: unknown = JSON.parse(raw);
+      if (Array.isArray(cached)) {
+        return cached.filter((s): s is string => typeof s === "string" && Boolean(s)).map((slug) => ({ slug }));
+      }
     } catch (cacheErr) {
       console.error("generateStaticParams: failed to read cached slugs:", cacheErr);
-      // Return empty array: export will succeed but no blog pages will be generated
-      return [];
     }
+
+    // If everything fails, return empty array rather than throwing.
+    // Export will succeed with no generated blog pages.
+    return [];
   }
 }
 
