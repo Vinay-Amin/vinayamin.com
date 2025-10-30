@@ -4,6 +4,9 @@ import { notFound } from "next/navigation";
 import { BlogNavigation } from "@/components/BlogNavigation";
 import { getAllBlogSlugs, getBlogPostBySlug, getBlogPosts } from "@/utils/contentful";
 import type { BlogPost } from "@/utils/contentful";
+import fs from "fs";
+import path from "path";
+import { getAllBlogSlugs } from "@/utils/contentful";
 
 type BlogParams = {
   params: {
@@ -14,17 +17,30 @@ type BlogParams = {
 // Ensure this import is present at the top of the file:
 // import { getAllBlogSlugs } from "@/utils/contentful";
 
+/**
+ * Return the list of slugs for static export. First try Contentful, then fall back
+ * to a cached file at data/blog-slugs.json to make CI/static export robust.
+ */
 export async function generateStaticParams() {
   try {
     const slugs = await getAllBlogSlugs();
-    // Ensure we only return string slugs and map to the params shape Next expects
     return slugs
       .filter((s): s is string => Boolean(s))
       .map((slug) => ({ slug }));
   } catch (err) {
-    // Return an empty array on error so the export step doesn't crash with a missing export
-    console.error("generateStaticParams error:", err);
-    return [];
+    console.error("generateStaticParams: failed to fetch slugs from Contentful:", err);
+
+    // Fallback: read cached slugs from repo (create data/blog-slugs.json)
+    try {
+      const cachePath = path.join(process.cwd(), "data", "blog-slugs.json");
+      const raw = fs.readFileSync(cachePath, "utf8");
+      const cached: string[] = JSON.parse(raw);
+      return cached.filter(Boolean).map((slug) => ({ slug }));
+    } catch (cacheErr) {
+      console.error("generateStaticParams: failed to read cached slugs:", cacheErr);
+      // Return empty array: export will succeed but no blog pages will be generated
+      return [];
+    }
   }
 }
 
