@@ -11,9 +11,21 @@ type BlogParams = {
   };
 };
 
+// Ensure this import is present at the top of the file:
+// import { getAllBlogSlugs } from "@/utils/contentful";
+
 export async function generateStaticParams() {
-  const slugs = await getAllBlogSlugs();
-  return slugs.map((slug) => ({ slug }));
+  try {
+    const slugs = await getAllBlogSlugs();
+    // Ensure we only return string slugs and map to the params shape Next expects
+    return slugs
+      .filter((s): s is string => Boolean(s))
+      .map((slug) => ({ slug }));
+  } catch (err) {
+    // Return an empty array on error so the export step doesn't crash with a missing export
+    console.error("generateStaticParams error:", err);
+    return [];
+  }
 }
 
 export async function generateMetadata({ params }: BlogParams): Promise<Metadata> {
