@@ -6,7 +6,6 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { HiMenu, HiX } from "react-icons/hi";
 import {
-  FaChartLine,
   FaRocket,
   FaServer,
   FaLinkedinIn,
@@ -17,17 +16,14 @@ import {
 import { MdLeaderboard } from "react-icons/md";
 
 import { RESUME_DOWNLOAD_URL } from "@/config/site";
-import { AnimatedSection, AnimatedItem } from "@/components/AnimatedSection";
-import { CountUp } from "@/components/CountUp";
+import { AnimatedSection } from "@/components/AnimatedSection";
 import { ParticleField } from "@/components/ParticleField";
 
 /* ─── Data ─── */
 const navigation = [
   { href: "#hero", label: "Home" },
   { href: "#journey", label: "Journey" },
-  { href: "#impact", label: "Impact" },
   { href: "#contact", label: "Contact" },
-  { href: "/blogs", label: "Blog" },
 ];
 
 const journeySteps = [
@@ -35,7 +31,6 @@ const journeySteps = [
     year: "2021",
     role: "Associate Software Engineer",
     company: "Kaleyra",
-    description: "Shipped omnichannel platform components, optimised infrastructure spend by tuning queuing & caching layers.",
     accent: "#38bdf8",
     icon: FaServer,
   },
@@ -43,7 +38,6 @@ const journeySteps = [
     year: "2022",
     role: "Backend Team Lead",
     company: "DeepByte Technology",
-    description: "Architected Python services processing 4M+ monthly transactions. Mentored a distributed team of 6 engineers.",
     accent: "#a78bfa",
     icon: FaRocket,
   },
@@ -51,68 +45,14 @@ const journeySteps = [
     year: "2023",
     role: "Product Manager",
     company: "Varahe Analytics",
-    description: "Leading analytics SaaS roadmap from discovery through release, running 120+ experiments to validate feature bets.",
     accent: "#6366f1",
     icon: MdLeaderboard,
-  },
-];
-
-const impactMetrics = [
-  { value: 4.2, prefix: "$", suffix: "M", label: "ARR Influenced", icon: FaChartLine },
-  { value: 120, prefix: "", suffix: "+", label: "Experiments Shipped", icon: FaRocket },
-  { value: 30, prefix: "", suffix: "%", label: "Faster Delivery", icon: FaServer },
-  { value: 99.97, prefix: "", suffix: "%", label: "Pipeline Uptime", icon: MdLeaderboard },
-];
-
-const projects = [
-  {
-    name: "Signal Insights Platform",
-    focus: "Enterprise Analytics SaaS",
-    result: "+12% renewals",
-    gradient: "from-indigo-500/20 to-purple-500/20",
-  },
-  {
-    name: "Viyaat Consulting",
-    focus: "Digital Delivery Platform",
-    result: "+30% throughput",
-    gradient: "from-cyan-500/20 to-blue-500/20",
-  },
-  {
-    name: "Aatri Experiential Travel",
-    focus: "Experience Orchestration",
-    result: "+18pt CSAT",
-    gradient: "from-violet-500/20 to-fuchsia-500/20",
-  },
-  {
-    name: "SphereTree Analytics",
-    focus: "Insight Storytelling",
-    result: "Data-driven adoption",
-    gradient: "from-sky-500/20 to-indigo-500/20",
-  },
-];
-
-const testimonials = [
-  {
-    quote: "Vinay is the rare product leader who can translate ambiguous problem spaces into crisp, data-backed product strategy.",
-    name: "Sahana Rao",
-    title: "VP, Product Strategy",
-  },
-  {
-    quote: "He creates clarity in complex stakeholder environments and rallies teams around measurable outcomes.",
-    name: "Arjun Menon",
-    title: "Head of Engineering, DeepByte",
-  },
-  {
-    quote: "From roadmap to rollout, Vinay ensures every decision ladders up to user impact and business value.",
-    name: "Priya Desai",
-    title: "Product Marketing Lead",
   },
 ];
 
 /* ─── Page ─── */
 export default function Home() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [activeTestimonial, setActiveTestimonial] = useState(0);
 
   const toggleMenu = () => setIsMenuOpen((prev) => !prev);
 
@@ -251,7 +191,7 @@ export default function Home() {
                   <FaLinkedinIn className="h-4 w-4" />
                 </a>
                 <a
-                  href="mailto:vinayamin1997@gmail.com"
+                  href="mailto:contact@vinayamin.com"
                   className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 text-slate-400 transition hover:border-indigo-500/40 hover:text-indigo-300 hover:shadow-lg hover:shadow-indigo-500/10"
                 >
                   <FaEnvelope className="h-4 w-4" />
@@ -269,7 +209,7 @@ export default function Home() {
               <div className="relative overflow-hidden rounded-3xl border border-white/[0.06] bg-white/[0.02] p-1 shadow-2xl shadow-indigo-500/10 backdrop-blur-sm">
                 <div className="overflow-hidden rounded-[1.25rem] bg-gradient-to-br from-slate-900/80 to-slate-900/40 p-8">
                   <Image
-                    src="/vinay-amin-headshot.svg"
+                    src="/vinay-amin-headshot.jpeg"
                     alt="Vinay Amin portrait"
                     width={520}
                     height={520}
@@ -278,7 +218,7 @@ export default function Home() {
                   />
                   <div className="mt-6 grid grid-cols-2 gap-3">
                     <div className="rounded-xl bg-white/[0.04] px-4 py-3 text-center">
-                      <p className="text-xl font-bold text-white">4+</p>
+                      <p className="text-xl font-bold text-white">5+</p>
                       <p className="text-xs text-slate-400">Years Experience</p>
                     </div>
                     <div className="rounded-xl bg-white/[0.04] px-4 py-3 text-center">
@@ -345,137 +285,11 @@ export default function Home() {
                       </span>
                       <h3 className="mt-1 text-xl font-semibold text-white">{step.role}</h3>
                       <p className="text-sm text-slate-400">{step.company}</p>
-                      <p className="mt-3 max-w-md text-sm leading-relaxed text-slate-400">
-                        {step.description}
-                      </p>
                     </div>
                   </div>
                 </AnimatedSection>
               ))}
             </div>
-          </div>
-        </section>
-
-        {/* ━━━ Impact Metrics ━━━ */}
-        <section id="impact" className="section-padding relative overflow-hidden px-6">
-          <div className="absolute inset-0 mesh-gradient opacity-60" />
-          <div className="relative mx-auto max-w-5xl">
-            <AnimatedSection className="text-center">
-              <p className="text-xs font-semibold uppercase tracking-[0.4em] text-indigo-400">Impact</p>
-              <h2 className="mt-3 font-display text-4xl text-white sm:text-5xl">Numbers that matter</h2>
-            </AnimatedSection>
-
-            <AnimatedSection variant="stagger" className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-              {impactMetrics.map((metric) => (
-                <AnimatedItem key={metric.label}>
-                  <motion.div
-                    whileHover={{ y: -4, scale: 1.02 }}
-                    transition={{ type: "spring", stiffness: 300 }}
-                    className="glass-card group relative overflow-hidden p-6 text-center"
-                  >
-                    <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/[0.05] to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
-                    <div className="relative">
-                      <metric.icon className="mx-auto mb-4 h-6 w-6 text-indigo-400 transition group-hover:text-indigo-300" />
-                      <div className="text-3xl font-bold text-white">
-                        <CountUp
-                          end={metric.value}
-                          prefix={metric.prefix}
-                          suffix={metric.suffix}
-                        />
-                      </div>
-                      <p className="mt-2 text-sm text-slate-400">{metric.label}</p>
-                    </div>
-                  </motion.div>
-                </AnimatedItem>
-              ))}
-            </AnimatedSection>
-          </div>
-        </section>
-
-        {/* ━━━ Projects ━━━ */}
-        <section className="section-padding relative px-6">
-          <div className="absolute inset-0 dot-grid opacity-30" />
-          <div className="relative mx-auto max-w-5xl">
-            <AnimatedSection>
-              <p className="text-xs font-semibold uppercase tracking-[0.4em] text-indigo-400">Projects</p>
-              <h2 className="mt-3 font-display text-4xl text-white sm:text-5xl">What I&apos;ve built</h2>
-            </AnimatedSection>
-
-            <AnimatedSection variant="stagger" className="mt-16 grid gap-5 sm:grid-cols-2">
-              {projects.map((project) => (
-                <AnimatedItem key={project.name}>
-                  <motion.div
-                    whileHover={{ y: -4 }}
-                    transition={{ type: "spring", stiffness: 300 }}
-                    className="glass-card group relative overflow-hidden p-7"
-                  >
-                    <div className={`absolute inset-0 bg-gradient-to-br ${project.gradient} opacity-0 transition-opacity duration-500 group-hover:opacity-100`} />
-                    <div className="relative">
-                      <div className="mb-4 inline-flex rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-xs font-medium text-slate-400">
-                        {project.focus}
-                      </div>
-                      <h3 className="text-lg font-semibold text-white transition group-hover:text-indigo-200">
-                        {project.name}
-                      </h3>
-                      <div className="mt-3 inline-flex items-center gap-2 text-sm font-medium text-indigo-300">
-                        <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
-                        {project.result}
-                      </div>
-                    </div>
-                  </motion.div>
-                </AnimatedItem>
-              ))}
-            </AnimatedSection>
-          </div>
-        </section>
-
-        {/* ━━━ Testimonials ━━━ */}
-        <section className="section-padding relative overflow-hidden px-6">
-          <div className="absolute inset-0 mesh-gradient opacity-40" />
-          <div className="relative mx-auto max-w-3xl">
-            <AnimatedSection className="text-center">
-              <p className="text-xs font-semibold uppercase tracking-[0.4em] text-indigo-400">Testimonials</p>
-              <h2 className="mt-3 font-display text-4xl text-white sm:text-5xl">What people say</h2>
-            </AnimatedSection>
-
-            <AnimatedSection className="mt-16">
-              <div className="glass-card relative overflow-hidden p-8 sm:p-12">
-                <div className="absolute top-6 left-8 text-6xl font-serif text-indigo-500/20">&ldquo;</div>
-                <AnimatePresence mode="wait">
-                  <motion.div
-                    key={activeTestimonial}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -20 }}
-                    transition={{ duration: 0.4 }}
-                    className="relative"
-                  >
-                    <p className="text-lg leading-relaxed text-slate-300 sm:text-xl">
-                      {testimonials[activeTestimonial].quote}
-                    </p>
-                    <div className="mt-6">
-                      <p className="font-semibold text-white">{testimonials[activeTestimonial].name}</p>
-                      <p className="text-sm text-slate-400">{testimonials[activeTestimonial].title}</p>
-                    </div>
-                  </motion.div>
-                </AnimatePresence>
-
-                <div className="mt-8 flex gap-2">
-                  {testimonials.map((_, i) => (
-                    <button
-                      key={i}
-                      onClick={() => setActiveTestimonial(i)}
-                      className={`h-1.5 rounded-full transition-all duration-300 ${
-                        i === activeTestimonial
-                          ? "w-8 bg-indigo-400"
-                          : "w-1.5 bg-white/20 hover:bg-white/40"
-                      }`}
-                      aria-label={`View testimonial ${i + 1}`}
-                    />
-                  ))}
-                </div>
-              </div>
-            </AnimatedSection>
           </div>
         </section>
 
@@ -512,7 +326,7 @@ export default function Home() {
 
                     <div className="flex flex-col items-center gap-4 pt-4 sm:flex-row sm:justify-center sm:gap-8">
                       <a
-                        href="mailto:vinayamin1997@gmail.com"
+                        href="mailto:contact@vinayamin.com"
                         className="group flex items-center gap-3 rounded-xl border border-white/[0.06] bg-white/[0.02] px-5 py-4 transition hover:border-indigo-500/30 hover:bg-indigo-500/[0.04]"
                       >
                         <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-500/10">
@@ -520,7 +334,7 @@ export default function Home() {
                         </div>
                         <div className="text-left">
                           <p className="text-sm font-medium text-white">Email</p>
-                          <p className="text-xs text-slate-400">vinayamin1997@gmail.com</p>
+                          <p className="text-xs text-slate-400">contact@vinayamin.com</p>
                         </div>
                       </a>
                       <a
@@ -550,19 +364,14 @@ export default function Home() {
       <footer className="border-t border-white/[0.04] px-6 py-8">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 text-sm text-slate-500 sm:flex-row">
           <p>&copy; {new Date().getFullYear()} Vinay Amin. All rights reserved.</p>
-          <div className="flex items-center gap-6">
-            <a
-              href="https://www.linkedin.com/in/vinayvp/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="transition hover:text-slate-300"
-            >
-              LinkedIn
-            </a>
-            <Link href="/blogs" className="transition hover:text-slate-300">
-              Blog
-            </Link>
-          </div>
+          <a
+            href="https://www.linkedin.com/in/vinayvp/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="transition hover:text-slate-300"
+          >
+            LinkedIn
+          </a>
         </div>
       </footer>
     </div>
