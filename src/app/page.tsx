@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -208,13 +207,11 @@ export default function Home() {
               <div className="animate-pulse-ring absolute -inset-8 rounded-full bg-gradient-to-br from-indigo-500/10 via-purple-500/5 to-transparent blur-2xl" />
               <div className="relative overflow-hidden rounded-3xl border border-white/[0.06] bg-white/[0.02] p-1 shadow-2xl shadow-indigo-500/10 backdrop-blur-sm">
                 <div className="overflow-hidden rounded-[1.25rem] bg-gradient-to-br from-slate-900/80 to-slate-900/40 p-8">
-                  <Image
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
                     src="/vinay-amin-headshot.jpeg"
                     alt="Vinay Amin portrait"
-                    width={520}
-                    height={520}
-                    className="mx-auto h-auto w-full max-w-[280px]"
-                    priority
+                    className="mx-auto h-auto w-full max-w-[280px] rounded-2xl object-cover"
                   />
                   <div className="mt-6 grid grid-cols-2 gap-3">
                     <div className="rounded-xl bg-white/[0.04] px-4 py-3 text-center">
