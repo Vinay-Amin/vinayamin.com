@@ -2,266 +2,378 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { FormEvent, useCallback, useState } from "react";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { HiMenu, HiX } from "react-icons/hi";
+import {
+  FaRocket,
+  FaServer,
+  FaLinkedinIn,
+  FaEnvelope,
+  FaArrowRight,
+  FaCalendarAlt,
+} from "react-icons/fa";
+import { MdLeaderboard } from "react-icons/md";
 
 import { RESUME_DOWNLOAD_URL } from "@/config/site";
+import { AnimatedSection } from "@/components/AnimatedSection";
+import { ParticleField } from "@/components/ParticleField";
 
+/* ─── Data ─── */
 const navigation = [
   { href: "#hero", label: "Home" },
-  { href: "#about", label: "About" },
+  { href: "#journey", label: "Journey" },
   { href: "#contact", label: "Contact" },
-  { href: "/blogs", label: "Blog" },
 ];
 
+const journeySteps = [
+  {
+    year: "2021",
+    role: "Associate Software Engineer",
+    company: "Kaleyra",
+    accent: "#38bdf8",
+    icon: FaServer,
+  },
+  {
+    year: "2022",
+    role: "Backend Team Lead",
+    company: "DeepByte Technology",
+    accent: "#a78bfa",
+    icon: FaRocket,
+  },
+  {
+    year: "2023",
+    role: "Product Manager",
+    company: "Varahe Analytics",
+    accent: "#6366f1",
+    icon: MdLeaderboard,
+  },
+];
+
+/* ─── Page ─── */
 export default function Home() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [formStatus, setFormStatus] = useState<
-    | { state: "idle" }
-    | { state: "loading" }
-    | { state: "success"; message: string }
-    | { state: "error"; message: string }
-  >({ state: "idle" });
 
   const toggleMenu = () => setIsMenuOpen((prev) => !prev);
 
-  const handleContactSubmit = useCallback(async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    const form = event.currentTarget;
-    const formData = new FormData(form);
-    const getValue = (key: string) => {
-      const value = formData.get(key);
-      return typeof value === "string" ? value.trim() : "";
-    };
-
-    const payload = {
-      fullName: getValue("fullName"),
-      email: getValue("email"),
-      phone: getValue("phone"),
-      organization: getValue("organization"),
-      message: getValue("message"),
-    };
-
-    setFormStatus({ state: "loading" });
-
-    try {
-      const response = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-
-      const data = await response.json().catch(() => ({}));
-
-      if (!response.ok) {
-        const message =
-          typeof data?.message === "string"
-            ? data.message
-            : data?.errors && typeof data.errors === "object"
-              ? Object.values(data.errors as Record<string, string>)[0] ?? "Something went wrong."
-              : "Something went wrong.";
-
-        setFormStatus({ state: "error", message });
-        return;
-      }
-
-      form.reset();
-      setFormStatus({ state: "success", message: data?.message ?? "Thanks for reaching out!" });
-    } catch (error) {
-      console.error("Failed to submit contact form", error);
-      setFormStatus({ state: "error", message: "Unable to send message right now. Please try again soon." });
-    }
-  }, []);
-
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100">
-      <header className="sticky top-0 z-30 border-b border-slate-800/60 bg-slate-950/95 backdrop-blur">
-        <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-5">
-          <Link href="#hero" className="text-lg font-semibold tracking-tight text-white">
-            Vinay Amin
+    <div className="min-h-screen bg-gray-950 text-slate-100 grain-overlay">
+      {/* ━━━ Header ━━━ */}
+      <motion.header
+        initial={{ y: -20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.6 }}
+        className="fixed top-0 z-50 w-full border-b border-white/[0.04] bg-gray-950/80 backdrop-blur-xl"
+      >
+        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+          <Link href="#hero" className="group flex items-center gap-2">
+            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 text-sm font-bold text-white shadow-lg shadow-indigo-500/25">
+              VA
+            </div>
+            <span className="text-base font-semibold tracking-tight text-white transition group-hover:text-indigo-300">
+              Vinay Amin
+            </span>
           </Link>
+
           <button
-            className="rounded-full border border-slate-800 p-2 text-slate-200 transition hover:border-slate-600 hover:text-white md:hidden"
+            className="rounded-xl border border-white/10 p-2 text-slate-300 transition hover:border-white/20 hover:text-white md:hidden"
             onClick={toggleMenu}
             aria-label="Toggle navigation menu"
           >
             {isMenuOpen ? <HiX className="h-5 w-5" /> : <HiMenu className="h-5 w-5" />}
           </button>
-          <nav className="hidden items-center gap-8 text-sm font-medium text-slate-300 md:flex">
+
+          <nav className="hidden items-center gap-1 md:flex">
             {navigation.map((item) => (
-              <Link key={item.label} href={item.href} className="nav-link">
+              <Link
+                key={item.label}
+                href={item.href}
+                className="rounded-lg px-3.5 py-2 text-sm font-medium text-slate-400 transition hover:bg-white/[0.04] hover:text-white"
+              >
                 {item.label}
               </Link>
             ))}
+            <Link
+              href={RESUME_DOWNLOAD_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="ml-3 rounded-full bg-gradient-to-r from-indigo-500 to-purple-600 px-5 py-2 text-sm font-semibold text-white shadow-lg shadow-indigo-500/25 transition hover:shadow-indigo-500/40"
+            >
+              Resume
+            </Link>
           </nav>
         </div>
-        {isMenuOpen && (
-          <div className="border-t border-slate-800 bg-slate-950 px-6 pb-6 pt-4 shadow-lg md:hidden">
-            <nav className="flex flex-col gap-4 text-sm font-medium text-slate-200">
-              {navigation.map((item) => (
-                <Link key={item.label} href={item.href} onClick={toggleMenu} className="nav-link">
-                  {item.label}
-                </Link>
-              ))}
-            </nav>
-          </div>
-        )}
-      </header>
+
+        <AnimatePresence>
+          {isMenuOpen && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              className="overflow-hidden border-t border-white/[0.04] md:hidden"
+            >
+              <nav className="flex flex-col gap-1 px-6 py-4">
+                {navigation.map((item) => (
+                  <Link
+                    key={item.label}
+                    href={item.href}
+                    onClick={toggleMenu}
+                    className="rounded-lg px-3 py-2.5 text-sm font-medium text-slate-300 transition hover:bg-white/[0.04] hover:text-white"
+                  >
+                    {item.label}
+                  </Link>
+                ))}
+              </nav>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.header>
 
       <main>
-        <section id="hero" className="section-padding px-6">
-          <div className="mx-auto grid max-w-5xl gap-12 lg:grid-cols-[1.1fr,0.9fr] lg:items-center">
-            <div className="space-y-6">
-              <p className="text-xs font-semibold uppercase tracking-[0.4em] text-blue-400">Product Leadership</p>
-              <h1 className="text-balance font-display text-4xl tracking-tight text-white sm:text-5xl">
-                Guiding data-rich platforms from vision to shipped outcomes
+        {/* ━━━ Hero ━━━ */}
+        <section id="hero" className="relative min-h-screen overflow-hidden px-6 pt-28 pb-20 flex items-center">
+          <ParticleField />
+          <div className="absolute inset-0 mesh-gradient" />
+          <div className="absolute top-1/4 left-1/2 -translate-x-1/2 h-[600px] w-[600px] rounded-full bg-indigo-500/[0.07] blur-[120px]" />
+
+          <div className="relative mx-auto grid max-w-6xl gap-16 lg:grid-cols-2 lg:items-center">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, ease: [0.25, 0.4, 0.25, 1] }}
+              className="space-y-8"
+            >
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.3, duration: 0.5 }}
+                className="inline-flex items-center gap-2 rounded-full border border-indigo-500/20 bg-indigo-500/[0.06] px-4 py-1.5 text-xs font-medium tracking-wide text-indigo-300"
+              >
+                <span className="h-1.5 w-1.5 rounded-full bg-indigo-400 animate-pulse" />
+                Product & Technology Leader
+              </motion.div>
+
+              <h1 className="font-display text-5xl leading-[1.1] tracking-tight sm:text-6xl lg:text-7xl">
+                <span className="text-white">Turning data</span>
+                <br />
+                <span className="gradient-text">into outcomes</span>
               </h1>
-              <p className="text-lg text-slate-300">
-                Vinay Amin is a product and technology leader based in Bengaluru who builds analytics platforms that translate
-                complex strategy into measurable delivery. He blends roadmapping, experimentation, and engineering stewardship to
-                help civic and enterprise teams scale impact.
+
+              <p className="max-w-lg text-lg leading-relaxed text-slate-400">
+                Building analytics platforms that translate complex strategy into
+                measurable delivery — from vision to shipped product.
               </p>
+
               <div className="flex flex-wrap gap-4">
                 <Link
                   href="#contact"
-                  className="inline-flex items-center justify-center rounded-full bg-blue-500 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-500/30 transition hover:bg-blue-400"
+                  className="group inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-indigo-500 to-purple-600 px-7 py-3.5 text-sm font-semibold text-white shadow-xl shadow-indigo-500/25 transition hover:shadow-indigo-500/40"
                 >
                   Let&apos;s Collaborate
+                  <FaArrowRight className="h-3 w-3 transition group-hover:translate-x-1" />
                 </Link>
                 <Link
-                  href={RESUME_DOWNLOAD_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center rounded-full border border-slate-700 px-6 py-3 text-sm font-semibold text-slate-100 transition hover:border-slate-500 hover:text-white"
+                  href="#journey"
+                  className="inline-flex items-center gap-2 rounded-full border border-white/10 px-7 py-3.5 text-sm font-semibold text-slate-300 transition hover:border-white/20 hover:text-white"
                 >
-                  Download Resume
+                  View Journey
                 </Link>
               </div>
-              <div className="grid gap-3 text-sm text-slate-400 sm:grid-cols-3">
-                <div>
-                  <span className="block text-xs uppercase tracking-[0.2em] text-slate-500">Current Focus</span>
-                  Product Manager, Varahe Analytics
-                </div>
-                <div>
-                  <span className="block text-xs uppercase tracking-[0.2em] text-slate-500">Expertise</span>
-                  Analytics SaaS · Experimentation · Delivery Rigor
-                </div>
-                <div>
-                  <span className="block text-xs uppercase tracking-[0.2em] text-slate-500">Location</span>
-                  Bengaluru, India
+
+              <div className="flex gap-4 pt-2">
+                <a
+                  href="https://www.linkedin.com/in/vinayvp/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 text-slate-400 transition hover:border-indigo-500/40 hover:text-indigo-300 hover:shadow-lg hover:shadow-indigo-500/10"
+                >
+                  <FaLinkedinIn className="h-4 w-4" />
+                </a>
+                <a
+                  href="mailto:contact@vinayamin.com"
+                  className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 text-slate-400 transition hover:border-indigo-500/40 hover:text-indigo-300 hover:shadow-lg hover:shadow-indigo-500/10"
+                >
+                  <FaEnvelope className="h-4 w-4" />
+                </a>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.4, duration: 0.8, ease: [0.25, 0.4, 0.25, 1] }}
+              className="relative hidden lg:block"
+            >
+              <div className="animate-pulse-ring absolute -inset-8 rounded-full bg-gradient-to-br from-indigo-500/10 via-purple-500/5 to-transparent blur-2xl" />
+              <div className="relative overflow-hidden rounded-3xl border border-white/[0.06] bg-white/[0.02] p-1 shadow-2xl shadow-indigo-500/10 backdrop-blur-sm">
+                <div className="overflow-hidden rounded-[1.25rem] bg-gradient-to-br from-slate-900/80 to-slate-900/40 p-8">
+                  <Image
+                    src="/vinay-amin-headshot.jpeg"
+                    alt="Vinay Amin portrait"
+                    width={520}
+                    height={520}
+                    className="mx-auto h-auto w-full max-w-[280px]"
+                    priority
+                  />
+                  <div className="mt-6 grid grid-cols-2 gap-3">
+                    <div className="rounded-xl bg-white/[0.04] px-4 py-3 text-center">
+                      <p className="text-xl font-bold text-white">5+</p>
+                      <p className="text-xs text-slate-400">Years Experience</p>
+                    </div>
+                    <div className="rounded-xl bg-white/[0.04] px-4 py-3 text-center">
+                      <p className="text-xl font-bold text-white">3</p>
+                      <p className="text-xs text-slate-400">Companies</p>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className="relative">
-              <div className="absolute inset-0 -z-10 rounded-3xl bg-gradient-to-br from-blue-500/20 via-indigo-400/10 to-transparent blur-3xl" />
-              <div className="overflow-hidden rounded-3xl border border-slate-800 bg-slate-900/60 p-6 shadow-xl">
-                <Image
-                  src="/vinay-amin-headshot.svg"
-                  alt="Vinay Amin portrait"
-                  width={520}
-                  height={520}
-                  className="mx-auto h-auto w-full max-w-xs"
-                  priority
-                />
-                <div className="mt-6 space-y-2 text-sm text-slate-300">
-                  <p>
-                    Previously led backend engineering at DeepByte Technology and delivered resilient omnichannel platforms at
-                    Kaleyra.
-                  </p>
-                  <p>
-                    Trusted by stakeholders for synthesising insights into roadmaps that lift retention, revenue, and reliability.
-                  </p>
-                </div>
-              </div>
+            </motion.div>
+          </div>
+
+          {/* Scroll indicator */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.5 }}
+            className="absolute bottom-8 left-1/2 -translate-x-1/2"
+          >
+            <motion.div
+              animate={{ y: [0, 8, 0] }}
+              transition={{ repeat: Infinity, duration: 2 }}
+              className="flex h-10 w-6 items-start justify-center rounded-full border border-white/10 pt-2"
+            >
+              <div className="h-1.5 w-1 rounded-full bg-white/30" />
+            </motion.div>
+          </motion.div>
+        </section>
+
+        {/* ━━━ Journey Timeline ━━━ */}
+        <section id="journey" className="section-padding relative px-6">
+          <div className="absolute inset-0 dot-grid opacity-40" />
+          <div className="relative mx-auto max-w-5xl">
+            <AnimatedSection>
+              <p className="text-xs font-semibold uppercase tracking-[0.4em] text-indigo-400">The Journey</p>
+              <h2 className="mt-3 font-display text-4xl text-white sm:text-5xl">From engineer to product leader</h2>
+            </AnimatedSection>
+
+            <div className="mt-16 space-y-0">
+              {journeySteps.map((step, i) => (
+                <AnimatedSection key={step.year} delay={i * 0.15} direction={i % 2 === 0 ? "left" : "right"}>
+                  <div className="group relative flex gap-8 pb-16 last:pb-0">
+                    {/* Timeline line */}
+                    <div className="relative flex flex-col items-center">
+                      <motion.div
+                        whileHover={{ scale: 1.2 }}
+                        className="relative z-10 flex h-14 w-14 items-center justify-center rounded-2xl border border-white/10 bg-gray-950 shadow-xl"
+                        style={{ boxShadow: `0 0 30px ${step.accent}20` }}
+                      >
+                        <step.icon className="h-5 w-5" style={{ color: step.accent }} />
+                      </motion.div>
+                      {i < journeySteps.length - 1 && (
+                        <div className="absolute top-14 bottom-0 w-px bg-gradient-to-b from-white/10 to-transparent" />
+                      )}
+                    </div>
+
+                    {/* Content */}
+                    <div className="flex-1 pb-2">
+                      <span
+                        className="text-xs font-bold tracking-[0.3em]"
+                        style={{ color: step.accent }}
+                      >
+                        {step.year}
+                      </span>
+                      <h3 className="mt-1 text-xl font-semibold text-white">{step.role}</h3>
+                      <p className="text-sm text-slate-400">{step.company}</p>
+                    </div>
+                  </div>
+                </AnimatedSection>
+              ))}
             </div>
           </div>
         </section>
 
-        <section id="about" className="section-padding bg-slate-900/60 px-6">
-          <div className="mx-auto max-w-4xl space-y-10">
-            <div className="space-y-4">
-              <p className="text-xs font-semibold uppercase tracking-[0.4em] text-blue-400">About Me</p>
-              <h2 className="text-3xl font-semibold text-white sm:text-4xl">Building clarity and momentum across product lifecycles</h2>
-              <p className="text-lg text-slate-300">
-                Vinay pairs product discovery with engineering craftsmanship to convert ambiguous requirements into outcomes.
-                Recent work at Varahe Analytics established discovery councils, activation scorecards, and KPI instrumentation that
-                keep delivery grounded in the metrics that matter.
-              </p>
-            </div>
-            <div className="grid gap-8 sm:grid-cols-2">
-              <div className="space-y-3 rounded-3xl border border-slate-800 bg-slate-950/60 p-6">
-                <h3 className="text-base font-semibold text-white">Product Strategy &amp; Experimentation</h3>
-                <p className="text-sm text-slate-300">
-                  Orchestrated analytics SaaS roadmaps end-to-end, sequenced launches around renewal-critical value, and ran 120+
-                  experiments to prioritise what delivers measurable growth.
-                </p>
-              </div>
-              <div className="space-y-3 rounded-3xl border border-slate-800 bg-slate-950/60 p-6">
-                <h3 className="text-base font-semibold text-white">Technical Stewardship</h3>
-                <p className="text-sm text-slate-300">
-                  Mentored distributed engineering teams, modernised event pipelines with 99.97% uptime, and codified delivery
-                  rituals that reduced cycle time by 30%.
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
+        {/* ━━━ Contact ━━━ */}
+        <section id="contact" className="section-padding relative px-6">
+          <div className="absolute inset-0 dot-grid opacity-30" />
+          <div className="relative mx-auto max-w-3xl">
+            <AnimatedSection>
+              <div className="glass-card overflow-hidden p-1">
+                <div className="rounded-[1.375rem] bg-gradient-to-br from-gray-950/90 to-gray-900/80 p-8 sm:p-14">
+                  <div className="space-y-8 text-center">
+                    <p className="text-xs font-semibold uppercase tracking-[0.4em] text-indigo-400">Get in Touch</p>
+                    <h2 className="font-display text-3xl text-white sm:text-4xl lg:text-5xl">
+                      Let&apos;s build something
+                      <span className="gradient-text-brand"> together</span>
+                    </h2>
+                    <p className="mx-auto max-w-lg text-slate-400 leading-relaxed">
+                      Whether you&apos;re orchestrating a new analytics tier, scaling infrastructure,
+                      or rallying stakeholders around a roadmap — let&apos;s talk.
+                    </p>
 
-        <section id="contact" className="section-padding px-6">
-          <div className="mx-auto grid max-w-5xl gap-10 rounded-3xl border border-slate-800 bg-slate-950/80 p-8 shadow-2xl shadow-blue-500/10 lg:grid-cols-2">
-            <div className="space-y-6">
-              <p className="text-xs font-semibold uppercase tracking-[0.4em] text-blue-400">Collaborate</p>
-              <h2 className="text-3xl font-semibold text-white sm:text-4xl">Let&apos;s design the next experiment-driven launch</h2>
-              <p className="text-base text-slate-300">
-                Share the challenge you are solving—whether it is orchestrating a new analytics tier, scaling infrastructure, or
-                rallying stakeholders around a roadmap. Vinay will return with next steps and ways to help.
-              </p>
-              <div className="space-y-2 text-sm text-slate-400">
-                <p>vinayamin1997@gmail.com</p>
-                <p>+91 82178 66171</p>
-              </div>
-            </div>
-            <form onSubmit={handleContactSubmit} className="space-y-4">
-              <div className="form-field">
-                <span>Full Name</span>
-                <input id="fullName" name="fullName" type="text" autoComplete="name" required placeholder="Your name" />
-              </div>
-              <div className="grid gap-4 sm:grid-cols-2">
-                <div className="form-field">
-                  <span>Email</span>
-                  <input id="email" name="email" type="email" autoComplete="email" required placeholder="you@example.com" />
+                    <motion.a
+                      href="https://calendar.app.google/DPRgryrfHMZqqpbT6"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      whileHover={{ scale: 1.03 }}
+                      whileTap={{ scale: 0.97 }}
+                      className="group inline-flex items-center gap-3 rounded-full bg-gradient-to-r from-indigo-500 to-purple-600 px-8 py-4 text-base font-semibold text-white shadow-xl shadow-indigo-500/25 transition hover:shadow-indigo-500/40"
+                    >
+                      <FaCalendarAlt className="h-5 w-5" />
+                      Schedule a Meeting
+                      <FaArrowRight className="h-3.5 w-3.5 transition group-hover:translate-x-1" />
+                    </motion.a>
+
+                    <div className="flex flex-col items-center gap-4 pt-4 sm:flex-row sm:justify-center sm:gap-8">
+                      <a
+                        href="mailto:contact@vinayamin.com"
+                        className="group flex items-center gap-3 rounded-xl border border-white/[0.06] bg-white/[0.02] px-5 py-4 transition hover:border-indigo-500/30 hover:bg-indigo-500/[0.04]"
+                      >
+                        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-500/10">
+                          <FaEnvelope className="h-4 w-4 text-indigo-400" />
+                        </div>
+                        <div className="text-left">
+                          <p className="text-sm font-medium text-white">Email</p>
+                          <p className="text-xs text-slate-400">contact@vinayamin.com</p>
+                        </div>
+                      </a>
+                      <a
+                        href="https://www.linkedin.com/in/vinayvp/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="group flex items-center gap-3 rounded-xl border border-white/[0.06] bg-white/[0.02] px-5 py-4 transition hover:border-indigo-500/30 hover:bg-indigo-500/[0.04]"
+                      >
+                        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-500/10">
+                          <FaLinkedinIn className="h-4 w-4 text-indigo-400" />
+                        </div>
+                        <div className="text-left">
+                          <p className="text-sm font-medium text-white">LinkedIn</p>
+                          <p className="text-xs text-slate-400">linkedin.com/in/vinayvp</p>
+                        </div>
+                      </a>
+                    </div>
+                  </div>
                 </div>
-                <div className="form-field">
-                  <span>Phone</span>
-                  <input id="phone" name="phone" type="tel" autoComplete="tel" placeholder="Optional" />
-                </div>
               </div>
-              <div className="form-field">
-                <span>Organization</span>
-                <input id="organization" name="organization" type="text" placeholder="Company or initiative" />
-              </div>
-              <div className="form-field">
-                <span>Project Context</span>
-                <textarea id="message" name="message" rows={4} required placeholder="What challenge can Vinay help solve?" />
-              </div>
-              <button
-                type="submit"
-                className="w-full rounded-full bg-blue-500 px-6 py-3 text-sm font-semibold text-white transition hover:bg-blue-400"
-                disabled={formStatus.state === "loading"}
-              >
-                {formStatus.state === "loading" ? "Sending..." : "Send Message"}
-              </button>
-              {formStatus.state === "success" && (
-                <p className="text-sm text-green-400">{formStatus.message}</p>
-              )}
-              {formStatus.state === "error" && (
-                <p className="text-sm text-rose-400">{formStatus.message}</p>
-              )}
-            </form>
+            </AnimatedSection>
           </div>
         </section>
       </main>
+
+      {/* ━━━ Footer ━━━ */}
+      <footer className="border-t border-white/[0.04] px-6 py-8">
+        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 text-sm text-slate-500 sm:flex-row">
+          <p>&copy; {new Date().getFullYear()} Vinay Amin. All rights reserved.</p>
+          <a
+            href="https://www.linkedin.com/in/vinayvp/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="transition hover:text-slate-300"
+          >
+            LinkedIn
+          </a>
+        </div>
+      </footer>
     </div>
   );
 }

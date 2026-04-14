@@ -241,6 +241,34 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ message: "Too many requests" }, { status: 429 });
   }
 
+  const hasEmailConfig = Boolean(
+    (process.env.RESEND_API_KEY || process.env.SENDGRID_API_KEY) &&
+      process.env.CONTACT_FROM_EMAIL &&
+      process.env.CONTACT_TO_EMAIL,
+  );
+
+  if (!hasEmailConfig) {
+    const to = "vinayamin1997@gmail.com";
+    const subject = encodeURIComponent(`Contact from ${validation.data.fullName}`);
+    const body = encodeURIComponent(
+      [
+        `Name: ${validation.data.fullName}`,
+        `Email: ${validation.data.email}`,
+        validation.data.phone ? `Phone: ${validation.data.phone}` : "",
+        validation.data.organization ? `Organization: ${validation.data.organization}` : "",
+        "",
+        validation.data.message,
+      ]
+        .filter(Boolean)
+        .join("\n"),
+    );
+
+    return NextResponse.json(
+      { mailto: `mailto:${to}?subject=${subject}&body=${body}` },
+      { status: 200 },
+    );
+  }
+
   try {
     await Promise.all([sendMail(validation.data), logToNotion(validation.data)]);
   } catch (error) {
