@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { FormEvent, useCallback, useState } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { HiMenu, HiX } from "react-icons/hi";
 import {
@@ -12,6 +12,7 @@ import {
   FaLinkedinIn,
   FaEnvelope,
   FaArrowRight,
+  FaCalendarAlt,
 } from "react-icons/fa";
 import { MdLeaderboard } from "react-icons/md";
 
@@ -112,71 +113,8 @@ const testimonials = [
 export default function Home() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeTestimonial, setActiveTestimonial] = useState(0);
-  const [formStatus, setFormStatus] = useState<
-    | { state: "idle" }
-    | { state: "loading" }
-    | { state: "success"; message: string }
-    | { state: "error"; message: string }
-  >({ state: "idle" });
 
   const toggleMenu = () => setIsMenuOpen((prev) => !prev);
-
-  const handleContactSubmit = useCallback(
-    async (event: FormEvent<HTMLFormElement>) => {
-      event.preventDefault();
-      const form = event.currentTarget;
-      const formData = new FormData(form);
-      const getValue = (key: string) => {
-        const value = formData.get(key);
-        return typeof value === "string" ? value.trim() : "";
-      };
-
-      const payload = {
-        fullName: getValue("fullName"),
-        email: getValue("email"),
-        phone: getValue("phone"),
-        organization: getValue("organization"),
-        message: getValue("message"),
-      };
-
-      setFormStatus({ state: "loading" });
-
-      try {
-        const response = await fetch("/api/contact", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
-        });
-
-        const data = await response.json().catch(() => ({}));
-
-        if (!response.ok) {
-          const message =
-            typeof data?.message === "string"
-              ? data.message
-              : data?.errors && typeof data.errors === "object"
-                ? Object.values(data.errors as Record<string, string>)[0] ?? "Something went wrong."
-                : "Something went wrong.";
-          setFormStatus({ state: "error", message });
-          return;
-        }
-
-        if (data?.mailto) {
-          window.open(data.mailto, "_blank");
-          form.reset();
-          setFormStatus({ state: "success", message: "Opening your email client..." });
-          return;
-        }
-
-        form.reset();
-        setFormStatus({ state: "success", message: data?.message ?? "Thanks for reaching out!" });
-      } catch (error) {
-        console.error("Failed to submit contact form", error);
-        setFormStatus({ state: "error", message: "Unable to send message right now. Please try again soon." });
-      }
-    },
-    [],
-  );
 
   return (
     <div className="min-h-screen bg-gray-950 text-slate-100 grain-overlay">
@@ -544,117 +482,62 @@ export default function Home() {
         {/* ━━━ Contact ━━━ */}
         <section id="contact" className="section-padding relative px-6">
           <div className="absolute inset-0 dot-grid opacity-30" />
-          <div className="relative mx-auto max-w-5xl">
+          <div className="relative mx-auto max-w-3xl">
             <AnimatedSection>
               <div className="glass-card overflow-hidden p-1">
-                <div className="rounded-[1.375rem] bg-gradient-to-br from-gray-950/90 to-gray-900/80 p-8 sm:p-12">
-                  <div className="grid gap-12 lg:grid-cols-2">
-                    <div className="space-y-6">
-                      <p className="text-xs font-semibold uppercase tracking-[0.4em] text-indigo-400">Get in Touch</p>
-                      <h2 className="font-display text-3xl text-white sm:text-4xl">
-                        Let&apos;s build something
-                        <span className="gradient-text-brand"> together</span>
-                      </h2>
-                      <p className="text-slate-400 leading-relaxed">
-                        Whether you&apos;re orchestrating a new analytics tier, scaling infrastructure,
-                        or rallying stakeholders around a roadmap — I&apos;d love to hear about it.
-                      </p>
+                <div className="rounded-[1.375rem] bg-gradient-to-br from-gray-950/90 to-gray-900/80 p-8 sm:p-14">
+                  <div className="space-y-8 text-center">
+                    <p className="text-xs font-semibold uppercase tracking-[0.4em] text-indigo-400">Get in Touch</p>
+                    <h2 className="font-display text-3xl text-white sm:text-4xl lg:text-5xl">
+                      Let&apos;s build something
+                      <span className="gradient-text-brand"> together</span>
+                    </h2>
+                    <p className="mx-auto max-w-lg text-slate-400 leading-relaxed">
+                      Whether you&apos;re orchestrating a new analytics tier, scaling infrastructure,
+                      or rallying stakeholders around a roadmap — let&apos;s talk.
+                    </p>
 
-                      <div className="space-y-4 pt-4">
-                        <a
-                          href="mailto:vinayamin1997@gmail.com"
-                          className="group flex items-center gap-4 rounded-xl border border-white/[0.06] bg-white/[0.02] px-5 py-4 transition hover:border-indigo-500/30 hover:bg-indigo-500/[0.04]"
-                        >
-                          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-500/10">
-                            <FaEnvelope className="h-4 w-4 text-indigo-400" />
-                          </div>
-                          <div>
-                            <p className="text-sm font-medium text-white">Email</p>
-                            <p className="text-xs text-slate-400">vinayamin1997@gmail.com</p>
-                          </div>
-                        </a>
-                        <a
-                          href="https://www.linkedin.com/in/vinayvp/"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="group flex items-center gap-4 rounded-xl border border-white/[0.06] bg-white/[0.02] px-5 py-4 transition hover:border-indigo-500/30 hover:bg-indigo-500/[0.04]"
-                        >
-                          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-500/10">
-                            <FaLinkedinIn className="h-4 w-4 text-indigo-400" />
-                          </div>
-                          <div>
-                            <p className="text-sm font-medium text-white">LinkedIn</p>
-                            <p className="text-xs text-slate-400">linkedin.com/in/vinayvp</p>
-                          </div>
-                        </a>
-                      </div>
-                    </div>
+                    <motion.a
+                      href="https://calendar.app.google/DPRgryrfHMZqqpbT6"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      whileHover={{ scale: 1.03 }}
+                      whileTap={{ scale: 0.97 }}
+                      className="group inline-flex items-center gap-3 rounded-full bg-gradient-to-r from-indigo-500 to-purple-600 px-8 py-4 text-base font-semibold text-white shadow-xl shadow-indigo-500/25 transition hover:shadow-indigo-500/40"
+                    >
+                      <FaCalendarAlt className="h-5 w-5" />
+                      Schedule a Meeting
+                      <FaArrowRight className="h-3.5 w-3.5 transition group-hover:translate-x-1" />
+                    </motion.a>
 
-                    <form onSubmit={handleContactSubmit} className="space-y-4">
-                      <div className="form-field">
-                        <span>Full Name</span>
-                        <input id="fullName" name="fullName" type="text" autoComplete="name" required placeholder="Your name" />
-                      </div>
-                      <div className="grid gap-4 sm:grid-cols-2">
-                        <div className="form-field">
-                          <span>Email</span>
-                          <input id="email" name="email" type="email" autoComplete="email" required placeholder="you@example.com" />
-                        </div>
-                        <div className="form-field">
-                          <span>Phone</span>
-                          <input id="phone" name="phone" type="tel" autoComplete="tel" placeholder="Optional" />
-                        </div>
-                      </div>
-                      <div className="form-field">
-                        <span>Organization</span>
-                        <input id="organization" name="organization" type="text" placeholder="Company or initiative" />
-                      </div>
-                      <div className="form-field">
-                        <span>Message</span>
-                        <textarea id="message" name="message" rows={4} required placeholder="Tell me about your project..." />
-                      </div>
-                      <motion.button
-                        type="submit"
-                        whileHover={{ scale: 1.01 }}
-                        whileTap={{ scale: 0.98 }}
-                        className="w-full rounded-xl bg-gradient-to-r from-indigo-500 to-purple-600 px-6 py-3.5 text-sm font-semibold text-white shadow-lg shadow-indigo-500/25 transition hover:shadow-indigo-500/40 disabled:opacity-50"
-                        disabled={formStatus.state === "loading"}
+                    <div className="flex flex-col items-center gap-4 pt-4 sm:flex-row sm:justify-center sm:gap-8">
+                      <a
+                        href="mailto:vinayamin1997@gmail.com"
+                        className="group flex items-center gap-3 rounded-xl border border-white/[0.06] bg-white/[0.02] px-5 py-4 transition hover:border-indigo-500/30 hover:bg-indigo-500/[0.04]"
                       >
-                        {formStatus.state === "loading" ? (
-                          <span className="flex items-center justify-center gap-2">
-                            <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none">
-                              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-                            </svg>
-                            Sending...
-                          </span>
-                        ) : (
-                          "Send Message"
-                        )}
-                      </motion.button>
-                      <AnimatePresence>
-                        {formStatus.state === "success" && (
-                          <motion.p
-                            initial={{ opacity: 0, y: 10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0 }}
-                            className="rounded-lg border border-emerald-500/20 bg-emerald-500/10 px-4 py-3 text-sm text-emerald-300"
-                          >
-                            {formStatus.message}
-                          </motion.p>
-                        )}
-                        {formStatus.state === "error" && (
-                          <motion.p
-                            initial={{ opacity: 0, y: 10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0 }}
-                            className="rounded-lg border border-rose-500/20 bg-rose-500/10 px-4 py-3 text-sm text-rose-300"
-                          >
-                            {formStatus.message}
-                          </motion.p>
-                        )}
-                      </AnimatePresence>
-                    </form>
+                        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-500/10">
+                          <FaEnvelope className="h-4 w-4 text-indigo-400" />
+                        </div>
+                        <div className="text-left">
+                          <p className="text-sm font-medium text-white">Email</p>
+                          <p className="text-xs text-slate-400">vinayamin1997@gmail.com</p>
+                        </div>
+                      </a>
+                      <a
+                        href="https://www.linkedin.com/in/vinayvp/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="group flex items-center gap-3 rounded-xl border border-white/[0.06] bg-white/[0.02] px-5 py-4 transition hover:border-indigo-500/30 hover:bg-indigo-500/[0.04]"
+                      >
+                        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-500/10">
+                          <FaLinkedinIn className="h-4 w-4 text-indigo-400" />
+                        </div>
+                        <div className="text-left">
+                          <p className="text-sm font-medium text-white">LinkedIn</p>
+                          <p className="text-xs text-slate-400">linkedin.com/in/vinayvp</p>
+                        </div>
+                      </a>
+                    </div>
                   </div>
                 </div>
               </div>
