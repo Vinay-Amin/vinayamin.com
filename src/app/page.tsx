@@ -161,6 +161,13 @@ export default function Home() {
           return;
         }
 
+        if (data?.mailto) {
+          window.open(data.mailto, "_blank");
+          form.reset();
+          setFormStatus({ state: "success", message: "Opening your email client..." });
+          return;
+        }
+
         form.reset();
         setFormStatus({ state: "success", message: data?.message ?? "Thanks for reaching out!" });
       } catch (error) {
