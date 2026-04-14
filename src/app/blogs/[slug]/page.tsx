@@ -13,11 +13,6 @@ type BlogParams = {
 
 export const dynamicParams = false;
 
-/**
- * Provide static params for Next.js export. The underlying utility handles
- * falling back to cached slugs when Contentful is unavailable so the export does
- * not crash in CI environments.
- */
 export async function generateStaticParams(): Promise<{ slug: string }[]> {
   const slugs = await getAllBlogSlugs();
   return slugs.filter((slug): slug is string => Boolean(slug)).map((slug) => ({ slug }));
@@ -80,7 +75,7 @@ function formatDate(input?: string) {
 
 function renderContent(body?: string) {
   if (!body) {
-    return <p className="text-sm text-slate-300">Content coming soon.</p>;
+    return <p className="text-sm text-slate-400">Content coming soon.</p>;
   }
 
   return body.split("\n\n").map((part, index) => {
@@ -101,7 +96,7 @@ function renderContent(body?: string) {
     }
 
     return (
-      <p key={index} className="text-base leading-relaxed text-slate-200">
+      <p key={index} className="text-base leading-relaxed text-slate-300">
         {part}
       </p>
     );
@@ -112,15 +107,19 @@ function RelatedCard({ post }: { post: BlogPost }) {
   const formattedDate = formatDate(post.publishDate);
 
   return (
-    <article className="rounded-3xl border border-slate-800 bg-slate-900/60 p-6 transition hover:border-slate-600">
-      <div className="space-y-2">
-        <h4 className="text-lg font-semibold text-white">
-          <Link href={`/blogs/${post.slug}`} className="nav-link text-inherit">
-            {post.title}
-          </Link>
-        </h4>
-        {formattedDate && <p className="text-xs uppercase tracking-[0.3em] text-slate-400">{formattedDate}</p>}
-        {post.excerpt && <p className="text-sm text-slate-300 line-clamp-3">{post.excerpt}</p>}
+    <article className="group overflow-hidden rounded-2xl border border-white/[0.06] bg-white/[0.02] p-1 transition hover:border-indigo-500/20">
+      <div className="rounded-[0.875rem] bg-gradient-to-br from-gray-900/80 to-gray-900/60 p-6">
+        <div className="space-y-2">
+          <h4 className="text-lg font-semibold text-white transition group-hover:text-indigo-200">
+            <Link href={`/blogs/${post.slug}`}>{post.title}</Link>
+          </h4>
+          {formattedDate && (
+            <p className="text-xs uppercase tracking-[0.3em] text-slate-500">{formattedDate}</p>
+          )}
+          {post.excerpt && (
+            <p className="text-sm text-slate-400 line-clamp-3">{post.excerpt}</p>
+          )}
+        </div>
       </div>
     </article>
   );
@@ -133,7 +132,9 @@ export default async function BlogPostPage({ params }: BlogParams) {
     notFound();
   }
 
-  const relatedPosts = (await getBlogPosts()).filter((related) => related.slug !== post.slug).slice(0, 2);
+  const relatedPosts = (await getBlogPosts())
+    .filter((related) => related.slug !== post.slug)
+    .slice(0, 2);
   const formattedDate = formatDate(post.publishDate);
 
   const schema = {
@@ -142,10 +143,7 @@ export default async function BlogPostPage({ params }: BlogParams) {
     headline: post.title,
     description: post.excerpt,
     author: post.author
-      ? {
-          "@type": "Person",
-          name: post.author,
-        }
+      ? { "@type": "Person", name: post.author }
       : undefined,
     datePublished: post.publishDate,
     dateModified: post.publishDate,
@@ -158,75 +156,80 @@ export default async function BlogPostPage({ params }: BlogParams) {
   };
 
   return (
-    <div className="dark min-h-screen bg-slate-950 text-slate-100">
+    <div className="min-h-screen bg-gray-950 text-slate-100 grain-overlay">
       <BlogNavigation pageType="blog" />
-      <main className="mx-auto max-w-3xl px-6 pb-24 pt-32">
-        <nav className="mb-8 text-xs font-semibold uppercase tracking-[0.3em] text-slate-500">
-          <ol className="flex items-center gap-2 text-slate-400">
+      <main className="mx-auto max-w-3xl px-6 pb-24 pt-28">
+        <nav className="mb-8 text-xs font-semibold uppercase tracking-[0.3em]">
+          <ol className="flex items-center gap-2 text-slate-500">
             <li>
-              <Link href="/" className="nav-link text-slate-400 hover:text-blue-300">
+              <Link href="/" className="transition hover:text-slate-300">
                 Home
               </Link>
             </li>
-            <li className="text-slate-600">/</li>
+            <li className="text-slate-700">/</li>
             <li>
-              <Link href="/blogs" className="nav-link text-slate-400 hover:text-blue-300">
+              <Link href="/blogs" className="transition hover:text-slate-300">
                 Blog
               </Link>
             </li>
-            <li className="text-slate-600">/</li>
-            <li className="text-slate-200">{post.title}</li>
+            <li className="text-slate-700">/</li>
+            <li className="text-slate-300 truncate max-w-[200px]">{post.title}</li>
           </ol>
         </nav>
 
-        <article className="space-y-10 rounded-3xl border border-slate-800 bg-slate-900/60 p-8 shadow-xl">
-          <header className="space-y-5 text-center">
-            {post.tags.length > 0 && (
-              <div className="flex flex-wrap justify-center gap-2 text-xs uppercase tracking-[0.3em] text-blue-400/80">
-                {post.tags.map((tag) => (
-                  <span key={tag} className="rounded-full border border-blue-400/30 px-3 py-1 text-[0.65rem] font-semibold text-blue-300">
-                    {tag}
-                  </span>
-                ))}
+        <article className="overflow-hidden rounded-2xl border border-white/[0.06] bg-white/[0.02] p-1">
+          <div className="rounded-[0.875rem] bg-gradient-to-br from-gray-900/80 to-gray-900/60 p-8 sm:p-12 space-y-10">
+            <header className="space-y-5 text-center">
+              {post.tags.length > 0 && (
+                <div className="flex flex-wrap justify-center gap-2">
+                  {post.tags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="rounded-full border border-indigo-500/20 bg-indigo-500/[0.06] px-3 py-1 text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-indigo-300"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              )}
+              <h1 className="font-display text-3xl text-white sm:text-4xl lg:text-5xl">
+                {post.title}
+              </h1>
+              <div className="flex flex-col items-center gap-2 text-xs uppercase tracking-[0.3em] text-slate-500 sm:flex-row sm:justify-center">
+                {formattedDate && (
+                  <time dateTime={post.publishDate ?? undefined} className="text-slate-400">
+                    {formattedDate}
+                  </time>
+                )}
+                {post.author && <span className="hidden sm:inline text-slate-700">·</span>}
+                {post.author && <span className="text-slate-400">{post.author}</span>}
               </div>
-            )}
-            <h1 className="text-balance font-display text-4xl tracking-tight text-white sm:text-5xl">{post.title}</h1>
-            <div className="flex flex-col items-center gap-2 text-xs uppercase tracking-[0.3em] text-slate-400 sm:flex-row sm:justify-center">
-              {formattedDate && (
-                <time dateTime={post.publishDate ?? undefined} className="text-slate-300">
-                  {formattedDate}
-                </time>
-              )}
-              {post.author && (
-                <span className="text-slate-500">•</span>
-              )}
-              {post.author && <span className="text-slate-300">{post.author}</span>}
+            </header>
+
+            <div className="space-y-6 text-left leading-relaxed">
+              {renderContent(post.body)}
             </div>
-          </header>
 
-          <div className="space-y-6 text-left leading-relaxed">
-            {renderContent(post.body)}
-          </div>
-
-          <div className="flex flex-wrap items-center justify-between gap-4 border-t border-slate-800 pt-6 text-sm text-slate-300">
-            <div>Enjoyed this read? Share it with your network.</div>
-            <div className="flex flex-wrap gap-3">
-              <a
-                href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(`https://vinayvp.com/blogs/${post.slug}`)}&text=${encodeURIComponent(post.title)}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="rounded-full border border-blue-400/40 px-4 py-2 text-xs font-semibold uppercase tracking-[0.3em] text-blue-300 transition hover:border-blue-300 hover:text-blue-200"
-              >
-                Twitter
-              </a>
-              <a
-                href={`https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(`https://vinayvp.com/blogs/${post.slug}`)}&title=${encodeURIComponent(post.title)}&summary=${encodeURIComponent(post.excerpt ?? "")}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="rounded-full border border-blue-400/40 px-4 py-2 text-xs font-semibold uppercase tracking-[0.3em] text-blue-300 transition hover:border-blue-300 hover:text-blue-200"
-              >
-                LinkedIn
-              </a>
+            <div className="flex flex-wrap items-center justify-between gap-4 border-t border-white/[0.06] pt-6 text-sm text-slate-400">
+              <span>Enjoyed this? Share it.</span>
+              <div className="flex flex-wrap gap-3">
+                <a
+                  href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(`https://vinayvp.com/blogs/${post.slug}`)}&text=${encodeURIComponent(post.title)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="rounded-full border border-white/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-slate-300 transition hover:border-indigo-500/30 hover:text-indigo-300"
+                >
+                  Twitter
+                </a>
+                <a
+                  href={`https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(`https://vinayvp.com/blogs/${post.slug}`)}&title=${encodeURIComponent(post.title)}&summary=${encodeURIComponent(post.excerpt ?? "")}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="rounded-full border border-white/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-slate-300 transition hover:border-indigo-500/30 hover:text-indigo-300"
+                >
+                  LinkedIn
+                </a>
+              </div>
             </div>
           </div>
         </article>
@@ -234,9 +237,12 @@ export default async function BlogPostPage({ params }: BlogParams) {
         {relatedPosts.length > 0 && (
           <section className="mt-12 space-y-6">
             <div className="flex items-center justify-between">
-              <h2 className="text-2xl font-semibold text-white">Continue exploring</h2>
-              <Link href="/blogs" className="nav-link text-sm text-blue-300 hover:text-blue-200">
-                View all posts
+              <h2 className="text-2xl font-semibold text-white">Continue reading</h2>
+              <Link
+                href="/blogs"
+                className="text-sm text-indigo-300 transition hover:text-indigo-200"
+              >
+                All posts →
               </Link>
             </div>
             <div className="grid gap-4 sm:grid-cols-2">
@@ -247,13 +253,13 @@ export default async function BlogPostPage({ params }: BlogParams) {
           </section>
         )}
 
-        <footer className="mt-16 flex flex-col items-center gap-3 text-center text-sm text-slate-500">
-          <p>&copy; {new Date().getFullYear()} Vinay V P. All rights reserved.</p>
+        <footer className="mt-20 flex flex-col items-center gap-3 border-t border-white/[0.04] pt-8 text-sm text-slate-500">
+          <p>&copy; {new Date().getFullYear()} Vinay Amin. All rights reserved.</p>
           <a
             href="https://www.linkedin.com/in/vinayvp/"
             target="_blank"
             rel="noopener noreferrer"
-            className="nav-link text-slate-400 hover:text-blue-300"
+            className="transition hover:text-slate-300"
           >
             LinkedIn
           </a>
@@ -262,9 +268,7 @@ export default async function BlogPostPage({ params }: BlogParams) {
 
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(schema),
-        }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
       />
     </div>
   );
