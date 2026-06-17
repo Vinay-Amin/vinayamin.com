@@ -1081,7 +1081,7 @@
     const container = document.getElementById('posts-container');
     const published = posts.filter(p => p.published !== false);
     container.innerHTML = published.map(post => `
-      <a href="blogs/${post.slug}.html" class="post-link fade-up">
+      <a href="blogs/post.html?slug=${post.slug}" class="post-link fade-up">
         <div class="post-content">
           <div class="post-meta">
             <span class="post-chip">${post.tag}</span>

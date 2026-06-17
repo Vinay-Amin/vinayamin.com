@@ -6,7 +6,8 @@
     "tag": "Product",
     "date": "Mar 2026",
     "readTime": "7 min",
-    "published": true
+    "published": true,
+    "content": "<p>This post is a placeholder. Replace this content field in <code>blogs/posts.json</code> with your actual post body. You can use any HTML here — paragraphs, headings, lists, blockquotes, code blocks.</p><p>The CMS workflow is simple: edit <code>blogs/posts.json</code> to update post metadata and content, then commit and push. Set <code>\"published\": false</code> to hide a post without deleting it.</p>"
   },
   {
     "slug": "building-a-rag-assistant-from-scratch",
@@ -15,7 +16,8 @@
     "tag": "AI / Eng",
     "date": "Feb 2026",
     "readTime": "11 min",
-    "published": true
+    "published": true,
+    "content": "<p>This post is a placeholder. Replace this content field in <code>blogs/posts.json</code> with your actual post body.</p>"
   },
   {
     "slug": "shipping-under-a-hard-deadline",
@@ -24,7 +26,8 @@
     "tag": "Delivery",
     "date": "Jan 2026",
     "readTime": "6 min",
-    "published": true
+    "published": true,
+    "content": "<p>This post is a placeholder. Replace this content field in <code>blogs/posts.json</code> with your actual post body.</p>"
   },
   {
     "slug": "engineer-to-pm-what-actually-changed",
@@ -33,7 +36,8 @@
     "tag": "Career",
     "date": "Dec 2025",
     "readTime": "5 min",
-    "published": true
+    "published": true,
+    "content": "<p>This post is a placeholder. Replace this content field in <code>blogs/posts.json</code> with your actual post body.</p>"
   },
   {
     "slug": "defining-metrics-that-tell-you-something",
@@ -42,7 +46,8 @@
     "tag": "Product",
     "date": "Nov 2025",
     "readTime": "8 min",
-    "published": true
+    "published": true,
+    "content": "<p>This post is a placeholder. Replace this content field in <code>blogs/posts.json</code> with your actual post body.</p>"
   },
   {
     "slug": "automating-the-boring-parts-with-n8n",
@@ -51,6 +56,7 @@
     "tag": "Automation",
     "date": "Oct 2025",
     "readTime": "6 min",
-    "published": true
+    "published": true,
+    "content": "<p>This post is a placeholder. Replace this content field in <code>blogs/posts.json</code> with your actual post body.</p>"
   }
 ]
