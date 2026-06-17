@@ -1,0 +1,56 @@
+[
+  {
+    "slug": "from-static-pdfs-to-interactive-exploration",
+    "title": "From Static PDFs to Interactive Exploration",
+    "blurb": "Why I killed the report and built a platform — and what changes when stakeholders can finally ask their own questions of the data.",
+    "tag": "Product",
+    "date": "Mar 2026",
+    "readTime": "7 min",
+    "published": true
+  },
+  {
+    "slug": "building-a-rag-assistant-from-scratch",
+    "title": "Building a RAG Assistant from Scratch",
+    "blurb": "Source-grounded answers over 100+ messy sources. The retrieval and chunking choices that actually moved answer quality.",
+    "tag": "AI / Eng",
+    "date": "Feb 2026",
+    "readTime": "11 min",
+    "published": true
+  },
+  {
+    "slug": "shipping-under-a-hard-deadline",
+    "title": "Shipping Under a Hard Deadline",
+    "blurb": "85,000 users, an immovable election date, and a platform that did not exist yet. Field notes on scoping under real pressure.",
+    "tag": "Delivery",
+    "date": "Jan 2026",
+    "readTime": "6 min",
+    "published": true
+  },
+  {
+    "slug": "engineer-to-pm-what-actually-changed",
+    "title": "Engineer to PM: What Actually Changed",
+    "blurb": "I still read the code. What is different is the question I start the day from — and who I am accountable to.",
+    "tag": "Career",
+    "date": "Dec 2025",
+    "readTime": "5 min",
+    "published": true
+  },
+  {
+    "slug": "defining-metrics-that-tell-you-something",
+    "title": "Defining Metrics That Tell You Something",
+    "blurb": "Most dashboards measure motion, not progress. A short framework for picking the one number that should move.",
+    "tag": "Product",
+    "date": "Nov 2025",
+    "readTime": "8 min",
+    "published": true
+  },
+  {
+    "slug": "automating-the-boring-parts-with-n8n",
+    "title": "Automating the Boring Parts with n8n",
+    "blurb": "AI video pipelines and posting on autopilot — the unglamorous automations behind a startup content engine.",
+    "tag": "Automation",
+    "date": "Oct 2025",
+    "readTime": "6 min",
+    "published": true
+  }
+]

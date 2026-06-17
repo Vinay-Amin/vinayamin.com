@@ -75,6 +75,23 @@
     color: var(--bg);
   }
 
+  /* ===== ENTRANCE ANIMATIONS ===== */
+  .fade-up {
+    opacity: 0;
+    transform: translateY(22px);
+    transition: opacity 0.7s cubic-bezier(0.22,1,0.36,1), transform 0.7s cubic-bezier(0.22,1,0.36,1);
+  }
+  .fade-up.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* hero stagger delays */
+  .hero-d1 { transition-delay: 0.05s; }
+  .hero-d2 { transition-delay: 0.18s; }
+  .hero-d3 { transition-delay: 0.30s; }
+  .hero-d4 { transition-delay: 0.42s; }
+
   /* ===== NAV ===== */
   nav {
     position: sticky;
@@ -100,7 +117,10 @@
     color: var(--ink);
     text-decoration: none;
     white-space: nowrap;
+    opacity: 1;
+    transition: opacity 0.2s ease;
   }
+  .nav-brand:hover { opacity: 0.5; }
 
   .nav-right {
     display: flex;
@@ -121,8 +141,12 @@
     border-radius: 2px;
     cursor: pointer;
     line-height: 1;
+    transition: border-color 0.2s ease, transform 0.35s ease;
   }
-  .theme-btn:hover { border-color: var(--ink); }
+  .theme-btn:hover {
+    border-color: var(--ink);
+    transform: rotate(18deg);
+  }
 
   .nav-links {
     display: flex;
@@ -139,18 +163,23 @@
     color: var(--ink-3);
     text-decoration: none;
     padding: 6px 0;
+    transition: color 0.2s ease;
   }
   .nav-link:hover { color: var(--ink); }
   .nav-link.active { color: var(--ink); }
-  .nav-link.active::after {
+  .nav-link::after {
     content: '';
     position: absolute;
     left: 0; right: 0; bottom: -2px;
     height: 2px;
     background: var(--ink);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s cubic-bezier(0.22,1,0.36,1);
   }
+  .nav-link.active::after { transform: scaleX(1); }
 
-  .nav-resume {
+  .nav-schedule {
     display: inline-flex;
     align-items: center;
     gap: 8px;
@@ -164,10 +193,12 @@
     padding: 9px 16px;
     border-radius: 2px;
     border: 1px solid var(--solid);
+    transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
   }
-  .nav-resume:hover {
+  .nav-schedule:hover {
     background: var(--bg);
     color: var(--ink);
+    transform: translateY(-1px);
   }
 
   .menu-btn {
@@ -204,7 +235,7 @@
     border-bottom: 1px solid var(--line);
   }
 
-  .mobile-resume {
+  .mobile-schedule {
     display: inline-flex;
     align-items: center;
     justify-content: space-between;
@@ -340,6 +371,7 @@
     align-items: start;
     padding: clamp(28px, 4vw, 46px) 0;
     cursor: pointer;
+    transition: opacity 0.2s ease;
   }
   .project-trigger:hover { opacity: 0.74; }
 
@@ -389,7 +421,10 @@
     color: var(--ink);
     line-height: 1;
     padding-top: 10px;
+    transition: transform 0.35s cubic-bezier(0.22,1,0.36,1);
+    display: inline-block;
   }
+  .project-sign.open { transform: rotate(45deg); }
 
   .project-body {
     max-height: 0;
@@ -515,17 +550,20 @@
     display: grid;
     grid-template-columns: 1fr auto;
     gap: clamp(20px, 4vw, 56px);
-    align-items: baseline;
-    padding: clamp(22px, 2.6vw, 30px) 0;
+    align-items: center;
+    padding: clamp(22px, 2.6vw, 30px) 8px;
     border-top: 1px solid var(--line-2);
     text-decoration: none;
     color: inherit;
+    transition: background 0.2s ease;
   }
   .post-link:hover { background: var(--hover); }
-
-  .post-content {
-    padding-left: 8px;
+  .post-link:hover .post-arrow {
+    transform: translateX(5px);
+    color: var(--ink);
   }
+
+  .post-content { }
 
   .post-meta {
     display: flex;
@@ -575,6 +613,7 @@
     color: var(--ink-4);
     padding-right: 8px;
     align-self: center;
+    transition: transform 0.25s cubic-bezier(0.22,1,0.36,1), color 0.2s ease;
   }
 
   /* ===== ABOUT ===== */
@@ -636,7 +675,9 @@
     padding: 22px 24px;
     text-decoration: none;
     border-radius: 2px;
+    transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
   }
+  .cta-card:hover { transform: translateY(-2px); }
 
   .cta-card.solid {
     background: var(--solid);
@@ -655,20 +696,35 @@
     color: var(--solid-text);
   }
 
+  /* email card gets extra room for the address */
+  .cta-card.email { min-width: 300px; }
+  .cta-card.email .cta-label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
   .cta-eyebrow {
     font-family: 'JetBrains Mono', monospace;
     font-size: 11px;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     opacity: 0.6;
+    flex-shrink: 0;
   }
 
   .cta-label {
     font-size: 17px;
     font-weight: 500;
+    flex: 1;
   }
 
-  .cta-glyph { font-size: 18px; }
+  .cta-glyph {
+    font-size: 18px;
+    flex-shrink: 0;
+    transition: transform 0.25s cubic-bezier(0.22,1,0.36,1);
+  }
+  .cta-card:hover .cta-glyph { transform: translate(2px, -2px); }
 
   /* ===== FOOTER ===== */
   footer {
@@ -699,7 +755,7 @@
         <a href="#work"  class="nav-link active" data-section="work">Work</a>
         <a href="#blog"  class="nav-link"         data-section="blog">Blog</a>
         <a href="#about" class="nav-link"         data-section="about">About</a>
-        <a href="uploads/Vinay%20V%20P%20-%20Resume.pdf" target="_blank" class="nav-resume">Resume ↓</a>
+        <a href="https://calendar.app.google/DPRgryrfHMZqqpbT6" target="_blank" class="nav-schedule">Schedule ↗</a>
       </div>
       <button class="menu-btn" id="menuBtn" aria-label="Open menu">Menu</button>
     </div>
@@ -708,19 +764,19 @@
     <a href="#work"  class="mobile-link" onclick="closeMenu()">Work</a>
     <a href="#blog"  class="mobile-link" onclick="closeMenu()">Blog</a>
     <a href="#about" class="mobile-link" onclick="closeMenu()">About</a>
-    <a href="uploads/Vinay%20V%20P%20-%20Resume.pdf" target="_blank" class="mobile-resume" onclick="closeMenu()">Resume <span>↓</span></a>
+    <a href="https://calendar.app.google/DPRgryrfHMZqqpbT6" target="_blank" class="mobile-schedule" onclick="closeMenu()">Schedule 30 min <span>↗</span></a>
   </div>
 </nav>
 
 <!-- ===== HERO ===== -->
 <header id="top">
-  <div class="hero-meta">
+  <div class="hero-meta fade-up hero-d1">
     <span class="mono-label">Portfolio — 2026</span>
     <span class="mono-label">Bengaluru · IND</span>
   </div>
-  <h1>Vinay V P</h1>
-  <p class="hero-subtitle">Product &amp; Technology Leader</p>
-  <div class="hero-body">
+  <h1 class="fade-up hero-d2">Vinay V P</h1>
+  <p class="hero-subtitle fade-up hero-d3">Product &amp; Technology Leader</p>
+  <div class="hero-body fade-up hero-d4">
     <p class="hero-desc">Engineer-turned-PM with five years in tech. I turn ambiguous problems into shipped outcomes — owning products end to end, from discovery to launch and iteration, and partnering with engineering and design as an equal.</p>
     <div class="hero-tags">
       <div class="hero-tag"><span class="hero-dot"></span><span class="hero-tag-label">End-to-end ownership</span></div>
@@ -732,12 +788,12 @@
 
 <!-- ===== WORK ===== -->
 <section id="work">
-  <div class="section-header">
+  <div class="section-header fade-up">
     <span class="mono-label">Selected Work</span>
     <span class="mono-label" style="color:var(--ink-4)">Context · Problem · Solution · Wins</span>
   </div>
 
-  <div class="project-item">
+  <div class="project-item fade-up">
     <div class="project-trigger" onclick="toggleProject(0)">
       <span class="project-num">01</span>
       <div>
@@ -778,7 +834,7 @@
     </div>
   </div>
 
-  <div class="project-item">
+  <div class="project-item fade-up">
     <div class="project-trigger" onclick="toggleProject(1)">
       <span class="project-num">02</span>
       <div>
@@ -819,7 +875,7 @@
     </div>
   </div>
 
-  <div class="project-item">
+  <div class="project-item fade-up">
     <div class="project-trigger" onclick="toggleProject(2)">
       <span class="project-num">03</span>
       <div>
@@ -860,7 +916,7 @@
     </div>
   </div>
 
-  <div class="project-item">
+  <div class="project-item fade-up">
     <div class="project-trigger" onclick="toggleProject(3)">
       <span class="project-num">04</span>
       <div>
@@ -907,7 +963,7 @@
 <!-- ===== BLOG ===== -->
 <section id="blog">
   <div class="blog-inner">
-    <div class="blog-header">
+    <div class="blog-header fade-up">
       <div>
         <span class="mono-label">The Blog</span>
         <h2>Writing &amp; notes</h2>
@@ -915,85 +971,16 @@
       <p class="blog-desc">Self-hosted thinking on building products, shipping under pressure, and the move from code to roadmap.</p>
     </div>
 
-    <a href="#blog" class="post-link">
-      <div class="post-content">
-        <div class="post-meta">
-          <span class="post-chip">Product</span>
-          <span class="post-date">Mar 2026 · 7 min</span>
-        </div>
-        <h3 class="post-title">From Static PDFs to Interactive Exploration</h3>
-        <p class="post-blurb">Why I killed the report and built a platform — and what changes when stakeholders can finally ask their own questions of the data.</p>
-      </div>
-      <span class="post-arrow">→</span>
-    </a>
-
-    <a href="#blog" class="post-link">
-      <div class="post-content">
-        <div class="post-meta">
-          <span class="post-chip">AI / Eng</span>
-          <span class="post-date">Feb 2026 · 11 min</span>
-        </div>
-        <h3 class="post-title">Building a RAG Assistant from Scratch</h3>
-        <p class="post-blurb">Source-grounded answers over 100+ messy sources. The retrieval and chunking choices that actually moved answer quality.</p>
-      </div>
-      <span class="post-arrow">→</span>
-    </a>
-
-    <a href="#blog" class="post-link">
-      <div class="post-content">
-        <div class="post-meta">
-          <span class="post-chip">Delivery</span>
-          <span class="post-date">Jan 2026 · 6 min</span>
-        </div>
-        <h3 class="post-title">Shipping Under a Hard Deadline</h3>
-        <p class="post-blurb">85,000 users, an immovable election date, and a platform that did not exist yet. Field notes on scoping under real pressure.</p>
-      </div>
-      <span class="post-arrow">→</span>
-    </a>
-
-    <a href="#blog" class="post-link">
-      <div class="post-content">
-        <div class="post-meta">
-          <span class="post-chip">Career</span>
-          <span class="post-date">Dec 2025 · 5 min</span>
-        </div>
-        <h3 class="post-title">Engineer to PM: What Actually Changed</h3>
-        <p class="post-blurb">I still read the code. What is different is the question I start the day from — and who I am accountable to.</p>
-      </div>
-      <span class="post-arrow">→</span>
-    </a>
-
-    <a href="#blog" class="post-link">
-      <div class="post-content">
-        <div class="post-meta">
-          <span class="post-chip">Product</span>
-          <span class="post-date">Nov 2025 · 8 min</span>
-        </div>
-        <h3 class="post-title">Defining Metrics That Tell You Something</h3>
-        <p class="post-blurb">Most dashboards measure motion, not progress. A short framework for picking the one number that should move.</p>
-      </div>
-      <span class="post-arrow">→</span>
-    </a>
-
-    <a href="#blog" class="post-link">
-      <div class="post-content">
-        <div class="post-meta">
-          <span class="post-chip">Automation</span>
-          <span class="post-date">Oct 2025 · 6 min</span>
-        </div>
-        <h3 class="post-title">Automating the Boring Parts with n8n</h3>
-        <p class="post-blurb">AI video pipelines and posting on autopilot — the unglamorous automations behind a startup content engine.</p>
-      </div>
-      <span class="post-arrow">→</span>
-    </a>
-
+    <div id="posts-container">
+      <!-- posts rendered by JS from blogs/posts.json -->
+    </div>
     <div style="border-top:1px solid var(--line-2);"></div>
   </div>
 </section>
 
 <!-- ===== ABOUT + CONTACT ===== -->
 <section id="about">
-  <div class="about-grid">
+  <div class="about-grid fade-up">
     <div>
       <span class="mono-label">About</span>
       <h2 class="about-heading">I came up writing production code. Now I own the product.</h2>
@@ -1004,26 +991,21 @@
     </div>
   </div>
 
-  <div class="cta-row">
+  <div class="cta-row fade-up">
     <a href="https://calendar.app.google/DPRgryrfHMZqqpbT6" target="_blank" class="cta-card solid">
       <span class="cta-eyebrow">Schedule</span>
       <span class="cta-label">Book a 30-min call</span>
       <span class="cta-glyph">↗</span>
     </a>
-    <a href="mailto:contact@vinayamin.com" class="cta-card outline">
-      <span class="cta-eyebrow" style="opacity:0.55">Email</span>
+    <a href="mailto:contact@vinayamin.com" class="cta-card outline email">
+      <span class="cta-eyebrow">Email</span>
       <span class="cta-label">contact@vinayamin.com</span>
       <span class="cta-glyph">↗</span>
     </a>
-    <a href="https://www.linkedin.com/in/vinayvp/" target="_blank" class="cta-card outline" style="min-width:200px">
-      <span class="cta-eyebrow" style="opacity:0.55">Connect</span>
+    <a href="https://www.linkedin.com/in/vinayvp/" target="_blank" class="cta-card outline" style="min-width:180px">
+      <span class="cta-eyebrow">Connect</span>
       <span class="cta-label">LinkedIn</span>
       <span class="cta-glyph">↗</span>
-    </a>
-    <a href="uploads/Vinay%20V%20P%20-%20Resume.pdf" target="_blank" class="cta-card outline" style="min-width:200px">
-      <span class="cta-eyebrow" style="opacity:0.55">Download</span>
-      <span class="cta-label">Resume (PDF)</span>
-      <span class="cta-glyph">↓</span>
     </a>
   </div>
 </section>
@@ -1056,7 +1038,7 @@
   });
 
   // ── Mobile menu ────────────────────────────────────────────────────────────
-  const menuBtn   = document.getElementById('menuBtn');
+  const menuBtn    = document.getElementById('menuBtn');
   const mobileMenu = document.getElementById('mobileMenu');
 
   menuBtn.addEventListener('click', () => {
@@ -1077,28 +1059,84 @@
     const sign = document.getElementById('sign-' + i);
     if (openProject === i) {
       body.classList.remove('open');
+      sign.classList.remove('open');
       sign.textContent = '+';
       openProject = -1;
     } else {
       if (openProject !== -1) {
         document.getElementById('body-' + openProject).classList.remove('open');
-        document.getElementById('sign-' + openProject).textContent = '+';
+        const prev = document.getElementById('sign-' + openProject);
+        prev.classList.remove('open');
+        prev.textContent = '+';
       }
       body.classList.add('open');
-      sign.textContent = '–';
+      sign.classList.add('open');
+      sign.textContent = '+';
       openProject = i;
     }
   }
 
+  // ── Blog posts from JSON ───────────────────────────────────────────────────
+  function renderPosts(posts) {
+    const container = document.getElementById('posts-container');
+    const published = posts.filter(p => p.published !== false);
+    container.innerHTML = published.map(post => `
+      <a href="blogs/${post.slug}.html" class="post-link fade-up">
+        <div class="post-content">
+          <div class="post-meta">
+            <span class="post-chip">${post.tag}</span>
+            <span class="post-date">${post.date} · ${post.readTime}</span>
+          </div>
+          <h3 class="post-title">${post.title}</h3>
+          <p class="post-blurb">${post.blurb}</p>
+        </div>
+        <span class="post-arrow">→</span>
+      </a>
+    `).join('');
+    // trigger scroll observer for newly added elements
+    container.querySelectorAll('.fade-up').forEach(el => scrollObs.observe(el));
+  }
+
+  fetch('blogs/posts.json')
+    .then(r => r.json())
+    .then(renderPosts)
+    .catch(() => {
+      // fallback if running locally without a server
+      renderPosts([
+        { slug:'#', title:'From Static PDFs to Interactive Exploration', blurb:'Why I killed the report and built a platform — and what changes when stakeholders can finally ask their own questions of the data.', tag:'Product', date:'Mar 2026', readTime:'7 min' },
+        { slug:'#', title:'Building a RAG Assistant from Scratch', blurb:'Source-grounded answers over 100+ messy sources. The retrieval and chunking choices that actually moved answer quality.', tag:'AI / Eng', date:'Feb 2026', readTime:'11 min' },
+        { slug:'#', title:'Shipping Under a Hard Deadline', blurb:'85,000 users, an immovable election date, and a platform that did not exist yet. Field notes on scoping under real pressure.', tag:'Delivery', date:'Jan 2026', readTime:'6 min' },
+        { slug:'#', title:'Engineer to PM: What Actually Changed', blurb:'I still read the code. What is different is the question I start the day from — and who I am accountable to.', tag:'Career', date:'Dec 2025', readTime:'5 min' },
+        { slug:'#', title:'Defining Metrics That Tell You Something', blurb:'Most dashboards measure motion, not progress. A short framework for picking the one number that should move.', tag:'Product', date:'Nov 2025', readTime:'8 min' },
+        { slug:'#', title:'Automating the Boring Parts with n8n', blurb:'AI video pipelines and posting on autopilot — the unglamorous automations behind a startup content engine.', tag:'Automation', date:'Oct 2025', readTime:'6 min' },
+      ]);
+    });
+
+  // ── Scroll-triggered fade-up ───────────────────────────────────────────────
+  const scrollObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        scrollObs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.08 });
+
+  document.querySelectorAll('.fade-up').forEach(el => scrollObs.observe(el));
+
+  // hero fires immediately since it's above the fold
+  requestAnimationFrame(() => {
+    document.querySelectorAll('header .fade-up').forEach(el => el.classList.add('visible'));
+  });
+
   // ── Active nav via IntersectionObserver ───────────────────────────────────
   const navLinks = document.querySelectorAll('.nav-link[data-section]');
 
-  const obs = new IntersectionObserver((entries) => {
+  const sectionObs = new IntersectionObserver((entries) => {
     entries.forEach(e => {
       if (e.isIntersecting) {
-        const id = e.target.id;
         navLinks.forEach(link => {
-          link.classList.toggle('active', link.dataset.section === id);
+          link.classList.toggle('active', link.dataset.section === e.target.id);
         });
       }
     });
@@ -1106,7 +1144,7 @@
 
   ['work', 'blog', 'about'].forEach(id => {
     const el = document.getElementById(id);
-    if (el) obs.observe(el);
+    if (el) sectionObs.observe(el);
   });
 </script>
 </body>
