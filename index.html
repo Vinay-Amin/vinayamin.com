@@ -1,0 +1,1113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vinay V P — Product &amp; Technology Leader</title>
+<meta name="description" content="Engineer-turned-PM with five years in tech. I turn ambiguous problems into shipped outcomes.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;600;700&family=Newsreader:ital,opsz,wght@0,16..72,300;0,16..72,400;0,16..72,500;1,16..72,300;1,16..72,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 88px;
+  }
+
+  :root {
+    --bg: #FAFAF8;
+    --bg-2: #F3F3EF;
+    --ink: #15151A;
+    --ink-2: #46463F;
+    --ink-3: #6B6B66;
+    --ink-4: #9A9A93;
+    --faint: #B5B5AD;
+    --line: #E7E7E1;
+    --line-2: #E0E0D9;
+    --hover: #EBEBE5;
+    --chip-border: #C9C9C0;
+    --solid: #15151A;
+    --solid-text: #FAFAF8;
+    --solid-hover: #2A2A30;
+    --nav-bg: rgba(250,250,248,0.82);
+    --panel-bg: #F3F3EF;
+    --transition: background-color .35s ease, color .35s ease, border-color .35s ease;
+  }
+
+  [data-theme="dark"] {
+    --bg: #121210;
+    --bg-2: #1A1A17;
+    --ink: #F2F2EC;
+    --ink-2: #BDBDB4;
+    --ink-3: #9E9E95;
+    --ink-4: #76766D;
+    --faint: #5A5A52;
+    --line: #2A2A26;
+    --line-2: #27271F;
+    --hover: #222220;
+    --chip-border: #3A3A34;
+    --solid: #F2F2EC;
+    --solid-text: #121210;
+    --solid-hover: #D8D8CE;
+    --nav-bg: rgba(18,18,16,0.82);
+    --panel-bg: #1A1A17;
+  }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Archivo', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    transition: var(--transition);
+  }
+
+  a, span, div, p, h1, h2, h3, button {
+    transition: var(--transition);
+  }
+
+  ::selection {
+    background: var(--ink);
+    color: var(--bg);
+  }
+
+  /* ===== NAV ===== */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: var(--nav-bg);
+    backdrop-filter: saturate(180%) blur(14px);
+    -webkit-backdrop-filter: saturate(180%) blur(14px);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .nav-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px clamp(20px, 5vw, 80px);
+  }
+
+  .nav-brand {
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .theme-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    font-size: 15px;
+    color: var(--ink);
+    background: transparent;
+    border: 1px solid var(--line);
+    border-radius: 2px;
+    cursor: pointer;
+    line-height: 1;
+  }
+  .theme-btn:hover { border-color: var(--ink); }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: clamp(18px, 3vw, 38px);
+  }
+
+  .nav-link {
+    position: relative;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    text-decoration: none;
+    padding: 6px 0;
+  }
+  .nav-link:hover { color: var(--ink); }
+  .nav-link.active { color: var(--ink); }
+  .nav-link.active::after {
+    content: '';
+    position: absolute;
+    left: 0; right: 0; bottom: -2px;
+    height: 2px;
+    background: var(--ink);
+  }
+
+  .nav-resume {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--solid-text);
+    background: var(--solid);
+    text-decoration: none;
+    padding: 9px 16px;
+    border-radius: 2px;
+    border: 1px solid var(--solid);
+  }
+  .nav-resume:hover {
+    background: var(--bg);
+    color: var(--ink);
+  }
+
+  .menu-btn {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink);
+    background: transparent;
+    border: 1px solid var(--ink);
+    border-radius: 2px;
+    padding: 8px 14px;
+    cursor: pointer;
+    display: none;
+  }
+
+  .mobile-menu {
+    display: none;
+    border-top: 1px solid var(--line);
+    padding: 8px clamp(20px, 5vw, 80px) 20px;
+    flex-direction: column;
+    background: var(--panel-bg);
+  }
+  .mobile-menu.open { display: flex; }
+
+  .mobile-link {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink);
+    text-decoration: none;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .mobile-resume {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--solid-text);
+    background: var(--solid);
+    text-decoration: none;
+    padding: 16px 18px;
+    border-radius: 2px;
+    margin-top: 16px;
+  }
+
+  @media (max-width: 760px) {
+    .nav-links { display: none; }
+    .menu-btn { display: block; }
+  }
+
+  /* ===== HERO ===== */
+  header {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: clamp(64px, 11vw, 150px) clamp(20px, 5vw, 80px) clamp(56px, 8vw, 110px);
+  }
+
+  .hero-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 22px;
+    margin-bottom: clamp(40px, 7vw, 84px);
+  }
+
+  .mono-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-4);
+  }
+
+  h1 {
+    margin: 0;
+    font-weight: 500;
+    font-size: clamp(58px, 12.5vw, 182px);
+    line-height: 0.9;
+    letter-spacing: -0.045em;
+    color: var(--ink);
+  }
+
+  .hero-subtitle {
+    margin: clamp(14px, 2vw, 26px) 0 0;
+    font-family: 'Newsreader', serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: clamp(26px, 4.4vw, 60px);
+    line-height: 1.0;
+    letter-spacing: -0.01em;
+    color: var(--ink-2);
+  }
+
+  .hero-body {
+    display: flex;
+    flex-wrap: wrap;
+    gap: clamp(40px, 6vw, 96px);
+    margin-top: clamp(40px, 6vw, 80px);
+    align-items: flex-start;
+  }
+
+  .hero-desc {
+    margin: 0;
+    max-width: 560px;
+    font-size: clamp(18px, 1.5vw, 21px);
+    line-height: 1.55;
+    color: var(--ink-2);
+  }
+
+  .hero-tags {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding-top: 4px;
+  }
+
+  .hero-tag {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .hero-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--ink);
+    flex-shrink: 0;
+  }
+
+  .hero-tag-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-2);
+  }
+
+  /* ===== WORK ===== */
+  #work {
+    scroll-margin-top: 90px;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: clamp(40px, 6vw, 72px) clamp(20px, 5vw, 80px) clamp(56px, 8vw, 100px);
+  }
+
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: clamp(24px, 4vw, 48px);
+  }
+
+  .project-item {
+    border-top: 1px solid var(--line);
+  }
+
+  .project-trigger {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: clamp(20px, 4vw, 52px);
+    align-items: start;
+    padding: clamp(28px, 4vw, 46px) 0;
+    cursor: pointer;
+  }
+  .project-trigger:hover { opacity: 0.74; }
+
+  .project-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--faint);
+    padding-top: 14px;
+  }
+
+  .project-title-row {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 14px;
+  }
+
+  .project-name {
+    margin: 0;
+    font-size: clamp(32px, 5vw, 64px);
+    font-weight: 500;
+    letter-spacing: -0.03em;
+    line-height: 0.95;
+    color: var(--ink);
+  }
+
+  .project-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-4);
+  }
+
+  .project-oneliner {
+    margin: 16px 0 0;
+    font-family: 'Newsreader', serif;
+    font-size: clamp(18px, 1.7vw, 23px);
+    line-height: 1.4;
+    color: var(--ink-2);
+    max-width: 680px;
+  }
+
+  .project-sign {
+    font-size: 28px;
+    font-weight: 300;
+    color: var(--ink);
+    line-height: 1;
+    padding-top: 10px;
+  }
+
+  .project-body {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: max-height 0.6s cubic-bezier(0.4,0,0.2,1), opacity 0.45s ease;
+  }
+  .project-body.open {
+    max-height: 1600px;
+    opacity: 1;
+  }
+
+  .project-body-inner {
+    padding: 0 0 clamp(40px, 5vw, 64px);
+  }
+
+  .project-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: clamp(28px, 3vw, 44px);
+    max-width: 980px;
+    margin-left: clamp(0px, 4vw, 52px);
+  }
+
+  .project-col-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--faint);
+    margin-bottom: 12px;
+  }
+
+  .project-col-text {
+    margin: 0;
+    font-family: 'Newsreader', serif;
+    font-size: 17px;
+    line-height: 1.55;
+    color: var(--ink-2);
+  }
+
+  .wins-section {
+    margin: clamp(32px, 4vw, 52px) 0 0;
+    margin-left: clamp(0px, 4vw, 52px);
+    max-width: 980px;
+    border-top: 1px solid var(--line);
+    padding-top: 28px;
+  }
+
+  .wins-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink);
+    margin-bottom: 22px;
+  }
+
+  .wins-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: clamp(20px, 2.5vw, 36px);
+  }
+
+  .win-metric {
+    font-size: clamp(30px, 3.2vw, 42px);
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    color: var(--ink);
+  }
+
+  .win-label {
+    margin-top: 9px;
+    font-size: 14px;
+    line-height: 1.4;
+    color: var(--ink-3);
+    max-width: 200px;
+  }
+
+  /* ===== BLOG ===== */
+  #blog {
+    scroll-margin-top: 90px;
+    background: var(--bg-2);
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .blog-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: clamp(56px, 8vw, 104px) clamp(20px, 5vw, 80px);
+  }
+
+  .blog-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-bottom: clamp(36px, 5vw, 64px);
+  }
+
+  h2 {
+    margin: 14px 0 0;
+    font-size: clamp(34px, 5vw, 68px);
+    font-weight: 500;
+    letter-spacing: -0.035em;
+    line-height: 0.95;
+    color: var(--ink);
+  }
+
+  .blog-desc {
+    margin: 0;
+    max-width: 340px;
+    font-family: 'Newsreader', serif;
+    font-size: 18px;
+    line-height: 1.5;
+    color: var(--ink-2);
+  }
+
+  .post-link {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: clamp(20px, 4vw, 56px);
+    align-items: baseline;
+    padding: clamp(22px, 2.6vw, 30px) 0;
+    border-top: 1px solid var(--line-2);
+    text-decoration: none;
+    color: inherit;
+  }
+  .post-link:hover { background: var(--hover); }
+
+  .post-content {
+    padding-left: 8px;
+  }
+
+  .post-meta {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 10px;
+  }
+
+  .post-chip {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink);
+    border: 1px solid var(--chip-border);
+    border-radius: 999px;
+    padding: 3px 10px;
+  }
+
+  .post-date {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    color: var(--ink-4);
+  }
+
+  .post-title {
+    margin: 0;
+    font-size: clamp(22px, 2.6vw, 34px);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    line-height: 1.08;
+    color: var(--ink);
+  }
+
+  .post-blurb {
+    margin: 9px 0 0;
+    font-family: 'Newsreader', serif;
+    font-size: 17px;
+    line-height: 1.5;
+    color: var(--ink-2);
+    max-width: 640px;
+  }
+
+  .post-arrow {
+    font-size: 22px;
+    color: var(--ink-4);
+    padding-right: 8px;
+    align-self: center;
+  }
+
+  /* ===== ABOUT ===== */
+  #about {
+    scroll-margin-top: 90px;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: clamp(64px, 9vw, 128px) clamp(20px, 5vw, 80px) clamp(48px, 6vw, 80px);
+  }
+
+  .about-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: clamp(40px, 6vw, 96px);
+    align-items: start;
+  }
+
+  .about-heading {
+    margin: 16px 0 0;
+    font-size: clamp(30px, 3.4vw, 46px);
+    font-weight: 500;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+    max-width: 520px;
+    color: var(--ink);
+  }
+
+  .about-body {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    max-width: 560px;
+  }
+
+  .about-p {
+    margin: 0;
+    font-family: 'Newsreader', serif;
+    font-size: clamp(18px, 1.5vw, 21px);
+    line-height: 1.6;
+    color: var(--ink-2);
+  }
+
+  .cta-row {
+    margin-top: clamp(48px, 6vw, 88px);
+    border-top: 1px solid var(--line);
+    padding-top: clamp(32px, 4vw, 48px);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+  }
+
+  .cta-card {
+    flex: 1;
+    min-width: 220px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 22px 24px;
+    text-decoration: none;
+    border-radius: 2px;
+  }
+
+  .cta-card.solid {
+    background: var(--solid);
+    color: var(--solid-text);
+    border: 1px solid var(--solid);
+  }
+  .cta-card.solid:hover { background: var(--solid-hover); }
+
+  .cta-card.outline {
+    background: transparent;
+    color: var(--ink);
+    border: 1px solid var(--ink);
+  }
+  .cta-card.outline:hover {
+    background: var(--solid);
+    color: var(--solid-text);
+  }
+
+  .cta-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    opacity: 0.6;
+  }
+
+  .cta-label {
+    font-size: 17px;
+    font-weight: 500;
+  }
+
+  .cta-glyph { font-size: 18px; }
+
+  /* ===== FOOTER ===== */
+  footer {
+    border-top: 1px solid var(--line);
+  }
+
+  .footer-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 32px clamp(20px, 5vw, 80px);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    align-items: center;
+    justify-content: space-between;
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== NAV ===== -->
+<nav>
+  <div class="nav-inner">
+    <a href="#top" class="nav-brand">Vinay V P</a>
+    <div class="nav-right">
+      <button class="theme-btn" id="themeBtn" aria-label="Toggle theme">☾</button>
+      <div class="nav-links" id="navLinks">
+        <a href="#work"  class="nav-link active" data-section="work">Work</a>
+        <a href="#blog"  class="nav-link"         data-section="blog">Blog</a>
+        <a href="#about" class="nav-link"         data-section="about">About</a>
+        <a href="uploads/Vinay%20V%20P%20-%20Resume.pdf" target="_blank" class="nav-resume">Resume ↓</a>
+      </div>
+      <button class="menu-btn" id="menuBtn" aria-label="Open menu">Menu</button>
+    </div>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#work"  class="mobile-link" onclick="closeMenu()">Work</a>
+    <a href="#blog"  class="mobile-link" onclick="closeMenu()">Blog</a>
+    <a href="#about" class="mobile-link" onclick="closeMenu()">About</a>
+    <a href="uploads/Vinay%20V%20P%20-%20Resume.pdf" target="_blank" class="mobile-resume" onclick="closeMenu()">Resume <span>↓</span></a>
+  </div>
+</nav>
+
+<!-- ===== HERO ===== -->
+<header id="top">
+  <div class="hero-meta">
+    <span class="mono-label">Portfolio — 2026</span>
+    <span class="mono-label">Bengaluru · IND</span>
+  </div>
+  <h1>Vinay V P</h1>
+  <p class="hero-subtitle">Product &amp; Technology Leader</p>
+  <div class="hero-body">
+    <p class="hero-desc">Engineer-turned-PM with five years in tech. I turn ambiguous problems into shipped outcomes — owning products end to end, from discovery to launch and iteration, and partnering with engineering and design as an equal.</p>
+    <div class="hero-tags">
+      <div class="hero-tag"><span class="hero-dot"></span><span class="hero-tag-label">End-to-end ownership</span></div>
+      <div class="hero-tag"><span class="hero-dot"></span><span class="hero-tag-label">Data-driven decisions</span></div>
+      <div class="hero-tag"><span class="hero-dot"></span><span class="hero-tag-label">RAG / AI products</span></div>
+    </div>
+  </div>
+</header>
+
+<!-- ===== WORK ===== -->
+<section id="work">
+  <div class="section-header">
+    <span class="mono-label">Selected Work</span>
+    <span class="mono-label" style="color:var(--ink-4)">Context · Problem · Solution · Wins</span>
+  </div>
+
+  <div class="project-item">
+    <div class="project-trigger" onclick="toggleProject(0)">
+      <span class="project-num">01</span>
+      <div>
+        <div class="project-title-row">
+          <h3 class="project-name">PRISM</h3>
+          <span class="project-tag">Varahe Analytics · 2023–Present</span>
+        </div>
+        <p class="project-oneliner">An insights platform that replaced static PDF reports with interactive, role-based data exploration.</p>
+      </div>
+      <span class="project-sign" id="sign-0">+</span>
+    </div>
+    <div class="project-body" id="body-0">
+      <div class="project-body-inner">
+        <div class="project-grid">
+          <div>
+            <div class="project-col-label">Context</div>
+            <p class="project-col-text">At Varahe Analytics, leadership and field teams ran on static PDF reports — slow to produce, impossible to interrogate, and stale the moment they shipped.</p>
+          </div>
+          <div>
+            <div class="project-col-label">Problem</div>
+            <p class="project-col-text">Decision-makers could not slice the data themselves. Every new question meant another report request and another wait, so insight stayed bottlenecked behind a document.</p>
+          </div>
+          <div>
+            <div class="project-col-label">Solution</div>
+            <p class="project-col-text">I led PRISM end to end — interactive, role-based data exploration — aligning engineering, data, and field teams around a single roadmap and shipping Phase 1 in six months. I now lead Prism AI, a natural-language layer built on a RAG stack.</p>
+          </div>
+        </div>
+        <div class="wins-section">
+          <div class="wins-label">Wins</div>
+          <div class="wins-grid">
+            <div><div class="win-metric">6 mo</div><div class="win-label">Phase 1 shipped, end to end</div></div>
+            <div><div class="win-metric">Zero</div><div class="win-label">Static PDF reports remaining</div></div>
+            <div><div class="win-metric">3 teams</div><div class="win-label">Eng, data &amp; field aligned</div></div>
+            <div><div class="win-metric">RAG</div><div class="win-label">Prism AI now in flight</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="project-item">
+    <div class="project-trigger" onclick="toggleProject(1)">
+      <span class="project-num">02</span>
+      <div>
+        <div class="project-title-row">
+          <h3 class="project-name">MLC Elections Platform</h3>
+          <span class="project-tag">Karnataka · 2024</span>
+        </div>
+        <p class="project-oneliner">A constituency-scale data platform built from scratch under a hard, immovable deadline.</p>
+      </div>
+      <span class="project-sign" id="sign-1">+</span>
+    </div>
+    <div class="project-body" id="body-1">
+      <div class="project-body-inner">
+        <div class="project-grid">
+          <div>
+            <div class="project-col-label">Context</div>
+            <p class="project-col-text">For the South-West Graduates Constituency MLC election, a first-time candidate needed a data and outreach platform serving 85,000+ voters — and none existed.</p>
+          </div>
+          <div>
+            <div class="project-col-label">Problem</div>
+            <p class="project-col-text">Fast-moving, messy data had to become real-time insight, and a calling team had to be trained and measured, all before a fixed election date that would not move.</p>
+          </div>
+          <div>
+            <div class="project-col-label">Solution</div>
+            <p class="project-col-text">As Technical Head, I owned end-to-end delivery across engineering, field ops, and leadership. I built a custom LMS for the calling team and an automated pipeline that linked training to caller output and quality, so impact showed up directly in the data.</p>
+          </div>
+        </div>
+        <div class="wins-section">
+          <div class="wins-label">Wins</div>
+          <div class="wins-grid">
+            <div><div class="win-metric">85k+</div><div class="win-label">Voters served by the platform</div></div>
+            <div><div class="win-metric">From 0</div><div class="win-label">Built under a hard deadline</div></div>
+            <div><div class="win-metric">Real-time</div><div class="win-label">Insights driving decisions</div></div>
+            <div><div class="win-metric">Win</div><div class="win-label">Helped a first-time candidate win</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="project-item">
+    <div class="project-trigger" onclick="toggleProject(2)">
+      <span class="project-num">03</span>
+      <div>
+        <div class="project-title-row">
+          <h3 class="project-name">Nitya AI</h3>
+          <span class="project-tag">RAG · Flutter · Firebase</span>
+        </div>
+        <p class="project-oneliner">A context-aware RAG assistant with source-grounded answers, built end to end.</p>
+      </div>
+      <span class="project-sign" id="sign-2">+</span>
+    </div>
+    <div class="project-body" id="body-2">
+      <div class="project-body-inner">
+        <div class="project-grid">
+          <div>
+            <div class="project-col-label">Context</div>
+            <p class="project-col-text">A founder build: an AI assistant that needed to answer reliably across a sprawling, heterogeneous body of source material.</p>
+          </div>
+          <div>
+            <div class="project-col-label">Problem</div>
+            <p class="project-col-text">Generic LLM answers were not trustworthy — responses had to be grounded in real sources and stay accurate as the underlying material kept growing.</p>
+          </div>
+          <div>
+            <div class="project-col-label">Solution</div>
+            <p class="project-col-text">I built a context-aware RAG assistant that returns source-grounded answers, backed by a data pipeline ingesting inputs from 100+ sources, shipped on a Flutter + Firebase stack.</p>
+          </div>
+        </div>
+        <div class="wins-section">
+          <div class="wins-label">Wins</div>
+          <div class="wins-grid">
+            <div><div class="win-metric">100+</div><div class="win-label">Sources in the data pipeline</div></div>
+            <div><div class="win-metric">Grounded</div><div class="win-label">Every answer cites its source</div></div>
+            <div><div class="win-metric">E2E</div><div class="win-label">Designed and built solo</div></div>
+            <div><div class="win-metric">RAG</div><div class="win-label">Retrieval-augmented from scratch</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="project-item">
+    <div class="project-trigger" onclick="toggleProject(3)">
+      <span class="project-num">04</span>
+      <div>
+        <div class="project-title-row">
+          <h3 class="project-name">HerRhythm</h3>
+          <span class="project-tag">Founder Build · Full-stack</span>
+        </div>
+        <p class="project-oneliner">A coach dashboard platform built hands-on with the founder, so she could scale past manual ops.</p>
+      </div>
+      <span class="project-sign" id="sign-3">+</span>
+    </div>
+    <div class="project-body" id="body-3">
+      <div class="project-body-inner">
+        <div class="project-grid">
+          <div>
+            <div class="project-col-label">Context</div>
+            <p class="project-col-text">A solo coach was running her whole practice by hand — scheduling, client tracking, and programming lived across spreadsheets and DMs, which quietly capped how many clients she could take on.</p>
+          </div>
+          <div>
+            <div class="project-col-label">Problem</div>
+            <p class="project-col-text">Growth was bottlenecked by operations, not demand. Without one place to manage clients and delivery, every new client added overhead instead of leverage.</p>
+          </div>
+          <div>
+            <div class="project-col-label">Solution</div>
+            <p class="project-col-text">I built the coach dashboard end to end, working directly alongside the founder — a full-stack platform to manage clients, schedules, and programming in one place, shipped fast and iterated against her real workflow.</p>
+          </div>
+        </div>
+        <div class="wins-section">
+          <div class="wins-label">Wins</div>
+          <div class="wins-grid">
+            <div><div class="win-metric">Scale</div><div class="win-label">Grew faster than planned</div></div>
+            <div><div class="win-metric">1:1</div><div class="win-label">Built hands-on with the founder</div></div>
+            <div><div class="win-metric">Full-stack</div><div class="win-label">Designed &amp; shipped end to end</div></div>
+            <div><div class="win-metric">Live</div><div class="win-label">Replaced manual spreadsheet ops</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="border-top:1px solid var(--line);"></div>
+</section>
+
+<!-- ===== BLOG ===== -->
+<section id="blog">
+  <div class="blog-inner">
+    <div class="blog-header">
+      <div>
+        <span class="mono-label">The Blog</span>
+        <h2>Writing &amp; notes</h2>
+      </div>
+      <p class="blog-desc">Self-hosted thinking on building products, shipping under pressure, and the move from code to roadmap.</p>
+    </div>
+
+    <a href="#blog" class="post-link">
+      <div class="post-content">
+        <div class="post-meta">
+          <span class="post-chip">Product</span>
+          <span class="post-date">Mar 2026 · 7 min</span>
+        </div>
+        <h3 class="post-title">From Static PDFs to Interactive Exploration</h3>
+        <p class="post-blurb">Why I killed the report and built a platform — and what changes when stakeholders can finally ask their own questions of the data.</p>
+      </div>
+      <span class="post-arrow">→</span>
+    </a>
+
+    <a href="#blog" class="post-link">
+      <div class="post-content">
+        <div class="post-meta">
+          <span class="post-chip">AI / Eng</span>
+          <span class="post-date">Feb 2026 · 11 min</span>
+        </div>
+        <h3 class="post-title">Building a RAG Assistant from Scratch</h3>
+        <p class="post-blurb">Source-grounded answers over 100+ messy sources. The retrieval and chunking choices that actually moved answer quality.</p>
+      </div>
+      <span class="post-arrow">→</span>
+    </a>
+
+    <a href="#blog" class="post-link">
+      <div class="post-content">
+        <div class="post-meta">
+          <span class="post-chip">Delivery</span>
+          <span class="post-date">Jan 2026 · 6 min</span>
+        </div>
+        <h3 class="post-title">Shipping Under a Hard Deadline</h3>
+        <p class="post-blurb">85,000 users, an immovable election date, and a platform that did not exist yet. Field notes on scoping under real pressure.</p>
+      </div>
+      <span class="post-arrow">→</span>
+    </a>
+
+    <a href="#blog" class="post-link">
+      <div class="post-content">
+        <div class="post-meta">
+          <span class="post-chip">Career</span>
+          <span class="post-date">Dec 2025 · 5 min</span>
+        </div>
+        <h3 class="post-title">Engineer to PM: What Actually Changed</h3>
+        <p class="post-blurb">I still read the code. What is different is the question I start the day from — and who I am accountable to.</p>
+      </div>
+      <span class="post-arrow">→</span>
+    </a>
+
+    <a href="#blog" class="post-link">
+      <div class="post-content">
+        <div class="post-meta">
+          <span class="post-chip">Product</span>
+          <span class="post-date">Nov 2025 · 8 min</span>
+        </div>
+        <h3 class="post-title">Defining Metrics That Tell You Something</h3>
+        <p class="post-blurb">Most dashboards measure motion, not progress. A short framework for picking the one number that should move.</p>
+      </div>
+      <span class="post-arrow">→</span>
+    </a>
+
+    <a href="#blog" class="post-link">
+      <div class="post-content">
+        <div class="post-meta">
+          <span class="post-chip">Automation</span>
+          <span class="post-date">Oct 2025 · 6 min</span>
+        </div>
+        <h3 class="post-title">Automating the Boring Parts with n8n</h3>
+        <p class="post-blurb">AI video pipelines and posting on autopilot — the unglamorous automations behind a startup content engine.</p>
+      </div>
+      <span class="post-arrow">→</span>
+    </a>
+
+    <div style="border-top:1px solid var(--line-2);"></div>
+  </div>
+</section>
+
+<!-- ===== ABOUT + CONTACT ===== -->
+<section id="about">
+  <div class="about-grid">
+    <div>
+      <span class="mono-label">About</span>
+      <h2 class="about-heading">I came up writing production code. Now I own the product.</h2>
+    </div>
+    <div class="about-body">
+      <p class="about-p">I started as a software engineer, hardening production systems and integrating APIs, then led backend delivery as a Team Lead — setting the coding standards, QA, and CI/CD that a product runs on.</p>
+      <p class="about-p">That foundation is why I move fast as a PM. I own my product area independently, define the metrics that tell me whether it worked, and partner with engineering as an equal. Alongside that I take on founder-level builds — from a coach dashboard to a RAG assistant — and advise startups on product, GTM, and automation.</p>
+    </div>
+  </div>
+
+  <div class="cta-row">
+    <a href="https://calendar.app.google/DPRgryrfHMZqqpbT6" target="_blank" class="cta-card solid">
+      <span class="cta-eyebrow">Schedule</span>
+      <span class="cta-label">Book a 30-min call</span>
+      <span class="cta-glyph">↗</span>
+    </a>
+    <a href="mailto:contact@vinayamin.com" class="cta-card outline">
+      <span class="cta-eyebrow" style="opacity:0.55">Email</span>
+      <span class="cta-label">contact@vinayamin.com</span>
+      <span class="cta-glyph">↗</span>
+    </a>
+    <a href="https://www.linkedin.com/in/vinayvp/" target="_blank" class="cta-card outline" style="min-width:200px">
+      <span class="cta-eyebrow" style="opacity:0.55">Connect</span>
+      <span class="cta-label">LinkedIn</span>
+      <span class="cta-glyph">↗</span>
+    </a>
+    <a href="uploads/Vinay%20V%20P%20-%20Resume.pdf" target="_blank" class="cta-card outline" style="min-width:200px">
+      <span class="cta-eyebrow" style="opacity:0.55">Download</span>
+      <span class="cta-label">Resume (PDF)</span>
+      <span class="cta-glyph">↓</span>
+    </a>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="footer-inner">
+    <span class="mono-label">© 2026 Vinay V P · Bengaluru</span>
+    <span class="mono-label">Designed in the open</span>
+  </div>
+</footer>
+
+<script>
+  // ── Theme ──────────────────────────────────────────────────────────────────
+  const themeBtn = document.getElementById('themeBtn');
+  let theme = localStorage.getItem('va-theme') || 'light';
+
+  function applyTheme(t) {
+    document.documentElement.setAttribute('data-theme', t);
+    themeBtn.textContent = t === 'dark' ? '☀' : '☾';
+    theme = t;
+  }
+
+  applyTheme(theme);
+
+  themeBtn.addEventListener('click', () => {
+    const next = theme === 'dark' ? 'light' : 'dark';
+    localStorage.setItem('va-theme', next);
+    applyTheme(next);
+  });
+
+  // ── Mobile menu ────────────────────────────────────────────────────────────
+  const menuBtn   = document.getElementById('menuBtn');
+  const mobileMenu = document.getElementById('mobileMenu');
+
+  menuBtn.addEventListener('click', () => {
+    const open = mobileMenu.classList.toggle('open');
+    menuBtn.textContent = open ? 'Close' : 'Menu';
+  });
+
+  function closeMenu() {
+    mobileMenu.classList.remove('open');
+    menuBtn.textContent = 'Menu';
+  }
+
+  // ── Project accordion ──────────────────────────────────────────────────────
+  let openProject = -1;
+
+  function toggleProject(i) {
+    const body = document.getElementById('body-' + i);
+    const sign = document.getElementById('sign-' + i);
+    if (openProject === i) {
+      body.classList.remove('open');
+      sign.textContent = '+';
+      openProject = -1;
+    } else {
+      if (openProject !== -1) {
+        document.getElementById('body-' + openProject).classList.remove('open');
+        document.getElementById('sign-' + openProject).textContent = '+';
+      }
+      body.classList.add('open');
+      sign.textContent = '–';
+      openProject = i;
+    }
+  }
+
+  // ── Active nav via IntersectionObserver ───────────────────────────────────
+  const navLinks = document.querySelectorAll('.nav-link[data-section]');
+
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const id = e.target.id;
+        navLinks.forEach(link => {
+          link.classList.toggle('active', link.dataset.section === id);
+        });
+      }
+    });
+  }, { rootMargin: '-45% 0px -50% 0px' });
+
+  ['work', 'blog', 'about'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) obs.observe(el);
+  });
+</script>
+</body>
+</html>
