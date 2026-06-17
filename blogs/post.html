@@ -72,9 +72,15 @@
     width: 34px; height: 34px; font-size: 15px;
     color: var(--ink); background: transparent;
     border: 1px solid var(--line); border-radius: 2px; cursor: pointer;
-    transition: border-color 0.2s, transform 0.35s;
+    transition: border-color 0.2s;
   }
-  .theme-btn:hover { border-color: var(--ink); transform: rotate(18deg); }
+  .theme-btn:hover { border-color: var(--ink); }
+  @keyframes theme-btn-spin {
+    0%   { transform: rotate(0deg); }
+    45%  { transform: rotate(22deg); }
+    100% { transform: rotate(0deg); }
+  }
+  .theme-btn.spin { animation: theme-btn-spin 0.4s cubic-bezier(0.22,1,0.36,1); }
 
   /* ── Article ── */
   article {
@@ -222,6 +228,10 @@
     const next = theme === 'dark' ? 'light' : 'dark';
     localStorage.setItem('va-theme', next);
     applyTheme(next);
+    themeBtn.classList.remove('spin');
+    void themeBtn.offsetWidth;
+    themeBtn.classList.add('spin');
+    themeBtn.addEventListener('animationend', () => themeBtn.classList.remove('spin'), { once: true });
   });
 
   // ── Load post ──

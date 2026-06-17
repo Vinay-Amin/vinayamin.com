@@ -141,12 +141,15 @@
     border-radius: 2px;
     cursor: pointer;
     line-height: 1;
-    transition: border-color 0.2s ease, transform 0.35s ease;
+    transition: border-color 0.2s ease;
   }
-  .theme-btn:hover {
-    border-color: var(--ink);
-    transform: rotate(18deg);
+  .theme-btn:hover { border-color: var(--ink); }
+  @keyframes theme-btn-spin {
+    0%   { transform: rotate(0deg); }
+    45%  { transform: rotate(22deg); }
+    100% { transform: rotate(0deg); }
   }
+  .theme-btn.spin { animation: theme-btn-spin 0.4s cubic-bezier(0.22,1,0.36,1); }
 
   .nav-links {
     display: flex;
@@ -1035,6 +1038,10 @@
     const next = theme === 'dark' ? 'light' : 'dark';
     localStorage.setItem('va-theme', next);
     applyTheme(next);
+    themeBtn.classList.remove('spin');
+    void themeBtn.offsetWidth; // force reflow so animation replays
+    themeBtn.classList.add('spin');
+    themeBtn.addEventListener('animationend', () => themeBtn.classList.remove('spin'), { once: true });
   });
 
   // ── Mobile menu ────────────────────────────────────────────────────────────
