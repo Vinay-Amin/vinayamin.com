@@ -411,8 +411,6 @@
     display: flex; flex-wrap: wrap; gap: 16px; align-items: center; justify-content: space-between;
   }
 </style>
-<!-- Early prefers-reduced-motion check so va-ready is set before paint -->
-<script>(function(){try{if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){document.documentElement.classList.add('va-ready');}}catch(e){}})();</script>
 </head>
 <body>
 
@@ -950,16 +948,30 @@
   let revObs;
   const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (!reduce) {
+    // Add va-ready here (not in <head>) so elements only go opacity:0 once the
+    // observer is ready — prevents the blank-page flash on initial load.
+    document.documentElement.classList.add('va-ready');
+
     revObs = new IntersectionObserver((entries) => {
       entries.forEach(e => {
         if (e.isIntersecting) { e.target.classList.add('in'); revObs.unobserve(e.target); }
       });
-    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.12 });
+    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.05 });
     document.querySelectorAll('[data-reveal]').forEach(el => revObs.observe(el));
-    // Fallback so nothing stays hidden if intersection never fires
+
+    // Double rAF: fires after the first real paint, revealing anything already
+    // in the viewport (hero, top of work section) without waiting for scroll.
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      document.querySelectorAll('[data-reveal]:not(.in)').forEach(el => {
+        const r = el.getBoundingClientRect();
+        if (r.top < window.innerHeight && r.bottom > 0) el.classList.add('in');
+      });
+    }));
+
+    // Safety net for anything the observer still misses.
     setTimeout(() => {
       document.querySelectorAll('[data-reveal]:not(.in)').forEach(el => el.classList.add('in'));
-    }, 2800);
+    }, 400);
   }
 
   // ── Active nav ────────────────────────────────────────────────────────────
