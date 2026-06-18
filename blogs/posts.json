@@ -1,62 +1,62 @@
 [
   {
-    "slug": "from-static-pdfs-to-interactive-exploration",
+    "slug": "pdfs-to-exploration",
     "title": "From Static PDFs to Interactive Exploration",
     "blurb": "Why I killed the report and built a platform, and what changes when stakeholders can finally ask their own questions of the data.",
     "tag": "Product",
     "date": "Mar 2026",
     "readTime": "7 min",
     "published": true,
-    "content": "<p>This post is a placeholder. Replace this content field in <code>blogs/posts.json</code> with your actual post body. You can use any HTML here: paragraphs, headings, lists, blockquotes, code blocks.</p><p>The CMS workflow is simple: edit <code>blogs/posts.json</code> to update post metadata and content, then commit and push. Set <code>\"published\": false</code> to hide a post without deleting it.</p>"
+    "content": "<p><em>For two years our most important decisions were made off a PDF that was already out of date. Here is why I replaced the report with a platform, and what changed once people could ask their own questions.</em></p><h2>The report was the bottleneck</h2><p>Every insight request became a ticket. An analyst pulled the data, formatted a deck, and by the time it landed the numbers had already moved. Worse, nobody could follow up without filing another request.</p><p>The document was a dead end, not a starting point. It answered exactly one question and then went stale, so the team spent more time producing reports than actually reading them.</p><h2>Designing for the question, not the answer</h2><p>We stopped shipping conclusions and started shipping the ability to explore. Role-based views meant a field lead and a director saw the same underlying truth at the right altitude, without a bespoke export for each.</p><p>The win was not a prettier chart. It was taking the analyst out of the critical path of curiosity, so the second and third question got answered in seconds instead of days.</p><h2>What it cost, and what it returned</h2><p>Phase one took six months and forced hard scoping. We cut three features to protect one: fast, trustworthy filtering. Trust mattered more than breadth, because a platform people doubt is just a slower PDF.</p><p>Adoption followed once the tool reliably answered the follow-up. That is the real test of an internal product. Not whether it loads, but whether people reach for it before they reach for a colleague.</p>"
   },
   {
-    "slug": "building-a-rag-assistant-from-scratch",
+    "slug": "rag-from-scratch",
     "title": "Building a RAG Assistant from Scratch",
-    "blurb": "Source-grounded answers over 100+ messy sources. The retrieval and chunking choices that actually moved answer quality.",
+    "blurb": "Source-grounded answers over a hundred messy sources. The retrieval and chunking choices that actually moved answer quality.",
     "tag": "AI / Eng",
     "date": "Feb 2026",
     "readTime": "11 min",
     "published": true,
-    "content": "<p>This post is a placeholder. Replace this content field in <code>blogs/posts.json</code> with your actual post body.</p>"
+    "content": "<p><em>Grounded answers over a hundred heterogeneous sources sound like a model problem. Almost all of the quality came from retrieval and chunking, long before the model ever saw a token.</em></p><h2>Chunking is a product decision</h2><p>How you split a document decides what can ever be retrieved. Chunks that are too large drown the model in noise; chunks that are too small lose the context that makes an answer correct.</p><p>We split along semantic boundaries instead of fixed character counts, kept headings attached to their bodies, and answer quality jumped before we touched a single prompt.</p><h2>Retrieval beats prompting</h2><p>The instinct is to fix bad answers by rewriting the prompt. In practice the bigger lever was retrieval: metadata filters to scope the search, and a reranking pass to push the genuinely relevant passages to the top.</p><p>A good prompt over the wrong context still produces a confident, wrong answer. Get the right passages in front of the model and most of the prompt engineering stops mattering.</p><h2>Trust is the feature</h2><p>Every answer cites the source it came from, so a user can verify in one click. An ungrounded answer that happens to be right is still a liability, because it teaches people to trust the next one blindly.</p><p>Shipping citations changed how the assistant was used. It stopped being a novelty people tested and became a tool people relied on, because they could always check its work.</p>"
   },
   {
-    "slug": "shipping-under-a-hard-deadline",
+    "slug": "hard-deadline",
     "title": "Shipping Under a Hard Deadline",
-    "blurb": "85,000 users, an immovable election date, and a platform that did not exist yet. Field notes on scoping under real pressure.",
+    "blurb": "85,000 voters, an immovable election date, and a platform that did not exist yet. Field notes on scoping under real pressure.",
     "tag": "Delivery",
     "date": "Jan 2026",
     "readTime": "6 min",
     "published": true,
-    "content": "<p>This post is a placeholder. Replace this content field in <code>blogs/posts.json</code> with your actual post body.</p>"
+    "content": "<p><em>Eighty-five thousand voters, an election date that would not move, and a platform that did not exist. Scoping under real pressure is mostly a discipline of what you refuse to build.</em></p><h2>The deadline does the prioritising</h2><p>When the date is fixed, scope becomes the only variable you control. That sounds constraining, but it clarifies everything. Every feature has to justify itself against one question: does this change what happens on election day?</p><p>We wrote the must-haves on one list and everything else on another, then protected the first list ruthlessly. The second list was not a backlog. It was a record of things we were proud to have said no to.</p><h2>Tie training to output</h2><p>A calling team is only as good as what it does on the phone. I built a custom LMS for the callers and a pipeline that linked their training directly to measured output and call quality.</p><p>That loop meant a coaching decision showed up in the data within days, not at the end of the campaign when it was too late to act on it.</p><h2>Messy data, real-time decisions</h2><p>The raw data was fast-moving and inconsistent, the way real field data always is. The job was not to make it perfect; it was to make it trustworthy enough to act on while it was still useful.</p><p>We shipped a platform that turned that mess into real-time insight, and it helped a first-time candidate win.</p>"
   },
   {
-    "slug": "engineer-to-pm-what-actually-changed",
+    "slug": "engineer-to-pm",
     "title": "Engineer to PM: What Actually Changed",
-    "blurb": "I still read the code. What is different is the question I start the day from, and who I am accountable to.",
+    "blurb": "I still read the code. What changed is the question I start the day with, and who I answer to.",
     "tag": "Career",
     "date": "Dec 2025",
     "readTime": "5 min",
     "published": true,
-    "content": "<p>This post is a placeholder. Replace this content field in <code>blogs/posts.json</code> with your actual post body.</p>"
+    "content": "<p><em>I still read the code. What changed is the question I start the day with, and who I am accountable to.</em></p><h2>From how to why</h2><p>As an engineer my first question was how. How do we build this, how does it scale, how do we keep it from breaking at 2am. As a PM the first question is why, and whether the thing is worth building at all.</p><p>The engineering instinct never left. It just moved upstream, from the implementation to the decision about what deserves an implementation in the first place.</p><h2>Credibility is currency</h2><p>Being able to read a pull request changes the conversation with engineering. The roadmap lands differently when the people building it know you understand the cost of what you are asking for.</p><p>It also keeps me honest. I cannot hide a vague requirement behind product language when I know exactly which ambiguity the team is about to inherit.</p><h2>The hardest unlearning</h2><p>The hardest part was learning to say no to good ideas. Engineering rewards solving the problem in front of you. Product rewards choosing which problem is worth your team's only quarter.</p>"
   },
   {
-    "slug": "defining-metrics-that-tell-you-something",
+    "slug": "metrics-that-matter",
     "title": "Defining Metrics That Tell You Something",
     "blurb": "Most dashboards measure motion, not progress. A short framework for picking the one number that should move.",
     "tag": "Product",
     "date": "Nov 2025",
     "readTime": "8 min",
     "published": true,
-    "content": "<p>This post is a placeholder. Replace this content field in <code>blogs/posts.json</code> with your actual post body.</p>"
+    "content": "<p><em>Most dashboards measure motion, not progress. Here is a short way to pick the one number that should actually move.</em></p><h2>Vanity versus signal</h2><p>A vanity metric goes up and to the right no matter what you do, which makes it useless for deciding anything. A signal metric can go down, and that possibility is exactly what makes it worth watching.</p><p>If a number cannot fall when you make the product worse, it is decoration. Cut it from the dashboard before it costs someone a bad decision.</p><h2>One metric, one owner</h2><p>A metric with no owner is a metric nobody will defend when it dips. Each number that matters should have a single person who feels it move, and who is expected to have an opinion about why.</p><h2>Instrument before you ship</h2><p>The cheapest time to add tracking is before launch; the most expensive is the week you finally need the data and discover it was never collected.</p><p>Decide the question first, then instrument for it. A dashboard built backwards from a real decision beats a hundred charts built because the data happened to be there.</p>"
   },
   {
-    "slug": "automating-the-boring-parts-with-n8n",
+    "slug": "automating-with-n8n",
     "title": "Automating the Boring Parts with n8n",
     "blurb": "AI video pipelines and posting on autopilot: the unglamorous automations behind a startup content engine.",
     "tag": "Automation",
     "date": "Oct 2025",
     "readTime": "6 min",
     "published": true,
-    "content": "<p>This post is a placeholder. Replace this content field in <code>blogs/posts.json</code> with your actual post body.</p>"
+    "content": "<p><em>The unglamorous automations behind a content engine: AI video pipelines and posting on autopilot, so the team spends its hours on judgment instead of plumbing.</em></p><h2>Automate the handoffs</h2><p>The slowest part of most workflows is not the work; it is the wait between steps while something sits in an inbox. The highest-leverage automations remove those handoffs, not the thinking.</p><p>I wired the pipeline so a finished draft moved itself to rendering, then to scheduling, with no human carrying it between tools. The people stayed where their judgment mattered.</p><h2>Humans in the loop where it counts</h2><p>Full automation is a trap when quality is subjective. The goal is not to remove the human; it is to put the human at the one checkpoint that actually changes the outcome, and automate everything around it.</p><h2>Compounding time</h2><p>A single automation saving twenty minutes a day looks trivial. Ten of them, running every day, quietly hand a small team back a full extra person of capacity.</p><p>That recovered time is the real product. It is what let a lean team ship like a much larger one.</p>"
   }
 ]
