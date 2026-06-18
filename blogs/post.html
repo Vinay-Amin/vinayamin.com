@@ -243,10 +243,10 @@
       const post = posts.find(p => p.slug === slug && p.published !== false);
       if (!post) {
         document.getElementById('not-found').style.display = 'block';
-        document.title = 'Post not found — Vinay V P';
+        document.title = 'Post not found · Vinay V P';
         return;
       }
-      document.title = post.title + ' — Vinay V P';
+      document.title = post.title + ' · Vinay V P';
       document.getElementById('post-tag').textContent    = post.tag;
       document.getElementById('post-meta').textContent   = post.date + ' · ' + post.readTime;
       document.getElementById('post-title').textContent  = post.title;
@@ -256,7 +256,7 @@
     })
     .catch(() => {
       document.getElementById('not-found').style.display = 'block';
-      document.title = 'Post not found — Vinay V P';
+      document.title = 'Post not found · Vinay V P';
     });
 </script>
 </body>
