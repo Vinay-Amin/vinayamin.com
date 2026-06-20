@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;600;700&family=Newsreader:ital,opsz,wght@0,16..72,300;0,16..72,400;0,16..72,500;1,16..72,300;1,16..72,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script>(function(){const t=localStorage.getItem('va-theme')||'dark';document.documentElement.setAttribute('data-theme',t);})();</script>
 <style>
   *, *::before, *::after { box-sizing: border-box; }
   html { scroll-behavior: smooth; }
@@ -18,16 +19,22 @@
     --faint: #B5B5AD; --line: #E7E7E1; --line-2: #E0E0D9;
     --chip-border: #C9C9C0;
     --solid: #15151A; --solid-text: #FAFAF8; --solid-hover: #2A2A30;
-    --nav-bg: rgba(250,250,248,0.82); --panel-bg: #F3F3EF;
     --transition: background-color .35s ease, color .35s ease, border-color .35s ease;
+    --glass-bg: rgba(250,250,248,0.60);
+    --glass-border: rgba(255,255,255,0.85);
+    --glass-specular: rgba(255,255,255,0.92);
+    --glass-shadow: rgba(21,21,26,0.10);
   }
   [data-theme="dark"] {
-    --bg: #121210; --bg-2: #1A1A17;
+    --bg: #111110; --bg-2: #191917;
     --ink: #F2F2EC; --ink-2: #BDBDB4; --ink-3: #9E9E95; --ink-4: #76766D;
-    --faint: #5A5A52; --line: #2A2A26; --line-2: #27271F;
+    --faint: #5A5A52; --line: #2C2C28; --line-2: #27271F;
     --chip-border: #3A3A34;
-    --solid: #F2F2EC; --solid-text: #121210; --solid-hover: #D8D8CE;
-    --nav-bg: rgba(18,18,16,0.82); --panel-bg: #1A1A17;
+    --solid: #F2F2EC; --solid-text: #111110; --solid-hover: #D8D8CE;
+    --glass-bg: rgba(17,17,16,0.68);
+    --glass-border: rgba(255,255,255,0.10);
+    --glass-specular: rgba(255,255,255,0.07);
+    --glass-shadow: rgba(0,0,0,0.45);
   }
 
   body {
@@ -41,40 +48,52 @@
   }
   ::selection { background: var(--ink); color: var(--bg); }
 
-  /* ── Nav ── */
-  nav {
+  /* ── Nav (liquid glass, matching home) ── */
+  .nav-outer {
     position: sticky; top: 0; z-index: 50;
-    background: var(--nav-bg);
-    backdrop-filter: saturate(180%) blur(14px);
-    -webkit-backdrop-filter: saturate(180%) blur(14px);
-    border-bottom: 1px solid var(--line);
+    padding: 12px clamp(20px,5vw,80px);
+  }
+  nav {
+    max-width: 1280px; margin: 0 auto;
+    background: var(--glass-bg);
+    backdrop-filter: blur(56px) saturate(200%);
+    -webkit-backdrop-filter: blur(56px) saturate(200%);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    box-shadow:
+      inset 0 1.5px 0 var(--glass-specular),
+      0 8px 40px var(--glass-shadow),
+      0 2px 6px rgba(0,0,0,0.06);
+    overflow: hidden;
+    transition: background 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
   }
   .nav-inner {
     display: flex; align-items: center; justify-content: space-between;
-    padding: 16px clamp(20px,5vw,80px);
+    padding: 13px clamp(16px,2.5vw,28px);
   }
   .nav-brand {
     font-size: 15px; font-weight: 600; letter-spacing: -0.01em;
     color: var(--ink); text-decoration: none; white-space: nowrap;
     transition: opacity 0.2s; opacity: 1;
   }
-  .nav-brand:hover { opacity: 0.5; }
+  .nav-brand:hover { opacity: 0.45; }
   .nav-back {
     display: inline-flex; align-items: center; gap: 8px;
-    font-family: 'JetBrains Mono', monospace; font-size: 12px;
-    letter-spacing: 0.06em; text-transform: uppercase;
+    font-family: 'JetBrains Mono', monospace; font-size: 11.5px;
+    letter-spacing: 0.07em; text-transform: uppercase;
     color: var(--ink-3); text-decoration: none;
     transition: color 0.2s;
   }
   .nav-back:hover { color: var(--ink); }
   .theme-btn {
     display: inline-flex; align-items: center; justify-content: center;
-    width: 34px; height: 34px; font-size: 15px;
+    width: 32px; height: 32px; font-size: 14px;
     color: var(--ink); background: transparent;
-    border: 1px solid var(--line); border-radius: 2px; cursor: pointer;
-    transition: border-color 0.2s;
+    border: 1px solid var(--line); border-radius: 8px; cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
   }
-  .theme-btn:hover { border-color: var(--ink); }
+  .theme-btn:hover { border-color: var(--ink); background: rgba(0,0,0,0.04); }
+  [data-theme="dark"] .theme-btn:hover { background: rgba(255,255,255,0.06); }
   @keyframes theme-btn-spin {
     0%   { transform: rotate(0deg); }
     45%  { transform: rotate(22deg); }
@@ -182,15 +201,17 @@
 </head>
 <body>
 
-<nav>
-  <div class="nav-inner">
-    <a href="../index.html" class="nav-brand">Vinay V P</a>
-    <div style="display:flex;align-items:center;gap:14px;">
-      <a href="../index.html#blog" class="nav-back">← All posts</a>
-      <button class="theme-btn" id="themeBtn" aria-label="Toggle theme">☾</button>
+<div class="nav-outer">
+  <nav>
+    <div class="nav-inner">
+      <a href="../index.html" class="nav-brand">Vinay V P</a>
+      <div style="display:flex;align-items:center;gap:14px;">
+        <a href="../index.html#blog" class="nav-back">← All posts</a>
+        <button class="theme-btn" id="themeBtn" aria-label="Toggle theme">☾</button>
+      </div>
     </div>
-  </div>
-</nav>
+  </nav>
+</div>
 
 <div id="content">
   <article id="post-article" style="display:none;">
@@ -217,7 +238,7 @@
 <script>
   // ── Theme ──
   const themeBtn = document.getElementById('themeBtn');
-  let theme = localStorage.getItem('va-theme') || 'light';
+  let theme = localStorage.getItem('va-theme') || 'dark';
   function applyTheme(t) {
     document.documentElement.setAttribute('data-theme', t);
     themeBtn.textContent = t === 'dark' ? '☀' : '☾';
