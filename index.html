@@ -8,7 +8,7 @@
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;600;700&family=Newsreader:ital,opsz,wght@0,16..72,300;0,16..72,400;0,16..72,500;1,16..72,300;1,16..72,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@10..48,500;10..48,600;10..48,700&family=Archivo:wght@300;400;500;600;700&family=Newsreader:ital,opsz,wght@0,16..72,300;0,16..72,400;0,16..72,500;1,16..72,300;1,16..72,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script>(function(){const t=localStorage.getItem('va-theme')||'dark';document.documentElement.setAttribute('data-theme',t);})();</script>
 <style>
   *, *::before, *::after { box-sizing: border-box; }
@@ -543,8 +543,76 @@
   /* ===== FOOTER ===== */
   footer { border-top: 1px solid var(--line); margin-top: clamp(16px,3vw,32px); }
   .footer-inner {
-    max-width: 1280px; margin: 0 auto; padding: 28px clamp(20px,5vw,80px);
+    max-width: 1280px; margin: 0 auto; padding: 24px clamp(20px,5vw,80px);
     display: flex; flex-wrap: wrap; gap: 16px; align-items: center; justify-content: space-between;
+  }
+  .footer-right { display: flex; align-items: center; gap: 24px; }
+  .footer-top-btn {
+    display: inline-flex; align-items: center; gap: 7px;
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--ink-4); background: transparent; border: none; cursor: pointer; padding: 0;
+    transition: color 0.2s, transform 0.3s cubic-bezier(.22,1,.36,1);
+  }
+  .footer-top-btn:hover { color: var(--ink); transform: translateY(-2px); }
+
+  /* ===== AVAILABILITY DOT ===== */
+  .avail-status { display: flex; align-items: center; gap: 8px; }
+  .avail-dot {
+    display: block; width: 6px; height: 6px; border-radius: 50%;
+    background: #4ade80;
+    box-shadow: 0 0 0 0 rgba(74,222,128,0.5);
+    animation: pulse-avail 2.4s ease-out infinite;
+    flex-shrink: 0;
+  }
+  @keyframes pulse-avail {
+    0%   { box-shadow: 0 0 0 0 rgba(74,222,128,0.5); }
+    70%  { box-shadow: 0 0 0 7px rgba(74,222,128,0); }
+    100% { box-shadow: 0 0 0 0 rgba(74,222,128,0); }
+  }
+
+  /* ===== SKILLS TICKER ===== */
+  .stack-ticker {
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding: 12px 0; overflow: hidden;
+    mask-image: linear-gradient(to right, transparent 0%, black 7%, black 93%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 7%, black 93%, transparent 100%);
+  }
+  .ticker-track {
+    display: flex; align-items: center; gap: 44px;
+    width: max-content; white-space: nowrap;
+    animation: ticker-scroll 32s linear infinite;
+  }
+  .ticker-track span {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: 0.13em; text-transform: uppercase; color: var(--ink-3);
+  }
+  .ticker-track .sep { color: var(--faint); }
+  @keyframes ticker-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  @media (prefers-reduced-motion: reduce) { .ticker-track { animation: none; } }
+
+  /* ===== READER PROGRESS BAR ===== */
+  .reader-progress {
+    position: fixed; top: 0; left: 0; z-index: 200;
+    height: 2px; width: 0%; background: var(--ink);
+    transition: width 80ms linear;
+    border-radius: 0 2px 2px 0;
+  }
+
+  /* ===== PROJECT SPOTLIGHT ===== */
+  #work:has(.project-trigger:hover) .project-item {
+    opacity: 0.38;
+    transition: opacity 0.3s ease;
+  }
+  #work:has(.project-trigger:hover) .project-item:has(.project-trigger:hover) {
+    opacity: 1;
+  }
+
+  /* ===== FONT OVERRIDES ===== */
+  h1, h2, .about-heading, .article-title {
+    font-family: 'Bricolage Grotesque', 'Archivo', sans-serif;
+    font-optical-sizing: auto;
   }
 </style>
 </head>
@@ -592,20 +660,46 @@
     <p class="hero-desc" data-reveal style="animation-delay:.28s">Engineer-turned-PM with five years in tech. I came up writing production code, so I own products end to end, from discovery to launch, and partner with engineering and design as an equal. Pure PMs can't write the RAG pipeline; pure engineers don't run GTM. I do both.</p>
     <div class="hero-stats" data-reveal style="animation-delay:.36s">
       <div class="hero-stat">
-        <div class="hero-stat-num">85k+</div>
+        <div class="hero-stat-num" data-count="85" data-prefix="" data-units="k" data-suffix="+">85k+</div>
         <div class="hero-stat-label">Users on a platform built from zero, and it won</div>
       </div>
       <div class="hero-stat">
-        <div class="hero-stat-num">₹4Cr</div>
+        <div class="hero-stat-num" data-count="4" data-prefix="₹" data-units="Cr" data-suffix="">₹4Cr</div>
         <div class="hero-stat-label">Annual revenue, advised as founding consultant</div>
       </div>
       <div class="hero-stat">
-        <div class="hero-stat-num">100+</div>
+        <div class="hero-stat-num" data-count="100" data-prefix="" data-units="" data-suffix="+">100+</div>
         <div class="hero-stat-label">Sources in a RAG pipeline, shipped solo</div>
       </div>
     </div>
   </div>
 </header>
+
+<!-- ===== SKILLS TICKER ===== -->
+<div class="stack-ticker" aria-hidden="true">
+  <div class="ticker-track">
+    <span>Product Management</span><span class="sep">·</span>
+    <span>Backend Engineering</span><span class="sep">·</span>
+    <span>RAG Systems</span><span class="sep">·</span>
+    <span>Flutter</span><span class="sep">·</span>
+    <span>Firebase</span><span class="sep">·</span>
+    <span>n8n Automation</span><span class="sep">·</span>
+    <span>Data Analytics</span><span class="sep">·</span>
+    <span>GTM Strategy</span><span class="sep">·</span>
+    <span>API Integration</span><span class="sep">·</span>
+    <span>CI / CD</span><span class="sep">·</span>
+    <span>Product Management</span><span class="sep">·</span>
+    <span>Backend Engineering</span><span class="sep">·</span>
+    <span>RAG Systems</span><span class="sep">·</span>
+    <span>Flutter</span><span class="sep">·</span>
+    <span>Firebase</span><span class="sep">·</span>
+    <span>n8n Automation</span><span class="sep">·</span>
+    <span>Data Analytics</span><span class="sep">·</span>
+    <span>GTM Strategy</span><span class="sep">·</span>
+    <span>API Integration</span><span class="sep">·</span>
+    <span>CI / CD</span><span class="sep">·</span>
+  </div>
+</div>
 
 <!-- ===== WORK ===== -->
 <section id="work">
@@ -825,6 +919,7 @@
 
 <!-- ===== BLOG READER OVERLAY ===== -->
 <div class="reader-overlay" id="readerOverlay" role="dialog" aria-modal="true" aria-label="Blog post">
+  <div class="reader-progress" id="readerProgress" role="progressbar" aria-label="Reading progress"></div>
   <div class="reader-nav">
     <div class="reader-nav-inner">
       <button class="reader-back" onclick="closePost()"><span style="font-size:15px">←</span> Back</button>
@@ -879,8 +974,16 @@
 <!-- ===== FOOTER ===== -->
 <footer>
   <div class="footer-inner">
-    <span class="mono-label">© 2026 Vinay V P · Bengaluru</span>
-    <span class="mono-label">Designed in the open</span>
+    <div class="avail-status">
+      <span class="avail-dot" aria-hidden="true"></span>
+      <span class="mono-label">Available for new projects</span>
+    </div>
+    <div class="footer-right">
+      <span class="mono-label" style="color:var(--ink-4)">© 2026 Vinay V P</span>
+      <button class="footer-top-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top">
+        ↑ <span>Top</span>
+      </button>
+    </div>
   </div>
 </footer>
 
@@ -1126,6 +1229,87 @@
     });
   }, { rootMargin: '-45% 0px -50% 0px' });
   ['work','blog','about'].forEach(id => { const el = document.getElementById(id); if (el) sectionObs.observe(el); });
+
+  // ── Hero name scramble ──────────────────────────────────────────────────────
+  if (!reduce) {
+    const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    function scramble(el, finalText, duration) {
+      const start = performance.now();
+      const saved = el.textContent;
+      function tick(now) {
+        const p = Math.min((now - start) / duration, 1);
+        el.textContent = finalText.split('').map((ch, i) => {
+          if (ch === ' ') return ' ';
+          const cp = Math.max(0, p * 1.6 - (i / finalText.length) * 0.6);
+          return cp >= 1 ? ch : CHARS[Math.floor(Math.random() * CHARS.length)];
+        }).join('');
+        p < 1 ? requestAnimationFrame(tick) : (el.textContent = finalText);
+      }
+      requestAnimationFrame(tick);
+    }
+    const h1El = document.querySelector('h1');
+    if (h1El) {
+      const h1Text = h1El.textContent.trim();
+      const mo = new MutationObserver(() => {
+        if (h1El.classList.contains('in')) { mo.disconnect(); scramble(h1El, h1Text, 680); }
+      });
+      mo.observe(h1El, { attributes: true, attributeFilter: ['class'] });
+    }
+  }
+
+  // ── Stats counter animation ─────────────────────────────────────────────────
+  if (!reduce) {
+    function animateCount(el) {
+      const final = el.textContent;
+      const target = parseInt(el.dataset.count, 10);
+      if (isNaN(target)) return;
+      const pre = el.dataset.prefix || '';
+      const units = el.dataset.units || '';
+      const suf = el.dataset.suffix || '';
+      const dur = 1300;
+      const t0 = performance.now();
+      const ease = t => 1 - Math.pow(1 - t, 3);
+      function tick(now) {
+        const t = ease(Math.min((now - t0) / dur, 1));
+        el.textContent = pre + Math.round(t * target) + units + suf;
+        t < 1 ? requestAnimationFrame(tick) : (el.textContent = final);
+      }
+      requestAnimationFrame(tick);
+    }
+    const statsBlock = document.querySelector('.hero-stats');
+    if (statsBlock) {
+      const statsObs = new IntersectionObserver(entries => {
+        if (entries[0].isIntersecting) {
+          statsBlock.querySelectorAll('.hero-stat-num[data-count]').forEach(animateCount);
+          statsObs.disconnect();
+        }
+      }, { threshold: 0.4 });
+      statsObs.observe(statsBlock);
+    }
+  }
+
+  // ── Blog reader progress bar ────────────────────────────────────────────────
+  const progressBar = document.getElementById('readerProgress');
+  overlay.addEventListener('scroll', () => {
+    const { scrollTop, scrollHeight, clientHeight } = overlay;
+    const pct = scrollHeight <= clientHeight ? 0 : (scrollTop / (scrollHeight - clientHeight)) * 100;
+    progressBar.style.width = pct + '%';
+  });
+
+  // ── Keyboard shortcuts ──────────────────────────────────────────────────────
+  document.addEventListener('keydown', e => {
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.metaKey || e.ctrlKey) return;
+    if (e.key === 'Escape') { closePost(); closeMenu(); }
+    if (e.key === 'd' || e.key === 'D') {
+      const next = theme === 'dark' ? 'light' : 'dark';
+      localStorage.setItem('va-theme', next);
+      applyTheme(next);
+      themeBtn.classList.remove('spin');
+      void themeBtn.offsetWidth;
+      themeBtn.classList.add('spin');
+      themeBtn.addEventListener('animationend', () => themeBtn.classList.remove('spin'), { once: true });
+    }
+  });
 </script>
 </body>
 </html>
