@@ -8,8 +8,8 @@
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;600;700&family=Newsreader:ital,opsz,wght@0,16..72,300;0,16..72,400;0,16..72,500;1,16..72,300;1,16..72,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<script>(function(){const t=localStorage.getItem('va-theme')||'dark';document.documentElement.setAttribute('data-theme',t);})();</script>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;600;700&family=Newsreader:ital,opsz,wght@0,16..72,300;0,16..72,400;0,16..72,500;1,16..72,300;1,16..72,400&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script>(function(){const t=localStorage.getItem('va-theme')||'dark';document.documentElement.setAttribute('data-theme',t);const m=localStorage.getItem('va-mode')||'pm';document.documentElement.setAttribute('data-mode',m);})();</script>
 <style>
   *, *::before, *::after { box-sizing: border-box; }
 
@@ -170,7 +170,7 @@
     transition: max-height 0.45s cubic-bezier(.22,1,.36,1), border-top-width 0.1s;
   }
   .mobile-menu.open {
-    max-height: 440px;
+    max-height: 520px;
     border-top: 1px solid var(--glass-border);
   }
   .mobile-menu-inner { padding: 8px clamp(16px,2.5vw,28px) 20px; }
@@ -546,6 +546,149 @@
     max-width: 1280px; margin: 0 auto; padding: 28px clamp(20px,5vw,80px);
     display: flex; flex-wrap: wrap; gap: 16px; align-items: center; justify-content: space-between;
   }
+
+  /* ═══════════════════════════════════════════════════════════════
+     DEV MODE — minimal terminal reskin. PM mode is the default look.
+     ═══════════════════════════════════════════════════════════════ */
+
+  /* ── Mode visibility ── */
+  html[data-mode="pm"] .dev-only { display: none !important; }
+  html[data-mode="dev"] .pm-only { display: none !important; }
+
+  /* ── Mode toggle control ── */
+  .mode-toggle {
+    display: inline-flex; align-items: center; gap: 2px;
+    padding: 2px; border: 1px solid var(--line); border-radius: 999px;
+    transition: border-color .35s ease, border-radius .35s ease;
+  }
+  .mode-opt {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px; font-weight: 500; letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-3); background: transparent;
+    border: none; border-radius: 999px; cursor: pointer;
+    padding: 6px 11px; line-height: 1;
+    transition: color .2s, background .2s, border-radius .35s ease;
+  }
+  .mode-opt:hover { color: var(--ink); }
+  .mode-opt.active { background: var(--solid); color: var(--solid-text); }
+  .mode-toggle.mobile-mode { display: flex; width: 100%; margin-top: 16px; }
+  .mode-toggle.mobile-mode .mode-opt { flex: 1; font-size: 12px; padding: 11px 0; text-align: center; }
+  @media (max-width: 420px) { .nav-right .mode-toggle { display: none; } }
+
+  /* ── Dev tokens: light ── */
+  [data-mode="dev"] {
+    --bg: #F8F9FA; --bg-2: #EEF1F4;
+    --ink: #14181D; --ink-2: #3E4750; --ink-3: #6B7681; --ink-4: #9AA5B1; --faint: #A9B3BD;
+    --line: #DDE3E9; --line-2: #D3DAE1; --hover: #EDF0F3; --chip-border: #C3CCD4;
+    --solid: #147A3D; --solid-text: #F8F9FA; --solid-hover: #0D6631;
+    --nav-bg: rgba(248,249,250,0.88); --panel-bg: #EEF1F4;
+    --accent: #147A3D;
+    --nav-border: rgba(20,24,29,0.10);
+    --grain-opacity: 0.024;
+    --glass-bg: rgba(248,249,250,0.62);
+    --glass-border: rgba(255,255,255,0.85);
+    --glass-specular: rgba(255,255,255,0.92);
+    --glass-shadow: rgba(20,24,29,0.10);
+  }
+  /* ── Dev tokens: dark (terminal) ── */
+  [data-mode="dev"][data-theme="dark"] {
+    --bg: #0A0C10; --bg-2: #12161C;
+    --ink: #E6EDF3; --ink-2: #A9B4BE; --ink-3: #79858F; --ink-4: #4E5862; --faint: #414B55;
+    --line: #1E242B; --line-2: #1A1F26; --hover: #151A20; --chip-border: #2A323B;
+    --solid: #56D364; --solid-text: #0A0C10; --solid-hover: #7EE787;
+    --nav-bg: rgba(10,12,16,0.88); --panel-bg: #12161C;
+    --accent: #56D364;
+    --nav-border: rgba(230,237,243,0.08);
+    --grain-opacity: 0.038;
+    --glass-bg: rgba(10,12,16,0.68);
+    --glass-border: rgba(255,255,255,0.08);
+    --glass-specular: rgba(255,255,255,0.05);
+    --glass-shadow: rgba(0,0,0,0.5);
+  }
+  [data-mode="dev"] ::selection { background: var(--accent); color: var(--bg); }
+
+  /* ── Dev typography: everything mono ── */
+  [data-mode="dev"] body,
+  [data-mode="dev"] .hero-subtitle,
+  [data-mode="dev"] .group-desc,
+  [data-mode="dev"] .project-oneliner,
+  [data-mode="dev"] .project-col-text,
+  [data-mode="dev"] .blog-desc,
+  [data-mode="dev"] .post-blurb,
+  [data-mode="dev"] .article-lede,
+  [data-mode="dev"] .article-body p,
+  [data-mode="dev"] .article-footer-text,
+  [data-mode="dev"] .about-p {
+    font-family: 'JetBrains Mono', monospace;
+    font-style: normal;
+  }
+
+  /* ── Dev scale & shape ── */
+  [data-mode="dev"] nav { border-radius: 10px; }
+  [data-mode="dev"] .theme-btn, [data-mode="dev"] .menu-btn { border-radius: 6px; }
+  [data-mode="dev"] .nav-cta { border-radius: 6px; }
+  [data-mode="dev"] .mode-toggle { border-radius: 8px; }
+  [data-mode="dev"] .mode-opt { border-radius: 5px; }
+  [data-mode="dev"] .post-chip { border-radius: 4px; }
+  [data-mode="dev"] .article-cta { border-radius: 6px; }
+  [data-mode="dev"] .cta-card { border-radius: 8px; }
+  [data-mode="dev"] .mobile-cta { border-radius: 6px; }
+  [data-mode="dev"] .project-sign-wrap, [data-mode="dev"] .post-arrow, [data-mode="dev"] .cta-glyph { border-radius: 8px; }
+
+  [data-mode="dev"] .mono-label { text-transform: lowercase; letter-spacing: 0.07em; }
+  [data-mode="dev"] .mono-label:not(.no-slash)::before { content: "// "; color: var(--accent); }
+  [data-mode="dev"] .dev-prompt { color: var(--accent); }
+
+  [data-mode="dev"] h1 {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 600; font-size: clamp(44px,10vw,140px);
+    letter-spacing: -0.05em; line-height: 1;
+  }
+  [data-mode="dev"] .hero-subtitle {
+    font-weight: 400; font-size: clamp(16px,2.4vw,30px);
+    line-height: 1.35; max-width: 30ch; color: var(--ink-2);
+  }
+  [data-mode="dev"] .hero-desc { font-size: clamp(14px,1.25vw,16.5px); line-height: 1.7; }
+  [data-mode="dev"] .hero-stat-num { font-family: 'JetBrains Mono', monospace; font-weight: 600; }
+
+  [data-mode="dev"] h2,
+  [data-mode="dev"] .group-title,
+  [data-mode="dev"] .about-heading,
+  [data-mode="dev"] .project-name,
+  [data-mode="dev"] .post-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 600; text-transform: lowercase;
+  }
+  [data-mode="dev"] h2 { font-size: clamp(26px,4vw,52px); letter-spacing: -0.035em; }
+  [data-mode="dev"] .group-title { font-size: clamp(18px,2vw,26px); letter-spacing: -0.02em; }
+  [data-mode="dev"] .about-heading { font-size: clamp(22px,2.7vw,36px); letter-spacing: -0.03em; line-height: 1.2; }
+  [data-mode="dev"] .project-name { font-size: clamp(24px,4vw,50px); letter-spacing: -0.03em; }
+  [data-mode="dev"] .post-title { font-size: clamp(17px,2vw,26px); letter-spacing: -0.02em; line-height: 1.25; }
+
+  [data-mode="dev"] .project-num::before { content: "["; color: var(--faint); }
+  [data-mode="dev"] .project-num::after  { content: "]"; color: var(--faint); }
+  [data-mode="dev"] .win-metric { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: clamp(22px,2.4vw,32px); }
+
+  [data-mode="dev"] .group-desc, [data-mode="dev"] .blog-desc { font-size: clamp(13px,1.15vw,15px); line-height: 1.6; }
+  [data-mode="dev"] .project-oneliner { font-size: clamp(13.5px,1.3vw,16.5px); line-height: 1.6; }
+  [data-mode="dev"] .project-col-text { font-size: 14px; line-height: 1.75; }
+  [data-mode="dev"] .post-blurb { font-size: 13.5px; line-height: 1.65; }
+  [data-mode="dev"] .about-p { font-size: clamp(13.5px,1.2vw,15.5px); line-height: 1.75; }
+  [data-mode="dev"] .article-title { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: clamp(26px,4.2vw,44px); letter-spacing: -0.035em; line-height: 1.15; }
+  [data-mode="dev"] .article-lede { font-size: clamp(15px,1.5vw,17.5px); line-height: 1.6; }
+  [data-mode="dev"] .article-body p { font-size: clamp(13.5px,1.2vw,15px); line-height: 1.8; }
+  [data-mode="dev"] .article-body h3 { font-family: 'JetBrains Mono', monospace; text-transform: lowercase; }
+  [data-mode="dev"] .article-footer-text { font-size: 14px; }
+
+  /* ── Dev cursor blink ── */
+  .dev-cursor {
+    display: inline-block; width: 0.5em; height: 0.8em;
+    background: var(--accent); margin-left: 0.08em;
+    animation: dev-blink 1.1s steps(1) infinite;
+  }
+  @keyframes dev-blink { 50% { opacity: 0; } }
+  @media (prefers-reduced-motion: reduce) { .dev-cursor { animation: none; } }
 </style>
 </head>
 <body>
@@ -556,8 +699,12 @@
 <div class="nav-outer">
   <nav>
     <div class="nav-inner">
-      <a href="#top" class="nav-brand">Vinay V P</a>
+      <a href="#top" class="nav-brand"><span class="pm-only">Vinay V P</span><span class="dev-only">~/vinay_vp</span></a>
       <div class="nav-right">
+        <div class="mode-toggle" role="group" aria-label="Portfolio mode">
+          <button class="mode-opt" data-mode-btn="pm" aria-pressed="true">PM</button>
+          <button class="mode-opt" data-mode-btn="dev" aria-pressed="false">Dev</button>
+        </div>
         <button class="theme-btn" id="themeBtn" aria-label="Toggle theme">☾</button>
         <div class="nav-links" id="navLinks">
           <a href="#work"  class="nav-link active" data-section="work">Work</a>
@@ -574,6 +721,10 @@
         <a href="#blog"  class="mobile-link" onclick="closeMenu()">Blog</a>
         <a href="#about" class="mobile-link" onclick="closeMenu()">About</a>
         <a href="https://calendar.app.google/DPRgryrfHMZqqpbT6" target="_blank" class="mobile-cta" onclick="closeMenu()">Book a call <span>↗</span></a>
+        <div class="mode-toggle mobile-mode" role="group" aria-label="Portfolio mode">
+          <button class="mode-opt" data-mode-btn="pm" aria-pressed="true">PM Mode</button>
+          <button class="mode-opt" data-mode-btn="dev" aria-pressed="false">Dev Mode</button>
+        </div>
       </div>
     </div>
   </nav>
@@ -583,14 +734,15 @@
 <header id="top">
   <div class="hero-ambient" aria-hidden="true"></div>
   <div class="hero-meta" data-reveal>
+    <span class="mono-label no-slash dev-prompt dev-only">vinay@blr:~ $ whoami</span>
     <span class="mono-label">Portfolio · 2026</span>
     <span class="mono-label">Bengaluru · IND</span>
   </div>
-  <h1 data-reveal style="animation-delay:.08s">Vinay V P</h1>
-  <p class="hero-subtitle" data-reveal style="animation-delay:.18s">The PM who ships it himself, from discovery to deploy.</p>
+  <h1 data-reveal style="animation-delay:.08s"><span class="pm-only">Vinay V P</span><span class="dev-only">vinay_vp<span class="dev-cursor" aria-hidden="true"></span></span></h1>
+  <p class="hero-subtitle" data-reveal style="animation-delay:.18s"><span class="pm-only">The PM who ships it himself, from discovery to deploy.</span><span class="dev-only">Engineer who happens to own the roadmap.</span></p>
   <div class="hero-grid">
-    <p class="hero-desc" data-reveal style="animation-delay:.28s">Engineer-turned-PM with five years in tech. I came up writing production code, so I own products end to end, from discovery to launch, and partner with engineering and design as an equal. Pure PMs can't write the RAG pipeline; pure engineers don't run GTM. I do both.</p>
-    <div class="hero-stats" data-reveal style="animation-delay:.36s">
+    <p class="hero-desc" data-reveal style="animation-delay:.28s"><span class="pm-only">Engineer-turned-PM with five years in tech. I came up writing production code, so I own products end to end, from discovery to launch, and partner with engineering and design as an equal. Pure PMs can't write the RAG pipeline; pure engineers don't run GTM. I do both.</span><span class="dev-only">Five years in tech, engineer first. I hardened production systems, led backend delivery, and still ship end to end — RAG pipelines, Flutter apps, n8n automation, CI/CD. The PM title just means I also decide what gets built.</span></p>
+    <div class="hero-stats pm-only" data-reveal style="animation-delay:.36s">
       <div class="hero-stat">
         <div class="hero-stat-num">85k+</div>
         <div class="hero-stat-label">Users on a platform built from zero, and it won</div>
@@ -604,6 +756,20 @@
         <div class="hero-stat-label">Sources in a RAG pipeline, shipped solo</div>
       </div>
     </div>
+    <div class="hero-stats dev-only" data-reveal style="animation-delay:.36s">
+      <div class="hero-stat">
+        <div class="hero-stat-num">5+ yrs</div>
+        <div class="hero-stat-label">Writing and shipping production code</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">100+</div>
+        <div class="hero-stat-label">Sources ingested by a solo-built RAG pipeline</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">85k+</div>
+        <div class="hero-stat-label">Users on a platform built from first commit</div>
+      </div>
+    </div>
   </div>
 </header>
 
@@ -611,16 +777,16 @@
 <section id="work">
   <div class="section-header" data-reveal>
     <span class="mono-label">Selected Work</span>
-    <span class="mono-label" style="color:var(--ink-4)">Context · Problem · Solution · Wins</span>
+    <span class="mono-label" style="color:var(--ink-4)"><span class="pm-only">Context · Problem · Solution · Wins</span><span class="dev-only">stack · build · shipped · wins</span></span>
   </div>
 
   <!-- Group: What I've owned -->
   <div class="group-header" data-reveal>
     <div class="group-title-row">
-      <h3 class="group-title">What I've owned</h3>
+      <h3 class="group-title"><span class="pm-only">What I've owned</span><span class="dev-only">Systems in production</span></h3>
       <span class="group-count">2 projects</span>
     </div>
-    <p class="group-desc">Products I led end to end inside a company: roadmap, metrics, and cross-functional delivery.</p>
+    <p class="group-desc"><span class="pm-only">Products I led end to end inside a company: roadmap, metrics, and cross-functional delivery.</span><span class="dev-only">Platforms I architected and shipped inside organisations — data models, pipelines, and the delivery that keeps them alive.</span></p>
   </div>
 
   <div class="project-item" data-reveal>
@@ -629,9 +795,9 @@
       <div>
         <div class="project-title-row">
           <h3 class="project-name">PRISM</h3>
-          <span class="project-tag">Varahe Analytics · Since 2023</span>
+          <span class="project-tag"><span class="pm-only">Varahe Analytics · Since 2023</span><span class="dev-only">Varahe · RBAC · RAG Stack</span></span>
         </div>
-        <p class="project-oneliner">An insights platform that replaced static PDF reports with interactive, role-based data exploration.</p>
+        <p class="project-oneliner"><span class="pm-only">An insights platform that replaced static PDF reports with interactive, role-based data exploration.</span><span class="dev-only">Role-based analytics platform that retired static PDF reporting; now growing a natural-language RAG layer on top.</span></p>
       </div>
       <span class="project-sign-wrap">
         <span class="project-sign open" id="sign-prism">+</span>
@@ -641,16 +807,19 @@
       <div class="project-body-inner">
         <div class="project-grid">
           <div>
-            <div class="project-col-label">Context</div>
-            <p class="project-col-text">At Varahe Analytics, leadership and field teams ran on static PDF reports: slow to produce, impossible to interrogate, and stale the moment they shipped.</p>
+            <div class="project-col-label"><span class="pm-only">Context</span><span class="dev-only">Stack</span></div>
+            <p class="project-col-text pm-only">At Varahe Analytics, leadership and field teams ran on static PDF reports: slow to produce, impossible to interrogate, and stale the moment they shipped.</p>
+            <p class="project-col-text dev-only">Interactive data exploration with role-based access control, replacing a static reporting pipeline. Prism AI adds a natural-language layer built on a RAG stack — retrieval and grounding over live report data.</p>
           </div>
           <div>
-            <div class="project-col-label">Problem</div>
-            <p class="project-col-text">Decision-makers could not slice the data themselves. Every new question meant another report request and another wait, so insight stayed bottlenecked behind a document.</p>
+            <div class="project-col-label"><span class="pm-only">Problem</span><span class="dev-only">Build</span></div>
+            <p class="project-col-text pm-only">Decision-makers could not slice the data themselves. Every new question meant another report request and another wait, so insight stayed bottlenecked behind a document.</p>
+            <p class="project-col-text dev-only">Owned the architecture and delivery end to end — data model, role-based views, and the release plan. Aligned engineering, data, and field teams on one roadmap and got Phase 1 into production in six months.</p>
           </div>
           <div>
-            <div class="project-col-label">Solution</div>
-            <p class="project-col-text">I led PRISM end to end, building interactive, role-based data exploration. I aligned engineering, data, and field teams around a single roadmap and shipped Phase 1 in six months. I now lead Prism AI, a natural-language layer built on a RAG stack.</p>
+            <div class="project-col-label"><span class="pm-only">Solution</span><span class="dev-only">Shipped</span></div>
+            <p class="project-col-text pm-only">I led PRISM end to end, building interactive, role-based data exploration. I aligned engineering, data, and field teams around a single roadmap and shipped Phase 1 in six months. I now lead Prism AI, a natural-language layer built on a RAG stack.</p>
+            <p class="project-col-text dev-only">Static PDF reports fully retired; decision-makers query the data directly. Prism AI, the RAG-backed natural-language layer, is now in flight.</p>
           </div>
         </div>
         <div class="wins-section">
@@ -672,9 +841,9 @@
       <div>
         <div class="project-title-row">
           <h3 class="project-name">MLC Elections Platform</h3>
-          <span class="project-tag">Karnataka · 2024</span>
+          <span class="project-tag"><span class="pm-only">Karnataka · 2024</span><span class="dev-only">0→1 · Data Pipeline · LMS</span></span>
         </div>
-        <p class="project-oneliner">A constituency-scale data platform built from scratch under a hard, immovable deadline.</p>
+        <p class="project-oneliner"><span class="pm-only">A constituency-scale data platform built from scratch under a hard, immovable deadline.</span><span class="dev-only">Constituency-scale voter data platform plus a custom LMS, built from scratch against an immovable deadline.</span></p>
       </div>
       <span class="project-sign-wrap">
         <span class="project-sign" id="sign-mlc">+</span>
@@ -684,16 +853,19 @@
       <div class="project-body-inner">
         <div class="project-grid">
           <div>
-            <div class="project-col-label">Context</div>
-            <p class="project-col-text">For the South-West Graduates Constituency MLC election, a first-time candidate needed a data and outreach platform serving 85,000+ voters. Nothing existed.</p>
+            <div class="project-col-label"><span class="pm-only">Context</span><span class="dev-only">Stack</span></div>
+            <p class="project-col-text pm-only">For the South-West Graduates Constituency MLC election, a first-time candidate needed a data and outreach platform serving 85,000+ voters. Nothing existed.</p>
+            <p class="project-col-text dev-only">A custom LMS for the calling team, plus an automated pipeline linking training data to measured caller output and call quality — real-time dashboards over fast-moving, messy field data.</p>
           </div>
           <div>
-            <div class="project-col-label">Problem</div>
-            <p class="project-col-text">Fast-moving, messy data had to become real-time insight, and a calling team had to be trained and measured, all before a fixed election date that would not move.</p>
+            <div class="project-col-label"><span class="pm-only">Problem</span><span class="dev-only">Build</span></div>
+            <p class="project-col-text pm-only">Fast-moving, messy data had to become real-time insight, and a calling team had to be trained and measured, all before a fixed election date that would not move.</p>
+            <p class="project-col-text dev-only">As Technical Head I owned everything from data design to field rollout, shipping the whole system from zero under a fixed election date that would not move.</p>
           </div>
           <div>
-            <div class="project-col-label">Solution</div>
-            <p class="project-col-text">As Technical Head, I owned end-to-end delivery across engineering, field ops, and leadership. I built a custom LMS for the calling team and an automated pipeline that linked training to caller output and quality, so impact showed up directly in the data.</p>
+            <div class="project-col-label"><span class="pm-only">Solution</span><span class="dev-only">Shipped</span></div>
+            <p class="project-col-text pm-only">As Technical Head, I owned end-to-end delivery across engineering, field ops, and leadership. I built a custom LMS for the calling team and an automated pipeline that linked training to caller output and quality, so impact showed up directly in the data.</p>
+            <p class="project-col-text dev-only">85,000+ voters served, real-time insight in the hands of the campaign, and a first-time candidate over the line.</p>
           </div>
         </div>
         <div class="wins-section">
@@ -712,10 +884,10 @@
   <!-- Group: What I've built -->
   <div class="group-header" data-reveal style="margin-top:clamp(56px,7vw,96px)">
     <div class="group-title-row">
-      <h3 class="group-title">What I've built</h3>
+      <h3 class="group-title"><span class="pm-only">What I've built</span><span class="dev-only">Zero-to-one builds</span></h3>
       <span class="group-count">2 projects</span>
     </div>
-    <p class="group-desc">Founder-level builds I designed and shipped myself, from first commit to launch.</p>
+    <p class="group-desc"><span class="pm-only">Founder-level builds I designed and shipped myself, from first commit to launch.</span><span class="dev-only">Products where I wrote the first commit and the last deploy — solo, full-stack.</span></p>
   </div>
 
   <div class="project-item" data-reveal>
@@ -726,7 +898,7 @@
           <h3 class="project-name">Nitya AI</h3>
           <span class="project-tag">RAG · Flutter · Firebase</span>
         </div>
-        <p class="project-oneliner">A context-aware RAG assistant with source-grounded answers, built end to end.</p>
+        <p class="project-oneliner"><span class="pm-only">A context-aware RAG assistant with source-grounded answers, built end to end.</span><span class="dev-only">RAG assistant with source-grounded answers — semantic chunking, filtered retrieval, and citations — built solo.</span></p>
       </div>
       <span class="project-sign-wrap">
         <span class="project-sign" id="sign-nitya">+</span>
@@ -736,16 +908,19 @@
       <div class="project-body-inner">
         <div class="project-grid">
           <div>
-            <div class="project-col-label">Context</div>
-            <p class="project-col-text">A founder build: an AI assistant that needed to answer reliably across a sprawling, heterogeneous body of source material.</p>
+            <div class="project-col-label"><span class="pm-only">Context</span><span class="dev-only">Stack</span></div>
+            <p class="project-col-text pm-only">A founder build: an AI assistant that needed to answer reliably across a sprawling, heterogeneous body of source material.</p>
+            <p class="project-col-text dev-only">Flutter client on a Firebase backend. Ingestion pipeline over 100+ heterogeneous sources, semantic chunking with structure preserved, and retrieval tuned before the model ever sees a token.</p>
           </div>
           <div>
-            <div class="project-col-label">Problem</div>
-            <p class="project-col-text">Generic LLM answers were not trustworthy; responses had to be grounded in real sources and stay accurate as the underlying material kept growing.</p>
+            <div class="project-col-label"><span class="pm-only">Problem</span><span class="dev-only">Build</span></div>
+            <p class="project-col-text pm-only">Generic LLM answers were not trustworthy; responses had to be grounded in real sources and stay accurate as the underlying material kept growing.</p>
+            <p class="project-col-text dev-only">Solo, end to end: data pipeline, retrieval layer, client app, and deploy. Answer quality moved on chunking and retrieval, not prompt engineering.</p>
           </div>
           <div>
-            <div class="project-col-label">Solution</div>
-            <p class="project-col-text">I built a context-aware RAG assistant that returns source-grounded answers, backed by a data pipeline ingesting inputs from 100+ sources, shipped on a Flutter + Firebase stack.</p>
+            <div class="project-col-label"><span class="pm-only">Solution</span><span class="dev-only">Shipped</span></div>
+            <p class="project-col-text pm-only">I built a context-aware RAG assistant that returns source-grounded answers, backed by a data pipeline ingesting inputs from 100+ sources, shipped on a Flutter + Firebase stack.</p>
+            <p class="project-col-text dev-only">A live assistant where every answer cites the source it came from, staying accurate as the underlying corpus keeps growing.</p>
           </div>
         </div>
         <div class="wins-section">
@@ -767,9 +942,9 @@
       <div>
         <div class="project-title-row">
           <h3 class="project-name">HerRhythm</h3>
-          <span class="project-tag">Founder Build · Full-stack</span>
+          <span class="project-tag"><span class="pm-only">Founder Build · Full-stack</span><span class="dev-only">Full-stack · Solo · Live</span></span>
         </div>
-        <p class="project-oneliner">A coach dashboard platform built hands-on with the founder, so she could scale past manual ops.</p>
+        <p class="project-oneliner"><span class="pm-only">A coach dashboard platform built hands-on with the founder, so she could scale past manual ops.</span><span class="dev-only">Full-stack coach dashboard — clients, scheduling, programming — shipped fast and iterated against a real user's workflow.</span></p>
       </div>
       <span class="project-sign-wrap">
         <span class="project-sign" id="sign-herrhythm">+</span>
@@ -779,16 +954,19 @@
       <div class="project-body-inner">
         <div class="project-grid">
           <div>
-            <div class="project-col-label">Context</div>
-            <p class="project-col-text">A solo coach was running her whole practice by hand. Scheduling, client tracking, and programming lived across spreadsheets and DMs, which quietly capped how many clients she could take on.</p>
+            <div class="project-col-label"><span class="pm-only">Context</span><span class="dev-only">Stack</span></div>
+            <p class="project-col-text pm-only">A solo coach was running her whole practice by hand. Scheduling, client tracking, and programming lived across spreadsheets and DMs, which quietly capped how many clients she could take on.</p>
+            <p class="project-col-text dev-only">A full-stack platform: client management, scheduling, and programme delivery in one app, replacing an ops layer that lived in spreadsheets and DMs.</p>
           </div>
           <div>
-            <div class="project-col-label">Problem</div>
-            <p class="project-col-text">Growth was bottlenecked by operations, not demand. Without one place to manage clients and delivery, every new client added overhead instead of leverage.</p>
+            <div class="project-col-label"><span class="pm-only">Problem</span><span class="dev-only">Build</span></div>
+            <p class="project-col-text pm-only">Growth was bottlenecked by operations, not demand. Without one place to manage clients and delivery, every new client added overhead instead of leverage.</p>
+            <p class="project-col-text dev-only">Designed and shipped end to end, working 1:1 with the founder — a tight loop of shipping against her live workflow and iterating on what real usage surfaced.</p>
           </div>
           <div>
-            <div class="project-col-label">Solution</div>
-            <p class="project-col-text">I built the coach dashboard end to end, working directly alongside the founder: a full-stack platform to manage clients, schedules, and programming in one place, shipped fast and iterated against her real workflow.</p>
+            <div class="project-col-label"><span class="pm-only">Solution</span><span class="dev-only">Shipped</span></div>
+            <p class="project-col-text pm-only">I built the coach dashboard end to end, working directly alongside the founder: a full-stack platform to manage clients, schedules, and programming in one place, shipped fast and iterated against her real workflow.</p>
+            <p class="project-col-text dev-only">Manual spreadsheet ops replaced outright, and a practice that scaled past its previous client cap.</p>
           </div>
         </div>
         <div class="wins-section">
@@ -815,7 +993,7 @@
         <span class="mono-label">The Blog</span>
         <h2>Writing &amp; notes</h2>
       </div>
-      <p class="blog-desc">Self-hosted thinking on building products, shipping under pressure, and the move from code to roadmap.</p>
+      <p class="blog-desc"><span class="pm-only">Self-hosted thinking on building products, shipping under pressure, and the move from code to roadmap.</span><span class="dev-only">Self-hosted write-ups from the trenches: retrieval, automation, and shipping under hard deadlines.</span></p>
     </div>
 
     <div id="posts-container"></div>
@@ -851,11 +1029,17 @@
   <div class="about-grid">
     <div data-reveal>
       <span class="mono-label">About</span>
-      <h2 class="about-heading">I came up writing production code. Now I own the product.</h2>
+      <h2 class="about-heading"><span class="pm-only">I came up writing production code. Now I own the product.</span><span class="dev-only">I never stopped shipping code. I just started choosing what to ship.</span></h2>
     </div>
     <div class="about-body" data-reveal style="animation-delay:.12s">
-      <p class="about-p">I started as a software engineer, hardening production systems and integrating APIs, then led backend delivery as a Team Lead, setting the coding standards, QA, and CI/CD that a product runs on.</p>
-      <p class="about-p">That foundation is why I move fast as a PM. I own my product area independently, define the metrics that tell me whether it worked, and partner with engineering as an equal. Alongside that I take on founder-level builds, from a coach dashboard to a RAG assistant, and advise startups on product, GTM, and automation.</p>
+      <div class="pm-only">
+        <p class="about-p">I started as a software engineer, hardening production systems and integrating APIs, then led backend delivery as a Team Lead, setting the coding standards, QA, and CI/CD that a product runs on.</p>
+        <p class="about-p" style="margin-top:22px">That foundation is why I move fast as a PM. I own my product area independently, define the metrics that tell me whether it worked, and partner with engineering as an equal. Alongside that I take on founder-level builds, from a coach dashboard to a RAG assistant, and advise startups on product, GTM, and automation.</p>
+      </div>
+      <div class="dev-only">
+        <p class="about-p">Software engineer first: hardening production systems, integrating third-party APIs, then leading backend delivery as a Team Lead — owning the coding standards, QA gates, and CI/CD pipelines the product ran on.</p>
+        <p class="about-p" style="margin-top:22px">That muscle never went away. I still take products from first commit to deploy: a RAG assistant on Flutter and Firebase, a full-stack coach dashboard, automation pipelines in n8n. The PM title just means I also decide what's worth building — and I can read every pull request that builds it.</p>
+      </div>
     </div>
   </div>
 
@@ -1036,7 +1220,41 @@
     document.body.style.overflow = '';
   }
 
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') closePost(); });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closePost();
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.metaKey || e.ctrlKey) return;
+    if (e.key === 'm' || e.key === 'M') {
+      const next = mode === 'dev' ? 'pm' : 'dev';
+      localStorage.setItem('va-mode', next);
+      applyMode(next);
+    }
+  });
+
+  // ── Mode (PM / Dev) ──────────────────────────────────────────────────────
+  const PM_TITLE  = 'Vinay V P · Product & Technology Leader';
+  const DEV_TITLE = 'vinay_vp · Engineer & Builder';
+  let mode = localStorage.getItem('va-mode') || 'pm';
+
+  function applyMode(m) {
+    document.documentElement.setAttribute('data-mode', m);
+    document.title = m === 'dev' ? DEV_TITLE : PM_TITLE;
+    document.querySelectorAll('[data-mode-btn]').forEach(b => {
+      const on = b.dataset.modeBtn === m;
+      b.classList.toggle('active', on);
+      b.setAttribute('aria-pressed', on);
+    });
+    mode = m;
+  }
+  applyMode(mode);
+
+  document.querySelectorAll('[data-mode-btn]').forEach(b => {
+    b.addEventListener('click', () => {
+      const m = b.dataset.modeBtn;
+      if (m === mode) return;
+      localStorage.setItem('va-mode', m);
+      applyMode(m);
+    });
+  });
 
   // ── Theme ──────────────────────────────────────────────────────────────────
   const themeBtn = document.getElementById('themeBtn');
