@@ -547,6 +547,94 @@
     display: flex; flex-wrap: wrap; gap: 16px; align-items: center; justify-content: space-between;
   }
 
+  /* ===== MODE PILL (hero meta row) ===== */
+  .hero-meta { align-items: center; flex-wrap: wrap; row-gap: 14px; }
+  .hms-track {
+    position: relative; display: grid; grid-template-columns: 1fr 1fr;
+    width: 150px; height: 36px; padding: 4px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(56px) saturate(200%);
+    -webkit-backdrop-filter: blur(56px) saturate(200%);
+    border: 1px solid var(--glass-border);
+    box-shadow:
+      inset 0 1.5px 0 var(--glass-specular),
+      inset 0 -8px 14px -10px rgba(255,255,255,0.12),
+      0 6px 28px var(--glass-shadow),
+      0 2px 5px rgba(0,0,0,0.07);
+    border-radius: 999px; cursor: pointer;
+    transition: border-color .25s, box-shadow .3s, background-color .35s, border-radius .35s ease;
+  }
+  .hms-track::before {
+    content: ''; position: absolute; inset: 0; border-radius: inherit;
+    background: linear-gradient(115deg, rgba(255,255,255,0.16) 0%, rgba(255,255,255,0.03) 38%, transparent 62%);
+    pointer-events: none;
+  }
+  .hms-track:hover { border-color: var(--ink-4); }
+  .hms-opt {
+    position: relative; z-index: 1;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--ink-3); transition: color .35s;
+  }
+  .hms-thumb {
+    position: absolute; top: 4px; left: 4px;
+    width: calc(50% - 4px); height: calc(100% - 8px);
+    background: color-mix(in srgb, var(--solid) 88%, transparent);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.35),
+      inset 0 -1px 1px rgba(0,0,0,0.18),
+      0 2px 8px rgba(0,0,0,0.20);
+    border-radius: 999px;
+    transition: transform .5s cubic-bezier(.22,1,.36,1), background-color .35s, border-radius .35s ease;
+  }
+  html[data-mode="pm"] .hms-pm, html[data-mode="dev"] .hms-dev { color: var(--solid-text); }
+  html[data-mode="dev"] .hms-thumb { transform: translateX(100%); }
+  [data-mode="dev"] .hms-track { border-radius: 9px; }
+  [data-mode="dev"] .hms-thumb { border-radius: 6px; }
+
+  /* First-visit attention: soft pulse + thumb peek, stops after interaction */
+  @keyframes hms-pulse {
+    0%, 100% {
+      box-shadow:
+        inset 0 1.5px 0 var(--glass-specular),
+        inset 0 -8px 14px -10px rgba(255,255,255,0.12),
+        0 6px 28px var(--glass-shadow),
+        0 2px 5px rgba(0,0,0,0.07),
+        0 0 0 0 color-mix(in srgb, var(--solid) 0%, transparent);
+    }
+    50% {
+      box-shadow:
+        inset 0 1.5px 0 var(--glass-specular),
+        inset 0 -8px 14px -10px rgba(255,255,255,0.12),
+        0 6px 28px var(--glass-shadow),
+        0 2px 5px rgba(0,0,0,0.07),
+        0 0 0 8px color-mix(in srgb, var(--solid) 14%, transparent);
+    }
+  }
+  @keyframes hms-peek {
+    0%, 100% { transform: translateX(0); }
+    35%      { transform: translateX(10px); }
+    55%      { transform: translateX(0); }
+    75%      { transform: translateX(5px); }
+  }
+  .hms-track.hms-intro { animation: hms-pulse 2.4s ease 1.4s 3; }
+  html[data-mode="pm"] .hms-track.hms-intro .hms-thumb { animation: hms-peek 1.7s cubic-bezier(.22,1,.36,1) 2.2s 2; }
+  @media (prefers-reduced-motion: reduce) {
+    .hms-track.hms-intro, .hms-track.hms-intro .hms-thumb { animation: none; }
+  }
+  @media (max-width: 640px) {
+    .hero-meta { justify-content: space-between; }
+    .hms-track { order: 3; flex-basis: 100%; max-width: 150px; margin: 0 auto; }
+  }
+
+  /* Nav echo: appears only after scrolling past the hero */
+  .nav-mode-toggle {
+    opacity: 0; transform: translateY(-4px); pointer-events: none;
+    transition: opacity .35s ease, transform .35s ease;
+  }
+  .nav-mode-toggle.show { opacity: 1; transform: none; pointer-events: auto; }
+
   /* ═══════════════════════════════════════════════════════════════
      DEV MODE — minimal terminal reskin. PM mode is the default look.
      ═══════════════════════════════════════════════════════════════ */
@@ -574,7 +662,6 @@
   .mode-opt.active { background: var(--solid); color: var(--solid-text); }
   .mode-toggle.mobile-mode { display: flex; width: 100%; margin-top: 16px; }
   .mode-toggle.mobile-mode .mode-opt { flex: 1; font-size: 12px; padding: 11px 0; text-align: center; }
-  @media (max-width: 420px) { .nav-right .mode-toggle { display: none; } }
 
   /* ── Dev tokens: light ── */
   [data-mode="dev"] {
@@ -701,7 +788,7 @@
     <div class="nav-inner">
       <a href="#top" class="nav-brand"><span class="pm-only">Vinay V P</span><span class="dev-only">~/vinay_vp</span></a>
       <div class="nav-right">
-        <div class="mode-toggle" role="group" aria-label="Portfolio mode">
+        <div class="mode-toggle nav-mode-toggle" id="navModeToggle" role="group" aria-label="Portfolio mode">
           <button class="mode-opt" data-mode-btn="pm" aria-pressed="true">PM</button>
           <button class="mode-opt" data-mode-btn="dev" aria-pressed="false">Dev</button>
         </div>
@@ -734,10 +821,15 @@
 <header id="top">
   <div class="hero-ambient" aria-hidden="true"></div>
   <div class="hero-meta" data-reveal>
-    <span class="mono-label no-slash dev-prompt dev-only">vinay@blr:~ $ whoami</span>
     <span class="mono-label">Portfolio · 2026</span>
+    <button class="hms-track hms-intro" id="heroPill" role="switch" aria-checked="false" aria-label="Toggle between PM and Dev mode">
+      <span class="hms-opt hms-pm">PM</span>
+      <span class="hms-opt hms-dev">Dev</span>
+      <span class="hms-thumb" aria-hidden="true"></span>
+    </button>
     <span class="mono-label">Bengaluru · IND</span>
   </div>
+  <div class="mono-label no-slash dev-prompt dev-only" data-reveal style="margin-bottom:14px">vinay@blr:~ $ whoami</div>
   <h1 data-reveal style="animation-delay:.08s"><span class="pm-only">Vinay V P</span><span class="dev-only">vinay_vp<span class="dev-cursor" aria-hidden="true"></span></span></h1>
   <p class="hero-subtitle" data-reveal style="animation-delay:.18s"><span class="pm-only">The PM who ships it himself, from discovery to deploy.</span><span class="dev-only">Engineer who happens to own the roadmap.</span></p>
   <div class="hero-grid">
@@ -1243,18 +1335,41 @@
       b.classList.toggle('active', on);
       b.setAttribute('aria-pressed', on);
     });
+    const hp = document.getElementById('heroPill');
+    if (hp) hp.setAttribute('aria-checked', m === 'dev');
     mode = m;
   }
   applyMode(mode);
 
-  document.querySelectorAll('[data-mode-btn]').forEach(b => {
-    b.addEventListener('click', () => {
-      const m = b.dataset.modeBtn;
-      if (m === mode) return;
-      localStorage.setItem('va-mode', m);
-      applyMode(m);
+  function setMode(m) {
+    if (m === mode) return;
+    localStorage.setItem('va-mode', m);
+    applyMode(m);
+  }
+
+  const heroPill = document.getElementById('heroPill');
+  function endPillIntro() { if (heroPill) heroPill.classList.remove('hms-intro'); }
+  setTimeout(endPillIntro, 12000);
+
+  if (heroPill) {
+    heroPill.addEventListener('click', () => {
+      endPillIntro();
+      setMode(mode === 'dev' ? 'pm' : 'dev');
     });
+  }
+
+  document.querySelectorAll('[data-mode-btn]').forEach(b => {
+    b.addEventListener('click', () => { endPillIntro(); setMode(b.dataset.modeBtn); });
   });
+
+  // Nav mode toggle appears once the hero is scrolled past
+  const navModeToggle = document.getElementById('navModeToggle');
+  const heroEl = document.getElementById('top');
+  if (navModeToggle && heroEl) {
+    new IntersectionObserver(entries => {
+      navModeToggle.classList.toggle('show', !entries[0].isIntersecting);
+    }, { rootMargin: '-120px 0px 0px 0px' }).observe(heroEl);
+  }
 
   // ── Theme ──────────────────────────────────────────────────────────────────
   const themeBtn = document.getElementById('themeBtn');
